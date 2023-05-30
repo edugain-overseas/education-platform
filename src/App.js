@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edugain Overseas: learning platform
+          Edugain Overseas: Learning platform
         </p>
         <a
           className="App-link"
