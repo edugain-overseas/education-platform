@@ -1,0 +1,52 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #718da7;
+  margin-right: 16px;
+}
+
+.userWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-right: 26px;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.userName {
+  font-size: 16px;
+  line-height: 19px;
+  color: #0c2e4c;
+}
+
+.settingsButton {
+  width: 126px;
+  height: 38px;
+  background: rgba(131, 131, 131, 0.2);
+  border-radius: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  border: none;
+}
+
+.settings {
+  font-size: 16px;
+  line-height: 19px;
+  color: #718DA7;
+  text-transform: capitalize;
+}
