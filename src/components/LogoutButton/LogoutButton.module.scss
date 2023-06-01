@@ -1,0 +1,22 @@
+.LogoutButton {
+  width: 100%;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+  background: #335BA9;
+  border: none;
+  cursor: pointer;
+
+  & svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  & span {
+    font-size: 14px;
+    line-height: 17px;
+    color: #ffffff;
+  }
+}

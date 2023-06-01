@@ -1,0 +1,26 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 8px 8px 36px;
+  gap: 7px;
+  width: 100%;
+
+  & svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  & span {
+    font-size: 14px;
+    line-height: 17px;
+    color: #fff;
+  }
+}
+
