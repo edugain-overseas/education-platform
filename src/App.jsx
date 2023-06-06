@@ -1,4 +1,4 @@
-import { LoginPage } from "./pages/LoginPage/LoginPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage.jsx";
 import { Routes, Route } from "react-router-dom";
 import { PublicRoute } from "./components/PublicRoute/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
