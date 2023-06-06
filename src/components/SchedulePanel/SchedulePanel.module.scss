@@ -1,0 +1,81 @@
+.mainWrapper {
+  position: relative;
+  padding: 14px 0;
+  width: 22.26%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.shownMore {
+  width: calc(22.26% * 3 + (16px * 2));
+}
+
+.title {
+  margin-left: 16px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #000000;
+  opacity: 0.3;
+}
+
+.scheduleWrapper {
+  display: flex;
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.dayScheduleWrapper {
+  overflow-y: auto;
+  min-width: 100%;
+}
+
+.dayShownMore {
+  min-width: calc(33.33% - (16px * 2 / 3));
+}
+
+.dateWrapper {
+  padding-left: 16px;
+  display: flex;
+  color: #545454;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.dayInfo {
+  font-size: 21px;
+  line-height: 25px;
+  margin-right: 2px;
+}
+
+.dateSubWrapper {
+}
+
+.monthInfo {
+  font-size: 9.14286px;
+  line-height: 10px;
+}
+
+.dayOfWeekInfo {
+  font-size: 10.4348px;
+  line-height: 11px;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.851064px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3.40426px;
+}

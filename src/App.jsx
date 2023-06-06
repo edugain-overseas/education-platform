@@ -1,8 +1,9 @@
-import { LoginPage } from "./pages/loginPage/LoginPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { Routes, Route } from "react-router-dom";
 import { PublicRoute } from "./components/PublicRoute/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { MainLayout } from "./components/MainLayout/MainLayout";
+import { HomePage } from "./pages/HomePage/HomePage";
 
 const Router = () => {
   return (
@@ -12,7 +13,7 @@ const Router = () => {
         element={<PublicRoute component={<LoginPage />} />}
       />
       <Route path="/" element={<PrivateRoute component={<MainLayout />} />}>
-        <Route path="/" element={<div>Home page</div>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="schedule" element={<div>Schedule page</div>} />
         <Route path="courses" element={<div>Courses page</div>} />
         <Route path="task" element={<div>Task page</div>} />

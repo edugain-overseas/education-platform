@@ -2,10 +2,16 @@
   display: flex;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 .rightWrapper {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.main {
+  flex-grow: 1;
+  max-height: calc(100% - 70px);
 }

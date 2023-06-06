@@ -20,6 +20,12 @@ code {
   text-decoration: none;
 }
 
+button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 .active {
   background: #335ba9;
 }

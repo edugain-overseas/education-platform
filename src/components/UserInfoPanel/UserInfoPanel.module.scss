@@ -1,0 +1,78 @@
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding: 40px 24px;
+  max-width: 232px;
+  max-height: 100%;
+  overflow-y: auto;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+
+.userInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 112px;
+  height: 112px;
+  border: 1.2px solid #001c54;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+}
+
+.userName {
+  font-size: 16px;
+  line-height: 19px;
+  color: #000000;
+  margin-bottom: 4px;
+}
+
+.eduProgress {
+  font-size: 12px;
+  line-height: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.eduInfoList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+}
+
+.eduInfoItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+
+.eduInfoProperty {
+    font-weight: 400;
+}
+
+.eduInfoValue {
+    font-weight: 600;
+}
