@@ -1,7 +1,7 @@
-import { LoginPage } from "./pages/LoginPage/LoginPage.jsx";
 import { Routes, Route } from "react-router-dom";
 import { PublicRoute } from "./components/PublicRoute/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 
