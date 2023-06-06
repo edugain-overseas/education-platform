@@ -7,7 +7,7 @@ import { ReactComponent as ShowLessIcon } from "../../images/icons/show-less.svg
 import styles from "./SchedulePanel.module.scss";
 
 export function SchedulePanel() {
-  const [isShownMore, setIsShownMore] = useState(true);
+  const [isShownMore, setIsShownMore] = useState(false);
   const nextThreeDays = [moment(), moment().add(1, "d"), moment().add(2, "d")];
 
   const lessons = [
