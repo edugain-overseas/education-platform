@@ -9,7 +9,7 @@
 }
 
 .shownMore {
-  width: calc(22.26% * 3 + (16px * 2));
+  min-width: calc(22.26% * 3 + (16px * 2));
 }
 
 .title {

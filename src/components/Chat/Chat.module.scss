@@ -1,7 +1,8 @@
 .mainWrapper {
-//   min-width: 44.58%;
-//   width: 44.58%;
+  min-width: 44.58%;
   background: #fff;
+  flex: 1;
+  flex-shrink: 0;
 }
 
 .subwrapper {

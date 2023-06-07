@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from "react";
+import { ReactComponent as SensIcon } from "../../../images/icons/send.svg";
+import styles from './MessageForm.module.scss'
 
 export function MessageForm() {
   const [message, setMessage] = useState("");
-  const [textareaHeight, setTextareaHeight] = useState(50);
+//   const [textareaHeight, setTextareaHeight] = useState(50);
 
-  const textareaRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,18 +18,22 @@ export function MessageForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.massageForm}>
       <textarea
-        ref={textareaRef}
         value={message}
-        onFocus={()=>setTextareaHeight(200)}
-        onBlur={()=>setTextareaHeight(50)}
+        // onFocus={() => setTextareaHeight(150)}
+        // onBlur={() => setTextareaHeight(50)}
         onChange={handleChange}
         placeholder="Enter you message here"
         rows={1}
-        style={{resize: 'none', height: textareaHeight, width: '100%'}}
+        className={styles.messageInput}
+        // style={{ resize: "none", height: textareaHeight, width: "100%" }}
       />
-      <button type="submit">Submit</button>
+      <div>
+      <button type="submit" className={styles.sendButton}>
+        <SensIcon />
+      </button>
+      </div>
     </form>
   );
 }
