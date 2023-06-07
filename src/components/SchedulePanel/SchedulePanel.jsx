@@ -13,7 +13,7 @@ export function SchedulePanel() {
   const lessons = [
     {
       id: 1,
-      date: "2023-06-06",
+      date: "2023-06-07",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -21,7 +21,7 @@ export function SchedulePanel() {
     },
     {
       id: 2,
-      date: "2023-06-06",
+      date: "2023-06-07",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -29,7 +29,7 @@ export function SchedulePanel() {
     },
     {
       id: 3,
-      date: "2023-06-06",
+      date: "2023-06-07",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -37,7 +37,7 @@ export function SchedulePanel() {
     },
     {
       id: 4,
-      date: "2023-06-06",
+      date: "2023-06-07",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -45,7 +45,7 @@ export function SchedulePanel() {
     },
     {
       id: 5,
-      date: "2023-06-06",
+      date: "2023-06-07",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -53,7 +53,7 @@ export function SchedulePanel() {
     },
     {
       id: 6,
-      date: "2023-06-07",
+      date: "2023-06-08",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -61,7 +61,7 @@ export function SchedulePanel() {
     },
     {
       id: 7,
-      date: "2023-06-07",
+      date: "2023-06-08",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -69,7 +69,7 @@ export function SchedulePanel() {
     },
     {
       id: 8,
-      date: "2023-06-07",
+      date: "2023-06-08",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -77,7 +77,7 @@ export function SchedulePanel() {
     },
     {
       id: 9,
-      date: "2023-06-08",
+      date: "2023-06-09",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -85,7 +85,7 @@ export function SchedulePanel() {
     },
     {
       id: 10,
-      date: "2023-06-08",
+      date: "2023-06-09",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -93,7 +93,7 @@ export function SchedulePanel() {
     },
     {
       id: 11,
-      date: "2023-06-08",
+      date: "2023-06-09",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
@@ -101,7 +101,7 @@ export function SchedulePanel() {
     },
     {
       id: 12,
-      date: "2023-06-08",
+      date: "2023-06-09",
       startTime: "10:10",
       endTime: "12:10",
       subject: "Bio-chemistry",
