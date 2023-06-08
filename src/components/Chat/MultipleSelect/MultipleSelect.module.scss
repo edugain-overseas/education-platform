@@ -1,0 +1,41 @@
+.select {
+  min-width: 88px;
+  font-size: 14px;
+  line-height: 17px;
+  color: #b3b3b3;
+}
+
+.customDropdown {
+  width: 183px;
+  max-height: 170px;
+  overflow-x: hidden;
+  padding: 12px;
+}
+
+.customOption {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  text-overflow: ellipsis;
+
+  & label {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  & label span + span {
+    flex-grow: 1;
+    font-size: 13px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: transparent;
+    background: transparent;
+  }
+}
