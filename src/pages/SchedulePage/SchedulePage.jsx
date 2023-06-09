@@ -1,15 +1,16 @@
 import React from "react";
-import { useState } from "react";
+import { LessonsList } from "../../components/LessonsList/LessonsList";
+import styles from "./SchedulePage.module.scss";
 import moment from "moment";
-import { LessonsList } from "../LessonsList/LessonsList";
-import { ReactComponent as ShowMoreIcon } from "../../images/icons/show-more.svg";
-import { ReactComponent as ShowLessIcon } from "../../images/icons/show-less.svg";
-import styles from "./SchedulePanel.module.scss";
 
-export function SchedulePanel() {
-  const [isShownMore, setIsShownMore] = useState(false);
-  const nextThreeDays = [moment(), moment().add(1, "d"), moment().add(2, "d")];
-
+export function SchedulePage() {
+  const nextFiveDays = [
+    moment(),
+    moment().add(1, "d"),
+    moment().add(2, "d"),
+    moment().add(3, "d"),
+    moment().add(4, "d"),
+  ];
   const lessons = [
     {
       id: 1,
@@ -107,30 +108,64 @@ export function SchedulePanel() {
       subject: "Bio-chemistry",
       lecturer: "Galliy Bogdan Viktorovich",
     },
+    {
+      id: 13,
+      date: "2023-06-12",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
+    {
+      id: 14,
+      date: "2023-06-12",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
+    {
+      id: 15,
+      date: "2023-06-12",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
+    {
+      id: 16,
+      date: "2023-06-13",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
+    {
+      id: 17,
+      date: "2023-06-13",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
+    {
+      id: 18,
+      date: "2023-06-18",
+      startTime: "10:10",
+      endTime: "12:10",
+      subject: "Bio-chemistry",
+      lecturer: "Galliy Bogdan Viktorovich",
+    },
   ];
 
   const getLessonsForOneDay = (day) =>
     lessons.filter((lesson) => lesson.date === day.format("YYYY-MM-DD"));
 
   return (
-    <div
-      className={
-        isShownMore
-          ? `${styles.mainWrapper} ${styles.shownMore}`
-          : styles.mainWrapper
-      }
-    >
-      <h2 className={styles.title}>Schedule</h2>
-      <div className={styles.scheduleWrapper}>
-        {nextThreeDays.map((day) => (
-          <div
-            key={day}
-            className={
-              isShownMore
-                ? `${styles.dayScheduleWrapper} ${styles.dayShownMore}`
-                : styles.dayScheduleWrapper
-            }
-          >
+    <div className={styles.mainWrapper}>
+      <div className={styles.subWrapper}>
+        {nextFiveDays.map((day) => (
+          <div key={day} className={styles.dayScheduleWrapper}>
             <div className={styles.dateWrapper}>
               <p className={styles.dayInfo}>{day.format("DD")} /</p>
               <div className={styles.dateSubWrapper}>
@@ -142,21 +177,6 @@ export function SchedulePanel() {
           </div>
         ))}
       </div>
-      {isShownMore ? (
-        <button
-          className={styles.toggleButton}
-            onClick={() => setIsShownMore(false)}
-          >
-          <ShowLessIcon />
-        </button>
-      ) : (
-        <button
-          className={styles.toggleButton}
-          onClick={() => setIsShownMore(true)}
-        >
-          <ShowMoreIcon />
-        </button>
-      )}
     </div>
   );
 }

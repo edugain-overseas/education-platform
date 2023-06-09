@@ -30,9 +30,6 @@ button {
   background: #335ba9;
 }
 
-.noScrolling {
-  overflow: hidden;
-}
-.scrolling {
-  overflow-y: auto;
+.hidden {
+  display: none;
 }

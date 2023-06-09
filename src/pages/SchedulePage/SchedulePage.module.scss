@@ -1,16 +1,17 @@
 .mainWrapper {
   position: relative;
   padding: 14px 0;
-  width: 22.26%;
-  min-width: 240px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #F4F6FC;
+  overflow-x: auto;
 }
 
-.shownMore {
-  min-width: calc(22.26% * 3 + (16px * 2));
+.subWrapper {
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
 }
 
 .title {
@@ -29,19 +30,14 @@
   display: flex;
   gap: 16px;
   flex-grow: 1;
-  
 }
 
 .dayScheduleWrapper {
   overflow-y: auto;
-  min-width: 100%;
+  width: 240px;
+  flex-shrink: 0;
 }
 
-
-
-.dayShownMore {
-  min-width: calc(33.33% - (16px * 2 / 3));
-}
 
 .dateWrapper {
   padding-left: 16px;

@@ -1,0 +1,100 @@
+.messageWrapper {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.feedback {
+    position: relative;
+    padding-left: 48px;
+    margin-top: -24px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: calc(100% - 20px);
+        right: calc(100% - 48px);
+        width: 28px;
+        height: 100%;
+        border-left: 1px solid #D9D9D9;
+        border-bottom: 1px solid #D9D9D9;
+        z-index: 1;
+    }
+}
+
+.avatarWrapper {
+  position: relative;
+  height: fit-content;
+  z-index: 2;
+  & span {
+    position: absolute;
+    bottom: -3px;
+    right: 1px;
+    box-sizing: content-box;
+    width: 10px;
+    height: 10px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+  }
+}
+
+.avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #0c2e4c;
+}
+
+.online {
+  background-color: #00c808;
+}
+
+.offline {
+  background-color: #f00;
+}
+
+.contentSubWrapper {
+  flex-grow: 1;
+  padding-bottom: 12px;
+}
+
+.userName {
+  font-size: 12px;
+  line-height: 15px;
+  color: #718da7;
+  margin-bottom: 4px;
+}
+
+.contentWrapper {
+  position: relative;
+  padding: 10px 27px 10px 16px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  font-size: 13px;
+  line-height: 20px;
+  color: #0c2e4c;
+}
+
+.feedbackButton {
+  position: absolute;
+  bottom: -12px;
+  right: 16px;
+  width: 115px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+
+.feedbackButtonTitle {
+  font-size: 13px;
+  line-height: 16px;
+  color: #718da7;
+}

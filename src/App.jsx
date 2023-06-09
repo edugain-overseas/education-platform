@@ -4,6 +4,7 @@ import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
+import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
 
 const Router = () => {
   return (
@@ -14,7 +15,7 @@ const Router = () => {
       />
       <Route path="/" element={<PrivateRoute component={<MainLayout />} />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="schedule" element={<div>Schedule page</div>} />
+        <Route path="schedule" element={<SchedulePage/>} />
         <Route path="courses" element={<div>Courses page</div>} />
         <Route path="task" element={<div>Task page</div>} />
         <Route path="register" element={<div>Register page</div>} />
