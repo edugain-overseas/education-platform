@@ -21,7 +21,11 @@ export function Chat() {
       <div className={styles.subWrapper}>
         <div className={styles.chatHeader}>
           <div className={`${styles.headerLeft} ${isShowMore && styles.more}`}>
-            <div className={`${styles.avatarsWrapper} ${isShowMore && styles.more}`}>
+            <div
+              className={`${styles.avatarsWrapper} ${
+                isShowMore && styles.more
+              }`}
+            >
               <img src={image} alt="" className={styles.avatarImage} />
               <img src={image} alt="" className={styles.avatarImage} />
               <img src={image} alt="" className={styles.avatarImage} />

@@ -1,0 +1,65 @@
+.wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 170px;
+  background: rgba(236, 236, 236, 0.3);
+  border: 1px solid rgba(215, 215, 215, 0.5);
+  border-radius: 4px;
+
+  & .ql-toolbar.ql-snow,
+  .ql-container.ql-snow {
+    border: none;
+  }
+
+  & .ql-toolbar.ql-snow {
+    padding: 16px;
+  }
+
+  & .ql-container.ql-snow {
+    font-size: 13px;
+    line-height: 20px;
+    color: #001c54;
+  }
+
+  & .ql-editor {
+    padding: 16px;
+  }
+
+  & .ql-editor.ql-blank::before {
+    font-size: 13px;
+    line-height: 16px;
+    color: #b3b3b3;
+  }
+
+  & .ql-editor u {
+    text-decoration: underline;
+  }
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+  display: flex;
+  width: 76px;
+  gap: 4px;
+
+  & button {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+
+    & svg {
+        height: 14px;
+        width: auto;
+    }
+  }
+}
+
+.ql-snow .ql-stroke {
+    stroke: #B3B3B3;
+}
+
+.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+    fill: #B3B3B3;
+}
