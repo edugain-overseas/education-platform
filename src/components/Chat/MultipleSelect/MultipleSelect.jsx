@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Select, Checkbox } from "antd";
 import styles from "./MultipleSelect.module.scss";
 
-export function MultipleSelect() {
+export function MultipleSelect({onChange}) {
   const options = [
     { label: "Student 1aaaaaaaaaaaaaaaaaaaaaa", value: "option1" },
     { label: "Student 2", value: "option2" },
@@ -19,16 +19,6 @@ export function MultipleSelect() {
   const allOption = { label: "Send All", value: "all" };
   const allOptions = [allOption, ...options];
   const [selectedOptions, setSelectedOptions] = useState([]);
-  // const [isScrolling, setIsScrolling] = useState(true);
-  // const scrollTimerRef = useRef(null);
-
-  const handleOptionChange = (values) => {
-    if (values.includes("all")) {
-      setSelectedOptions(options.map((option) => option.value));
-    } else {
-      setSelectedOptions(values);
-    }
-  };
 
   const handleOptionChangeCheckbox = (value, checked) => {
     const updatedOptions = [...selectedOptions];
@@ -41,6 +31,7 @@ export function MultipleSelect() {
       }
     }
     setSelectedOptions(updatedOptions);
+    onChange(updatedOptions)
   };
 
   const handleSendAll = (e) => {
@@ -51,26 +42,9 @@ export function MultipleSelect() {
     }
   };
 
-  // const choiceRender = (choice) => {
-  //   if (choice.value === "all") {
-  //     return "Send all";
-  //   }
-  //   return choice.label;
-  // };
-
-  // const handleScrollStart = () => {
-  //   setIsScrolling(true);
-  //   setIsScrolling(false)
-  //   // clearTimeout(scrollTimerRef.current);
-  //   console.log('asdasd');
-  //   // scrollTimerRef.current = setTimeout(() => setIsScrolling(false), 500);
-  // };
-
   const dropdownRender = (menu) => (
     <div
       className={styles.customDropdown}
-      // style={{ overflowY: isScrolling ? 'auto' : 'hidden' }}
-      // onScroll={handleScrollStart}
     >
       <div className={styles.customOption}>
         <Checkbox
@@ -100,7 +74,6 @@ export function MultipleSelect() {
     <Select
       mode="multiple"
       value={selectedOptions.length === options.length ? [] : selectedOptions}
-      onChange={handleOptionChange}
       options={allOptions}
       defaultValue={"all"}
       dropdownRender={dropdownRender}
@@ -113,7 +86,6 @@ export function MultipleSelect() {
       placeholder="Send all"
       popupMatchSelectWidth={false}
       virtual={false}
-      // choiceRender={choiceRender}
     />
   );
 }

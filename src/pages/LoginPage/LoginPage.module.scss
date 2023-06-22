@@ -10,6 +10,7 @@
 }
 
 .formWrapper {
+  position: relative;
   width: 100%;
   height: auto;
   padding: 30px;
@@ -93,4 +94,13 @@
   &:hover, &:focus {
     border: 1px solid #fff;
   }
+  &:disabled {
+    background-color: #727272;
+  }
+}
+
+.loaderWrapper {
+  width: 120px;
+  height: 32px;
+  transform: translateY(-20px);
 }

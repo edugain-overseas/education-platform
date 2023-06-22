@@ -23,6 +23,8 @@
 
   & .ql-editor {
     padding: 16px;
+    max-height: 120px;
+    overflow-y: auto;
   }
 
   & .ql-editor.ql-blank::before {
@@ -33,6 +35,25 @@
 
   & .ql-editor u {
     text-decoration: underline;
+  }
+}
+
+.wrapper--closed {
+  height: 50px;
+  & * {
+    overflow: hidden;
+  }
+
+  & div.ql-toolbar.ql-snow {
+    height: 0;
+    position: absolute;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  & .ql-editor {
+    overflow-y: hidden;
   }
 }
 
@@ -50,16 +71,17 @@
     padding: 0;
 
     & svg {
-        height: 14px;
-        width: auto;
+      height: 14px;
+      width: auto;
     }
   }
 }
 
 .ql-snow .ql-stroke {
-    stroke: #B3B3B3;
+  stroke: #b3b3b3;
 }
 
-.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
-    fill: #B3B3B3;
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+  fill: #b3b3b3;
 }

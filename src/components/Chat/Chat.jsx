@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
 import image from "../../images/login-bg.png";
 import { MessageForm } from "./MessageForm/MessageForm";
@@ -7,6 +7,13 @@ import { ChatFeed } from "./ChatFeed/ChatFeed";
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
+  const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
+
+  const avatarsWrapperRef = useRef(null);
+
+  useEffect(() => {
+    setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
+  }, [isShowMore]);
 
   const handleShowMore = () => {
     setIsShowMore(true);
@@ -25,27 +32,189 @@ export function Chat() {
               className={`${styles.avatarsWrapper} ${
                 isShowMore && styles.more
               }`}
+              ref={avatarsWrapperRef}
             >
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
-              <img src={image} alt="" className={styles.avatarImage} />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 1
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 2
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 3
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 4
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 5
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 6
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 7
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 8
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 9
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 10
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 11
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
+              <img
+                src={image}
+                alt=""
+                className={styles.avatarImage}
+                style={
+                  isShowMore
+                    ? {
+                        transform: `translateX(calc(${
+                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 12
+                        }px))`,
+                      }
+                    : {}
+                }
+              />
               {isShowMore ? (
                 <>
-                  <button>+</button>
-                  <button onClick={handleShowLess}>x</button>
+                  {/* <button className={styles.addToChatButton}>+</button> */}
+                  <button
+                    onClick={handleShowLess}
+                    className={styles.showLessAvatarsButton}
+                  >
+                    x
+                  </button>
                 </>
               ) : (
                 <button
-                  className={styles.showMoreAvatars}
+                  className={styles.showMoreAvatarsButton}
                   onClick={handleShowMore}
                 >
                   +

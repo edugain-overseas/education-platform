@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../redux/user/userOperations";
 import styles from "./LoginPage.module.scss";
+import { getIsLoading } from "../../redux/user/userSelectors";
+import { MutatingDots } from "react-loader-spinner";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const isLoading = useSelector(getIsLoading);
 
   const dispatch = useDispatch();
 
@@ -24,11 +27,9 @@ export const LoginPage = () => {
     e.preventDefault();
     console.log(username, password);
     const data = new FormData();
-    data.append('username', username);
-    data.append('password', password);
-    dispatch(
-      loginThunk(data)
-    );
+    data.append("username", username);
+    data.append("password", password);
+    dispatch(loginThunk(data));
   };
 
   return (
@@ -58,9 +59,26 @@ export const LoginPage = () => {
               placeholder="Password"
             />
           </label>
-          <button type="submit" className={styles.button}>
-            Login
-          </button>
+          {isLoading ? (
+            <MutatingDots
+              height="100"
+              width="100"
+              color="#001C54"
+              secondaryColor="#fff"
+              radius="10"
+              ariaLabel="mutating-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass={styles.loaderWrapper}
+              visible={true}
+            />
+          ) : (
+            <button
+              type="submit"
+              className={styles.button}
+            >
+              Login
+            </button>
+          )}
         </form>
       </div>
     </div>

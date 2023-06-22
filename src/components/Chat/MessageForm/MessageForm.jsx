@@ -1,35 +1,37 @@
 import React, { useState } from "react";
-import { ReactComponent as SensIcon } from "../../../images/icons/send.svg";
+import { ReactComponent as SendIcon } from "../../../images/icons/send.svg";
 import styles from "./MessageForm.module.scss";
 import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
 
 export function MessageForm() {
-  const [message, setMessage] = useState("");
-  const [isFormFocused, setIsFormFocused] = useState(false);
+  const [messageHTML, setMessageHTML] = useState('');
+  const [sendTo, setSendTo] = useState([])
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const message = {
+      messageHTML,
+      sendTo
+    }
     console.log(message);
-    setMessage("");
+    setMessageHTML("");
   };
-
-  // const handleChange = (event) => {
-  //   setMessage(event.target.value);
-  // };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={isFormFocused ? `${styles.massageForm} ${styles.focusedForm}` : `${styles.massageForm}`}
-      onFocus={()=>setIsFormFocused(true)}
-      onBlur={()=>setIsFormFocused(false)}
+      className={styles.massageForm}
     >
-      <Quill />
+      <Quill onChange={setMessageHTML} value={messageHTML}/>
       <div className={styles.toolbarRight}>
-        <MultipleSelect />
+        <MultipleSelect onChange={(values)=>{
+          console.log(values);
+          setSendTo(values)
+        }}/>
         <button type="submit" className={styles.sendButton}>
-          <SensIcon />
+          <SendIcon />
         </button>
       </div>
     </form>

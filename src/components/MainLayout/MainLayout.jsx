@@ -14,8 +14,8 @@ export const MainLayout = () => {
         <Header />
         <main className={styles.main}>
           <Outlet />
-          {/* <HomePage /> */}
-          {/* <SchedulePage/> */}
+          {/* <HomePage />
+          <SchedulePage/> */}
         </main>
       </div>
     </div>
