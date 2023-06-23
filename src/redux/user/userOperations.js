@@ -17,3 +17,14 @@ export const loginThunk = createAsyncThunk(
     }
   }
 );
+
+// export const updateAvatar = createAsyncThunk(
+//   'user/updateAvatar',
+//   async (credenrials, thunkAPI) => {
+//     try {
+      
+//     } catch (error) {
+      
+//     }
+//   }
+// )

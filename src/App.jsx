@@ -27,10 +27,10 @@ const Router = () => {
 
 function App() {
   return (
-    <div className="App">
-      <Router />
-    </div>
-    // <MainLayout />
+    // <div className="App">
+    //   <Router />
+    // </div>
+    <MainLayout />
   );
 }
 
