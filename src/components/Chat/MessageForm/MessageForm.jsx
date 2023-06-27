@@ -4,18 +4,29 @@ import styles from "./MessageForm.module.scss";
 import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
 
-export function MessageForm() {
+export function MessageForm({socket}) {
   const [messageHTML, setMessageHTML] = useState('');
   const [sendTo, setSendTo] = useState([])
+  console.log(sendTo);
 
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const message = {
-      messageHTML,
-      sendTo
+
+    const data = {
+      message: messageHTML,
+      sender_id: 15,
+      sender_type: "student",
+      fixed: false,
+      type: "message"
     }
-    console.log(message);
+
+    try {
+      socket.send(JSON.stringify(data));
+    } catch (error) {
+      console.log(error.message);
+    }
+    
     setMessageHTML("");
   };
 

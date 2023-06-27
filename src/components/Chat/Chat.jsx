@@ -4,12 +4,18 @@ import image from "../../images/login-bg.png";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
+import { connectToWebSocket } from "../../services/websocket";
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
+  const [socket, setSocket] = useState(()=>connectToWebSocket());
 
   const avatarsWrapperRef = useRef(null);
+
+  // useEffect(() => {
+  //   setSocket();
+  // }, []);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -233,11 +239,11 @@ export function Chat() {
         </div>
         <div className={styles.divider}></div>
         <div className={styles.formWrapper}>
-          <MessageForm />
+          <MessageForm  socket={socket}/>
         </div>
       </div>
       <div className={styles.chatFeedWrapper}>
-        <ChatFeed />
+        <ChatFeed socket={socket}/>
       </div>
     </div>
   );

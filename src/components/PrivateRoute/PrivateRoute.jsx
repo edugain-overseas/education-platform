@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { isAuthenticated } from '../../redux/user/userSelectors';
+import { getIsAuthenticated } from '../../redux/user/userSelectors';
 
 export const PrivateRoute = ({ component }) => {
-  const isAuth = useSelector(isAuthenticated);
+  const isAuth = useSelector(getIsAuthenticated);
   return isAuth ? component : <Navigate to={'/login'} />;
 };
 

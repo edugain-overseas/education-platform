@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { login } from "../../services/userServices";
+import { getUserInfo, login } from "../../services/userServices";
 import { instance } from "../../services/instance";
 
 export const loginThunk = createAsyncThunk(
@@ -18,13 +18,15 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
-// export const updateAvatar = createAsyncThunk(
-//   'user/updateAvatar',
-//   async (credenrials, thunkAPI) => {
-//     try {
-      
-//     } catch (error) {
-      
-//     }
-//   }
-// )
+export const getUserInfoThunk = createAsyncThunk(
+  'user/info',
+  async(_, thunkAPI) => {
+    try {
+      const response = await getUserInfo();
+      return response
+    } catch (error) {
+      return thunkAPI(error)
+    }
+  }
+)
+

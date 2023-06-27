@@ -25,7 +25,6 @@ export const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(username, password);
     const data = new FormData();
     data.append("username", username);
     data.append("password", password);

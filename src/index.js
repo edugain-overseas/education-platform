@@ -8,11 +8,11 @@ import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter basename="education-platform">
         <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  // {/* </React.StrictMode> */}
 );

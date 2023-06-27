@@ -3,22 +3,22 @@ import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedba
 import styles from "./MessageFromChat.module.scss";
 
 import user1Avatar from "../../../images/logo192.png";
-import user2Avatar from "../../../images/login-bg.png";
+// import user2Avatar from "../../../images/login-bg.png";
 
-const users = [
-  {
-    id: 1,
-    username: "John Doe",
-    userAvatar: user1Avatar,
-    isOnline: true,
-  },
-  {
-    id: 2,
-    username: "Jane Doe",
-    userAvatar: user2Avatar,
-    isOnline: false,
-  },
-];
+// const users = [
+//   {
+//     id: 1,
+//     username: "John Doe",
+//     userAvatar: user1Avatar,
+//     isOnline: true,
+//   },
+//   {
+//     id: 2,
+//     username: "Jane Doe",
+//     userAvatar: user2Avatar,
+//     isOnline: false,
+//   },
+// ];
 
 export function MessageFromChat({ message, type }) {
   return (
@@ -31,25 +31,27 @@ export function MessageFromChat({ message, type }) {
     >
       <div className={styles.avatarWrapper}>
         <img
-          src={users.find((user) => user.id === message.senderId).userAvatar}
-          alt="/"
+          // src={users.find((user) => user.id === message.senderId).userAvatar}
+          src={user1Avatar}
+          alt="avatar"
           className={styles.avatar}
         />
-        <span
+        {/* <span
           className={
             users.find((user) => user.id === message.senderId).isOnline
               ? styles.online
               : styles.offline
           }
-        ></span>
+        ></span> */}
+        <span className={styles.online}></span>
       </div>
       <div className={styles.contentSubWrapper}>
         <p className={styles.userName}>
-          {users.find((user) => user.id === message.senderId).username},{" "}
-          {message.date.format("HH:mm")}
+          {/* {users.find((user) => user.id === message.senderId).username},{" "} */}
+          {message.sender_id} {message.message_datetime.slice(-8, -3)}
         </p>
         <div className={styles.contentWrapper}>
-          <p className={styles.content}>{message.content}</p>
+          <div className={styles.content} dangerouslySetInnerHTML={{ __html: message.message_text }}></div>
           <button className={styles.feedbackButton}>
             <span className={styles.feedbackButtonTitle}>Feedback</span>
             <SendFeedbackIcon />

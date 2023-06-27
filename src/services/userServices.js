@@ -6,9 +6,10 @@ export const login = async (credentials) => {
   return data;
 };
 
-// export const uploadAvatar = async (file) => {
-//   instance.defaults.headers["Content-Type"] = "multipart/form-data";
-//   const { data } = await instance.put("/student/update/photo", file);
-//   console.log(data);
-//   return data
-// };
+export const getUserInfo = async () => {
+  const {data} = await instance.get('/student/info/me');
+  console.log(data);
+  return data;
+}
+
+
