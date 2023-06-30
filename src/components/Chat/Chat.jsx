@@ -9,13 +9,13 @@ import { connectToWebSocket } from "../../services/websocket";
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
-  const [socket, setSocket] = useState(()=>connectToWebSocket());
-
+  
+  const websocket = useRef(null)
   const avatarsWrapperRef = useRef(null);
 
-  // useEffect(() => {
-  //   setSocket();
-  // }, []);
+  useEffect(() => {
+    websocket.current = connectToWebSocket();
+  }, []);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -239,11 +239,11 @@ export function Chat() {
         </div>
         <div className={styles.divider}></div>
         <div className={styles.formWrapper}>
-          <MessageForm  socket={socket}/>
+          <MessageForm  socket={websocket.current}/>
         </div>
       </div>
       <div className={styles.chatFeedWrapper}>
-        <ChatFeed socket={socket}/>
+        <ChatFeed socket={websocket.current}/>
       </div>
     </div>
   );

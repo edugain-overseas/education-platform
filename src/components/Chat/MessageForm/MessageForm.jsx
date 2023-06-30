@@ -7,7 +7,6 @@ import { Quill } from "../Quill/Quill";
 export function MessageForm({socket}) {
   const [messageHTML, setMessageHTML] = useState('');
   const [sendTo, setSendTo] = useState([])
-  console.log(sendTo);
 
 
   const handleSubmit = (event) => {
@@ -23,6 +22,8 @@ export function MessageForm({socket}) {
 
     try {
       socket.send(JSON.stringify(data));
+      console.log('sended');
+      console.log(sendTo);
     } catch (error) {
       console.log(error.message);
     }

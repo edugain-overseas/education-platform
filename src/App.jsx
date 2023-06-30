@@ -45,7 +45,7 @@ function App() {
       <Router />
     </div>
     // <MainLayout />
-  );
+  )
 }
 
 export default App;
