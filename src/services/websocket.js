@@ -4,6 +4,9 @@ export const connectToWebSocket = () => {
   try {
     const websocket = new WebSocket(websocketUrl);
     websocket.onopen = () => console.log("Connected");
+    websocket.onclose = function (event) {
+      console.log('Connection Closed');
+    }
 
     return websocket;
   } catch (error) {

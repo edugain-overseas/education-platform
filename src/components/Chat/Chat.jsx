@@ -15,6 +15,8 @@ export function Chat() {
 
   useEffect(() => {
     websocket.current = connectToWebSocket();
+
+    return () => websocket.current.close();
   }, []);
 
   useEffect(() => {

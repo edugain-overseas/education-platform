@@ -1,3 +1,15 @@
-.uploaderWrapper {
+.uploadButton {
     position: absolute;
+    width: 96px;
+    height: 96px;
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    & input {
+        // display: none;
+    }
 }

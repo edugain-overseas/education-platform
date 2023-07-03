@@ -1,42 +1,25 @@
 import React, { useState } from "react";
-import { Upload, message } from "antd";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import styles from "./UploadAvatar.module.scss";
+import { useDispatch } from "react-redux";
+import { changeUserAvatarThunk } from "../../../redux/user/userOperations";
 
 export const AvatarUpload = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState("");
 
-  const handleAvatarChange = (info) => {
-    if (info.file.status === "done") {
-      // Handle successful upload
-      console.dir(info);
-      message.success("Avatar uploaded successfully");
-    } else if (info.file.status === "error") {
-      // Handle upload error
-      message.error("Avatar upload failed");
-    }
-  };
+  const dispatch = useDispatch();
 
-  const uploadFile = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    console.log(file);
+  const handleChange = (event) => {
+    const fileData = new FormData();
+    fileData.append("file", event.target.files[0]);
+    dispatch(changeUserAvatarThunk(fileData));
+    setFile(event.target.files[0])
   };
 
   return (
-    <Upload
-      name="avatar"
-      // action={uploadFile}
-      customRequest={uploadFile}
-      listType="picture-circle"
-      className={styles.uploaderWrapper}
-      showUploadList={false}
-      onChange={handleAvatarChange}
-    >
-      <div>
-        {isLoading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    </Upload>
+    <label type="button" htmlFor="avatar" className={styles.uploadButton}>
+      <input type="file" name="avatar" value={file} onChange={handleChange} />
+      <span className={styles.plus}>+</span>
+      <span className={styles.upload}>Upload</span>
+    </label>
   );
 };

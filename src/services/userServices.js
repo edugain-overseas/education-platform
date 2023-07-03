@@ -12,4 +12,8 @@ export const getUserInfo = async () => {
   return data;
 }
 
-
+export const changeAvatar = async (file) => {
+  const {data} = await instance.put('/student/update/photo', file)
+  console.log(data);
+  return data
+}
