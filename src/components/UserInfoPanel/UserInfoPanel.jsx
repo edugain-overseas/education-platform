@@ -17,9 +17,6 @@ export function UserInfoPanel() {
     }
   },[userInfo])
 
-  console.log(userInfo);
-  console.log(avatarSrc);
-
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.userInfoWrapper}>

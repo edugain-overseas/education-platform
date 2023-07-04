@@ -1,23 +1,41 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
-import image from "../../images/login-bg.png";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
 import { connectToWebSocket } from "../../services/websocket";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserGroup } from "../../redux/user/userSelectors";
+import { setMessages, setUsers } from "../../redux/chat/chatSlice";
+import { getParticipantsData } from "../../redux/chat/chatSelectors";
+import { serverName } from "../../constants/server";
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
-  
-  const websocket = useRef(null)
+
+  const websocket = useRef(null);
   const avatarsWrapperRef = useRef(null);
+
+  const chatGroup = useSelector(getUserGroup) || "";
+  const participantsData = useSelector(getParticipantsData);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     websocket.current = connectToWebSocket();
 
+    websocket.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const participantsData = data.user_info;
+      const messagesData = data.messages;
+      if (participantsData) {
+        dispatch(setUsers(participantsData));
+      }
+      dispatch(setMessages(messagesData));
+    };
+
     return () => websocket.current.close();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -42,174 +60,26 @@ export function Chat() {
               }`}
               ref={avatarsWrapperRef}
             >
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 1
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 2
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 3
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 4
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 5
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 6
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 7
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 8
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 9
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 10
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 11
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
-              <img
-                src={image}
-                alt=""
-                className={styles.avatarImage}
-                style={
-                  isShowMore
-                    ? {
-                        transform: `translateX(calc(${
-                          avatarsWrapperWidth - (avatarsWrapperWidth / 12) * 12
-                        }px))`,
-                      }
-                    : {}
-                }
-              />
+              {participantsData &&
+                participantsData.map((participant, index) => (
+                  <img
+                  key={participant.UserId}
+                    src={`${serverName}${participant.ImagePath}`}
+                    alt={`${participant.Name} ${participant.Surname} avatar`}
+                    className={styles.avatarImage}
+                    style={
+                      isShowMore
+                        ? {
+                            transform: `translateX(calc(${
+                              avatarsWrapperWidth -
+                              (avatarsWrapperWidth / participantsData.length) *
+                                (index + 1)
+                            }px))`,
+                          }
+                        : {}
+                    }
+                  />
+                ))}
               {isShowMore ? (
                 <>
                   {/* <button className={styles.addToChatButton}>+</button> */}
@@ -230,22 +100,22 @@ export function Chat() {
               )}
             </div>
             <div className={isShowMore ? "hidden" : styles.infoWrapper}>
-              <p className={styles.participantsInfo}>12 participants</p>
-              <p className={styles.onlineInfo}>8 Online</p>
+              <p className={styles.participantsInfo}>5 participants</p>
+              <p className={styles.onlineInfo}>3 Online</p>
             </div>
           </div>
           <div className={isShowMore ? "hidden" : styles.headerRight}>
             <GridIcon className={styles.gridIconHeader} />
-            <p className={styles.chatname}>chat 2023-01D</p>
+            <p className={styles.chatname}>chat {chatGroup}</p>
           </div>
         </div>
         <div className={styles.divider}></div>
         <div className={styles.formWrapper}>
-          <MessageForm  socket={websocket.current}/>
+          <MessageForm socket={websocket.current} />
         </div>
       </div>
       <div className={styles.chatFeedWrapper}>
-        <ChatFeed socket={websocket.current}/>
+        <ChatFeed />
       </div>
     </div>
   );

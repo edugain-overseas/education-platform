@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../redux/user/userOperations";
 import styles from "./LoginPage.module.scss";
 import { getIsLoading } from "../../redux/user/userSelectors";
-import { MutatingDots } from "react-loader-spinner";
+import MutationDots from "../../components/Loaders/MutationDots/MutationDots";
+
 
 export const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -59,17 +60,7 @@ export const LoginPage = () => {
             />
           </label>
           {isLoading ? (
-            <MutatingDots
-              height="100"
-              width="100"
-              color="#001C54"
-              secondaryColor="#fff"
-              radius="10"
-              ariaLabel="mutating-dots-loading"
-              wrapperStyle={{}}
-              wrapperClass={styles.loaderWrapper}
-              visible={true}
-            />
+            <MutationDots />
           ) : (
             <button
               type="submit"

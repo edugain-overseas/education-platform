@@ -1,34 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { MessageFromChat } from "../MessageFromChat/MessageFromChat";
 import styles from "./ChatFeed.module.scss";
+import { useSelector } from "react-redux";
+import { getMessages, getParticipantsData } from "../../../redux/chat/chatSelectors";
+import MutationDots from "../../Loaders/MutationDots/MutationDots";
+// import { message } from "antd";
 
 
 
-export function ChatFeed({ socket }) {
-  const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([])
-  
-
-  // useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        console.log(JSON.parse(event.data));
-        const data = JSON.parse(event.data);
-        setMessages(data.messages);
-        setUsers(data.user_info)
-        console.log(users);
-      };
-    }
-  // }, [socket]);
-
+export function ChatFeed() {
+  const messages = useSelector(getMessages)
+  const participantsData = useSelector(getParticipantsData)
 
   return (
     <div className={styles.feedWrapper}>
-      {messages.map((message) => {
-        // if (message.feedbackTo === null) {
+      {messages ? messages.map((message) => {
+        const userData = participantsData.find(user=>user.UserId === message.sender_id);
+        const messageFullData = {...message, userData}
         return (
           <MessageFromChat
-            message={message}
+            message={messageFullData}
             type="origin"
             key={message.message_id}
           />
@@ -41,7 +32,7 @@ export function ChatFeed({ socket }) {
         //     key={message.message_id}
         //   />
         // );
-      })}
+      }) : <MutationDots/>}
     </div>
   );
 }

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./UploadAvatar.module.scss";
 import { useDispatch } from "react-redux";
 import { changeUserAvatarThunk } from "../../../redux/user/userOperations";
 
 export const AvatarUpload = () => {
-
+  const inputUpload = useRef(null);
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
@@ -14,8 +14,19 @@ export const AvatarUpload = () => {
   };
 
   return (
-    <label type="button" htmlFor="avatar" className={styles.uploadButton}>
-      <input type="file" name="avatar" onChange={handleChange} />
+    <label
+      type="button"
+      htmlFor="avatar"
+      className={styles.uploadButton}
+      onClick={()=>inputUpload.current.click()}
+    >
+      <input
+        type="file"
+        name="avatar"
+        onChange={handleChange}
+        ref={inputUpload}
+        hidden
+      />
       <span className={styles.plus}>+</span>
       <span className={styles.upload}>Upload</span>
     </label>
