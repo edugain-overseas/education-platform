@@ -3,6 +3,10 @@
   font-size: 14px;
   line-height: 17px;
   color: #b3b3b3;
+
+  & .ant-select-selection-search-input {
+    width: 80px;
+  }
 }
 
 .customDropdown {

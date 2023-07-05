@@ -5,6 +5,10 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
+import { useEffect } from "react";
+import { getIsAuthenticated } from "./redux/user/userSelectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfoThunk } from "./redux/user/userOperations";
 
 const Router = () => {
   return (
@@ -26,25 +30,22 @@ const Router = () => {
 };
 
 function App() {
-  const socket = new WebSocket(
-    "ws://4f50-194-44-219-51.ngrok-free.app/api/v1/ws/Fil23"
-  );
 
-  socket.onopen = () => {
-    console.log("Connected to server");
-  };
+  const dispatch = useDispatch();
+  const isAuth = useSelector(getIsAuthenticated);
 
-  socket.onmessage = (event) => {
-    const data = event.data;
-    console.log("Received message:", data);
-  };
-  
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(getUserInfoThunk());
+    }
+  }, [isAuth, dispatch]);
+
   return (
-    // <div className="App">
-    //   <Router />
-    // </div>
-    <MainLayout />
-  );
+    <div className="App">
+      <Router />
+    </div>
+    // <MainLayout />
+  )
 }
 
 export default App;

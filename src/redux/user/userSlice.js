@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk } from "./userOperations";
+import {
+  changeUserAvatarThunk,
+  getUserInfoThunk,
+  loginThunk,
+} from "./userOperations";
 
 const initialState = {
   userName: null,
@@ -10,6 +14,7 @@ const initialState = {
   error: null,
   isLoading: false,
   token: null,
+  info: null,
 };
 
 export const userSlice = createSlice({
@@ -33,7 +38,30 @@ export const userSlice = createSlice({
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+      })
+      .addCase(getUserInfoThunk.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserInfoThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
+        state.info = payload.info;
+      })
+      .addCase(getUserInfoThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(changeUserAvatarThunk.pending, (state, { payload }) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(changeUserAvatarThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.info.image_path = payload;
+      })
+      .addCase(changeUserAvatarThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
-      
   },
 });

@@ -55,6 +55,7 @@
   border: 2px solid #fff;
   left: 0;
   transition: transform 500ms ease;
+  object-fit: cover;
 }
 
 .showMoreAvatarsButton {
@@ -126,5 +127,7 @@
 .chatFeedWrapper {
   padding: 24px;
   flex-grow: 1;
+  max-height: calc(100% - 155px);
+  min-height: calc(100% - 275px);
+  overflow-y: auto;
 }
-

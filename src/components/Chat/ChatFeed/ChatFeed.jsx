@@ -1,60 +1,38 @@
 import React from "react";
-import moment from "moment";
 import { MessageFromChat } from "../MessageFromChat/MessageFromChat";
 import styles from "./ChatFeed.module.scss";
+import { useSelector } from "react-redux";
+import { getMessages, getParticipantsData } from "../../../redux/chat/chatSelectors";
+import MutationDots from "../../Loaders/MutationDots/MutationDots";
+// import { message } from "antd";
 
-const messages = [
-  {
-    id: 1,
-    content: "hello wordld",
-    groupId: 1,
-    date: moment(),
-    fixed: false,
-    senderId: 1,
-    senderType: "",
-    feedbackTo: null,
-  },
-  {
-    id: 2,
-    content: "hello wordld",
-    groupId: 1,
-    date: moment(),
-    fixed: false,
-    senderId: 2,
-    senderType: "",
-    feedbackTo: 1,
-  },
-  {
-    id: 3,
-    content: "hello wordld",
-    groupId: 1,
-    date: moment(),
-    fixed: false,
-    senderId: 1,
-    senderType: "",
-    feedbackTo: null,
-  },
-  {
-    id: 4,
-    content: "hello wordld",
-    groupId: 1,
-    date: moment(),
-    fixed: false,
-    senderId: 2,
-    senderType: "",
-    feedbackTo: null,
-  },
-];
+
 
 export function ChatFeed() {
+  const messages = useSelector(getMessages)
+  const participantsData = useSelector(getParticipantsData)
+
   return (
     <div className={styles.feedWrapper}>
-      {messages.map((message) => {
-        if (message.feedbackTo === null) {
-          return <MessageFromChat message={message} type="origin" key={message.id}/>;
-        }
-        return <MessageFromChat message={message} type="feedback" key={message.id}/>;
-      })}
+      {messages ? messages.map((message) => {
+        const userData = participantsData.find(user=>user.UserId === message.sender_id);
+        const messageFullData = {...message, userData}
+        return (
+          <MessageFromChat
+            message={messageFullData}
+            type="origin"
+            key={message.message_id}
+          />
+        );
+        // }
+        // return (
+        //   <MessageFromChat
+        //     message={message}
+        //     type="feedback"
+        //     key={message.message_id}
+        //   />
+        // );
+      }) : <MutationDots/>}
     </div>
   );
 }
