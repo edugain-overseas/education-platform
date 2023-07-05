@@ -15,7 +15,7 @@ const Router = () => {
       />
       <Route path="/" element={<PrivateRoute component={<MainLayout />} />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="schedule" element={<SchedulePage/>} />
+        <Route path="schedule" element={<SchedulePage />} />
         <Route path="courses" element={<div>Courses page</div>} />
         <Route path="task" element={<div>Task page</div>} />
         <Route path="register" element={<div>Register page</div>} />
@@ -26,6 +26,19 @@ const Router = () => {
 };
 
 function App() {
+  const socket = new WebSocket(
+    "ws://4f50-194-44-219-51.ngrok-free.app/api/v1/ws/Fil23"
+  );
+
+  socket.onopen = () => {
+    console.log("Connected to server");
+  };
+
+  socket.onmessage = (event) => {
+    const data = event.data;
+    console.log("Received message:", data);
+  };
+  
   return (
     // <div className="App">
     //   <Router />
