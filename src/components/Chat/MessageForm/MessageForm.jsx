@@ -80,6 +80,7 @@ export function MessageForm({ socket }) {
             setSendTo(values);
           }}
         />
+        
         <button type="submit" className={styles.sendButton}>
           <SendIcon />
         </button>

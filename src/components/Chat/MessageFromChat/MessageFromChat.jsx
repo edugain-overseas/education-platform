@@ -7,7 +7,6 @@ import { serverName } from "../../../constants/server";
 
 
 export function MessageFromChat({ message, type }) {
-  console.log(message.userData);
   return (
     <div
       className={
@@ -23,6 +22,7 @@ export function MessageFromChat({ message, type }) {
               ? `${serverName}${message.userData.ImagePath}`
               : user1Avatar
           }
+          // src={user1Avatar}
           alt="avatar"
           className={styles.avatar}
         />

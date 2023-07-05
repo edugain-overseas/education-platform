@@ -8,23 +8,26 @@ import { AvatarUpload } from "./UploadAvatar/UploadAvatar";
 const serverName = "https://e54a-194-44-219-51.ngrok-free.app/";
 
 export function UserInfoPanel() {
-  const [avatarSrc, setAvatarSrc] = useState('');
+  const [avatarSrc, setAvatarSrc] = useState("");
   const userInfo = useSelector(getUserInfo);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (userInfo?.image_path) {
-      setAvatarSrc(`${serverName}${userInfo.image_path}`)
+      setAvatarSrc(`${serverName}${userInfo.image_path}`);
     }
-  },[userInfo])
+  }, [userInfo]);
 
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.userInfoWrapper}>
         <div className={styles.imageWrapper}>
-          <img src={
-            avatarSrc !== '' ? avatarSrc : avatar
-          } alt="user avatar" className={styles.avatar} />
-            <AvatarUpload />
+          <img
+            src={avatarSrc !== "" ? avatarSrc : avatar}
+            // src={avatar}
+            alt="user avatar"
+            className={styles.avatar}
+          />
+          <AvatarUpload />
         </div>
         <p
           className={styles.userName}

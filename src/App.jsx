@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { getIsAuthenticated } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
+import { getSchedule } from "./services/schedule";
+// import AttachFiles from "./components/Chat/MessageForm/AttachFiles/AttachFiles";
 
 const Router = () => {
   return (
@@ -37,6 +39,7 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       dispatch(getUserInfoThunk());
+      getSchedule();
     }
   }, [isAuth, dispatch]);
 
@@ -45,9 +48,9 @@ function App() {
       <Router />
     </div>
     // <MainLayout />
-  )
+    // <AttachFiles />
+  );
 }
 
 export default App;
 
-// delete this

@@ -16,9 +16,10 @@ export const UserPanel = () => {
       <p className={styles.notification}>Notification: {notification}</p>
       <div className={styles.userWrapper}>
         <img
-          src={
-            userInfo?.image_path ? `${serverName}${userInfo.image_path}` : image
-          }
+          // src={
+          //   userInfo?.image_path ? `${serverName}${userInfo.image_path}` : image
+          // }
+          src={image}
           alt="user avatar"
           className={styles.userAvatar}
         />

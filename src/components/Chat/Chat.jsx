@@ -65,6 +65,7 @@ export function Chat() {
                   <img
                   key={participant.UserId}
                     src={`${serverName}${participant.ImagePath}`}
+                    // src=""
                     alt={`${participant.Name} ${participant.Surname} avatar`}
                     className={styles.avatarImage}
                     style={
