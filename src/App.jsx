@@ -10,7 +10,7 @@ import { getIsAuthenticated } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
 import { getSchedule } from "./services/schedule";
-// import AttachFiles from "./components/Chat/MessageForm/AttachFiles/AttachFiles";
+// import { AttachFiles } from "./components/Chat/MessageForm/AttachFiles/AttachFiles";
 
 const Router = () => {
   return (
@@ -32,7 +32,6 @@ const Router = () => {
 };
 
 function App() {
-
   const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuthenticated);
 
@@ -53,4 +52,3 @@ function App() {
 }
 
 export default App;
-

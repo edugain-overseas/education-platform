@@ -1,0 +1,17 @@
+.mainWrapper {
+  display: inline-flex;
+  position: absolute;
+  bottom: 8px;
+  left: 156px;
+  gap: 9px;
+  justify-content: center;  
+  height: 32px;
+  align-items: center;
+}
+
+.openPopupButton:hover {
+    & path {
+        fill: #4171cd;
+    }
+}
+

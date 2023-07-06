@@ -1,0 +1,33 @@
+.modalWrapper {
+  padding: 8px;
+  color: #b3b3b3;
+
+  & li:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  & li button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #b3b3b3;
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  & li button:hover path {
+    fill: #4171cd;
+  }
+  & li button:hover {
+    color: #4171cd;
+  }
+
+  & svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  & path {
+    fill: #b3b3b3;
+  }
+}

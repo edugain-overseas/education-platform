@@ -5,6 +5,7 @@ import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
 import { useSelector } from "react-redux";
 import { getUserId } from "../../../redux/user/userSelectors";
+import { AttachFiles } from "./AttachFiles/AttachFiles";
 
 export function MessageForm({ socket }) {
   const [messageHTML, setMessageHTML] = useState("");
@@ -59,6 +60,10 @@ export function MessageForm({ socket }) {
       return;
     }
 
+    if (e.relatedTarget && e.relatedTarget.className.includes("AttachFiles")) {
+      return
+    }
+
     setIsFocused(false);
   };
 
@@ -74,13 +79,13 @@ export function MessageForm({ socket }) {
         value={messageHTML}
         focused={isFocused}
       />
+      <AttachFiles show={isFocused} />
       <div className={styles.toolbarRight}>
         <MultipleSelect
           onChange={(values) => {
             setSendTo(values);
           }}
         />
-        
         <button type="submit" className={styles.sendButton}>
           <SendIcon />
         </button>

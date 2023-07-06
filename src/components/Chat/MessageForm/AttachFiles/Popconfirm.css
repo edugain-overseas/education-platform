@@ -1,0 +1,9 @@
+.popconfirmOverlay .ant-popover-inner {
+  padding: 0;
+  box-shadow: 0px 0px 3.7067272663116455px 0px rgba(0, 0, 0, 0.12);
+  transform: translateX(-7px);
+}
+
+.popconfirmOverlay .ant-popover-arrow {
+  display: none;
+}

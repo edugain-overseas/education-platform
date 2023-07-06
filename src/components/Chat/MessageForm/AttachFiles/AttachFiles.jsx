@@ -3,31 +3,72 @@ import { ReactComponent as PhotoIcon } from "../../../../images/icons/photo.svg"
 import { ReactComponent as VideoIcon } from "../../../../images/icons/video.svg";
 import { ReactComponent as AudioIcon } from "../../../../images/icons/voice.svg";
 import { ReactComponent as FileIcon } from "../../../../images/icons/file.svg";
+import { Popconfirm } from "antd";
+import { AttachModal } from "./AttachModal/AttachModal";
+import './Popconfirm.css'
+import styles from "./AttachFiles.module.scss";
 
-export default function AttachFiles() {
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [type, setType] = useState(null);
+export const AttachFiles = ({show}) => {
+  const [type, setType] = useState("");
 
   const handleClick = (name) => {
-    setIsShowModal(true);
     setType(name);
-    console.log(isShowModal, type);
+    console.log("open");
   };
 
   return (
-    <div>
-      <button onClick={()=>handleClick("photo")}>
-        <PhotoIcon />
-      </button>
-      <button onClick={()=>handleClick("video")}>
-        <VideoIcon />
-      </button>
-      <button onClick={()=>handleClick("audio")}>
-        <AudioIcon />
-      </button>
-      <button onClick={()=>handleClick("file")}>
-        <FileIcon />
-      </button>
+    <div className={styles.mainWrapper} style={{display: show ? 'inline-flex' : 'none'}}>
+      <div className={styles.btnWrapper}>
+        <Popconfirm
+          placement="bottomLeft"
+          title={null}
+          description={<AttachModal type={type}/>}
+          showCancel={false}
+          icon={null}
+          okButtonProps={{ style: { display: "none" } }}
+          overlayClassName='popconfirmOverlay'
+          zIndex={999}
+        >
+          <button onClick={() => handleClick("photo")} className={styles.openPopupButton}>
+            <PhotoIcon />
+          </button>
+        </Popconfirm>
+      </div>
+      <div className={styles.btnWrapper}>
+        <Popconfirm
+          placement="bottomLeft"
+          title={null}
+          description={<AttachModal type={type} />}
+          showCancel={false}
+          icon={null}
+          okButtonProps={{ style: { display: "none" } }}
+          overlayClassName='popconfirmOverlay'
+        >
+          <button onClick={() => handleClick("video")}>
+            <VideoIcon />
+          </button>
+        </Popconfirm>
+      </div>
+      <div className={styles.btnWrapper}>
+        <Popconfirm
+          placement="bottomLeft"
+          title={null}
+          description={<AttachModal type={type} />}
+          showCancel={false}
+          icon={null}
+          okButtonProps={{ style: { display: "none" } }}
+          overlayClassName='popconfirmOverlay'
+        >
+          <button onClick={() => handleClick("audio")}>
+            <AudioIcon />
+          </button>
+        </Popconfirm>
+      </div>
+      <div className={styles.btnWrapper}>
+        <button>
+          <FileIcon />
+        </button>
+      </div>
     </div>
   );
-}
+};
