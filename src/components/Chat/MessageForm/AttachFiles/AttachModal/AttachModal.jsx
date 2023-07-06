@@ -6,7 +6,7 @@ import { ReactComponent as PictureIcon } from "../../../../../images/icons/pictu
 import styles from "./AttachModal.module.scss";
 import { WebcamModal } from "./WebcamModal/WebcamModal";
 
-export const AttachModal = ({ type, handleOpenWebcam }) => {
+export const AttachModal = ({ type }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const openModal = () => {
