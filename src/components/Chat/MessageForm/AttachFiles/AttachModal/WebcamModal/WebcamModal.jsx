@@ -23,12 +23,20 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
         console.log("Error accessing webcam:", error);
       }
     };
-
+    const startCapture = () => {
+      const video = webcamRef.current?.video;
+      const tracks = video?.srcObject?.getTracks();
+      console.log(webcamRef.current);
+      if (tracks) {
+        tracks.forEach((track) => track.start());
+      }
+    };
+    startCapture();
     getVideoConstraints();
-
-    // return () => {
-    //   stopCapture();
-    // };
+    
+    return () => {
+      stopCapture();
+    };
   }, []);
 
   // useEffect(() => {
@@ -51,36 +59,41 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
   // }, [isOpenModal]);
 
   const capture = () => {
-    const video = webcamRef.current.video;
-    const canvas = canvasRef.current;
-    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+    // const video = webcamRef.current.video;
+    // const canvas = canvasRef.current;
+    // canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    const imageData = canvas.toDataURL("image/png");
+    // const imageData = canvas.toDataURL("image/png");
 
-    console.log(imageData);
+    // console.log(imageData);
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc);
 
-    // stopCapture();
+    stopCapture();
     closeModal();
   };
 
-  // const stopCapture = () => {
-  //   const video = webcamRef.current.video;
-  //   const tracks = video.srcObject?.getTracks();
-  //   if (tracks) {
-  //     tracks.forEach((track) => track.stop());
-  //   }
-  //   console.log('stopped');
-  // };
+  const stopCapture = () => {
+    const video = webcamRef.current.video;
+    const tracks = video.srcObject?.getTracks();
+    if (tracks) {
+      tracks.forEach((track) => track.stop());
+    }
+    console.log("stopped");
+  };
 
   return (
     <div>
       <Modal
         open={isOpenModal}
-        onCancel={closeModal}
-        width="60%"
-        style={{
-          top: 20,
+        onCancel={()=> {
+          stopCapture()
+          closeModal()
         }}
+        // width="60%"
+        // style={{
+        //   top: 20,
+        // }}
         footer={[
           <Button key="capture" type="primary" onClick={capture}>
             Capture
@@ -95,6 +108,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
               ref={webcamRef}
               mirrored={true}
               style={{ width: "100%", height: "auto", paddingTop: 32 }}
+              screenshotFormat="image/png"
             />
             <canvas ref={canvasRef} style={{ display: "none" }} />
           </>

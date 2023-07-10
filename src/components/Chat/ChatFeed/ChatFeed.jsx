@@ -13,8 +13,9 @@ export function ChatFeed() {
   const participantsData = useSelector(getParticipantsData)
 
   return (
-    <div className={styles.feedWrapper}>
-      {messages ? messages.map((message) => {
+    messages ? (
+      <div className={styles.feedWrapper}>
+       {messages.map((message) => {
         const userData = participantsData.find(user=>user.UserId === message.sender_id);
         const messageFullData = {...message, userData}
         return (
@@ -22,8 +23,20 @@ export function ChatFeed() {
             message={messageFullData}
             type="origin"
             key={message.message_id}
-          />
-        );
+          />)})}
+      </div>) : <MutationDots/>
+  )
+    // <div className={styles.feedWrapper}>
+    //   {messages ? messages.map((message) => {
+    //     const userData = participantsData.find(user=>user.UserId === message.sender_id);
+    //     const messageFullData = {...message, userData}
+    //     return (
+    //       <MessageFromChat
+    //         message={messageFullData}
+    //         type="origin"
+    //         key={message.message_id}
+    //       />
+    //     );
         // }
         // return (
         //   <MessageFromChat
@@ -32,7 +45,6 @@ export function ChatFeed() {
         //     key={message.message_id}
         //   />
         // );
-      }) : <MutationDots/>}
-    </div>
-  );
+    //   }) : <MutationDots/>}
+    // </div>
 }

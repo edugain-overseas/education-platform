@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styles from "./UploadAvatar.module.scss";
 import { useDispatch } from "react-redux";
 import { changeUserAvatarThunk } from "../../../redux/user/userOperations";
+import {ReactComponent as EditIcon} from '../../../images/icons/edit.svg'
 
 export const AvatarUpload = () => {
   const inputUpload = useRef(null);
@@ -27,8 +28,8 @@ export const AvatarUpload = () => {
         ref={inputUpload}
         hidden
       />
-      <span className={styles.plus}>+</span>
-      <span className={styles.upload}>Upload</span>
+      <span className={styles.icon}><EditIcon/></span>
+      <span className={styles.edit}>Edit</span>
     </label>
   );
 };

@@ -25,14 +25,18 @@ export function MessageForm({ socket }) {
     }
 
     const data = {
+      type: "message",
       message: messageHTML,
+      message_type: "everyone",
+      recipient: null,
+      fixed: false,
       sender_id: userId,
       sender_type: "student",
-      fixed: false,
-      type: "message",
+      attach_file_path: null,
     };
 
     console.log(sendTo);
+    console.log(data);
 
     try {
       socket.send(JSON.stringify(data));
@@ -61,7 +65,7 @@ export function MessageForm({ socket }) {
     }
 
     if (e.relatedTarget && e.relatedTarget.className.includes("AttachFiles")) {
-      return
+      return;
     }
 
     setIsFocused(false);

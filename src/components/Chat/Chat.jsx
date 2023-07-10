@@ -5,9 +5,8 @@ import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
 import { connectToWebSocket } from "../../services/websocket";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserGroup } from "../../redux/user/userSelectors";
-import { setMessages, setUsers } from "../../redux/chat/chatSlice";
-import { getParticipantsData } from "../../redux/chat/chatSelectors";
+import { getToken, getUserGroup } from "../../redux/user/userSelectors";
+import { getActiveUsers, getParticipantsData } from "../../redux/chat/chatSelectors";
 import { serverName } from "../../constants/server";
 
 export function Chat() {
@@ -19,23 +18,36 @@ export function Chat() {
 
   const chatGroup = useSelector(getUserGroup) || "";
   const participantsData = useSelector(getParticipantsData);
+  const token = useSelector(getToken);
+  const activeUsers = useSelector(getActiveUsers);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    websocket.current = connectToWebSocket();
+    if (token && chatGroup) {
+      websocket.current = connectToWebSocket(chatGroup, token);
+      console.log(websocket.current);
 
-    websocket.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const participantsData = data.user_info;
-      const messagesData = data.messages;
-      if (participantsData) {
-        dispatch(setUsers(participantsData));
-      }
-      dispatch(setMessages(messagesData));
-    };
+      // websocket.current.onmessage = (event) => {
+      //   const data = JSON.parse(event.data);
 
-    return () => websocket.current.close();
-  }, [dispatch]);
+      //   const participantsData = data.user_info;
+      //   const messagesData = data.messages;
+      //   console.log(data);
+      //   if (messagesData) {
+      //     if (participantsData) {
+      //       dispatch(setUsers(participantsData));
+      //     }
+      //     dispatch(setMessages(messagesData));
+      //   } else if(data.id_active_users) {
+      //     dispatch(setActiveData(data))
+      //   } else {
+      //     dispatch(addMessage(data))
+      //   }
+      // };
+      return () => websocket.current.close();
+    }
+
+  }, [dispatch, token, chatGroup]);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -63,9 +75,8 @@ export function Chat() {
               {participantsData &&
                 participantsData.map((participant, index) => (
                   <img
-                  key={participant.UserId}
+                    key={participant.UserId}
                     src={`${serverName}${participant.ImagePath}`}
-                    // src=""
                     alt={`${participant.Name} ${participant.Surname} avatar`}
                     className={styles.avatarImage}
                     style={
@@ -101,8 +112,8 @@ export function Chat() {
               )}
             </div>
             <div className={isShowMore ? "hidden" : styles.infoWrapper}>
-              <p className={styles.participantsInfo}>5 participants</p>
-              <p className={styles.onlineInfo}>3 Online</p>
+              <p className={styles.participantsInfo}>{participantsData?.length} participants</p>
+              <p className={styles.onlineInfo}>{activeUsers?.total_active} Online</p>
             </div>
           </div>
           <div className={isShowMore ? "hidden" : styles.headerRight}>
