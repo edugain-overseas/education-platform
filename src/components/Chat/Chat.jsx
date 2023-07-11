@@ -6,7 +6,10 @@ import { ChatFeed } from "./ChatFeed/ChatFeed";
 import { connectToWebSocket } from "../../services/websocket";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken, getUserGroup } from "../../redux/user/userSelectors";
-import { getActiveUsers, getParticipantsData } from "../../redux/chat/chatSelectors";
+import {
+  getActiveUsers,
+  getParticipantsData,
+} from "../../redux/chat/chatSelectors";
 import { serverName } from "../../constants/server";
 
 export function Chat() {
@@ -22,36 +25,19 @@ export function Chat() {
   const activeUsers = useSelector(getActiveUsers);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     if (token && chatGroup) {
       websocket.current = connectToWebSocket(chatGroup, token);
-      console.log(websocket.current);
 
-      // websocket.current.onmessage = (event) => {
-      //   const data = JSON.parse(event.data);
-
-      //   const participantsData = data.user_info;
-      //   const messagesData = data.messages;
-      //   console.log(data);
-      //   if (messagesData) {
-      //     if (participantsData) {
-      //       dispatch(setUsers(participantsData));
-      //     }
-      //     dispatch(setMessages(messagesData));
-      //   } else if(data.id_active_users) {
-      //     dispatch(setActiveData(data))
-      //   } else {
-      //     dispatch(addMessage(data))
-      //   }
-      // };
       return () => websocket.current.close();
     }
-
   }, [dispatch, token, chatGroup]);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
-  }, [isShowMore]);
+    console.log(avatarsWrapperWidth);
+  }, [isShowMore, avatarsWrapperWidth]);
 
   const handleShowMore = () => {
     setIsShowMore(true);
@@ -73,31 +59,60 @@ export function Chat() {
               ref={avatarsWrapperRef}
             >
               {participantsData &&
-                participantsData.map((participant, index) => (
-                  <img
-                    key={participant.UserId}
-                    src={`${serverName}${participant.ImagePath}`}
-                    alt={`${participant.Name} ${participant.Surname} avatar`}
-                    className={styles.avatarImage}
-                    style={
-                      isShowMore
-                        ? {
-                            transform: `translateX(calc(${
-                              avatarsWrapperWidth -
-                              (avatarsWrapperWidth / participantsData.length) *
-                                (index + 1)
-                            }px))`,
-                          }
-                        : {}
-                    }
-                  />
-                ))}
+                participantsData.map((participant, index) => {
+                  if (participant.ImagePath) {
+                    return (
+                      <img
+                        key={participant.UserId}
+                        src={`${serverName}${participant.ImagePath}`}
+                        alt={`${participant.Name} ${participant.Surname} avatar`}
+                        className={styles.avatarImage}
+                        style={
+                          isShowMore
+                            ? {
+                                transform: `translateX(calc(28px * ${
+                                  participantsData.length
+                                } - 28px * ${index + 1} - (4px * ${
+                                  participantsData.length - index - 1
+                                })))`,
+                                zIndex: `${participantsData.length - index}`,
+                              }
+                            : {}
+                        }
+                      />
+                    );
+                  }
+                  return (
+                    <span
+                      key={participant.UserId}
+                      className={`${styles.avatarImage} ${styles.noImageAvatar}`}
+                      style={
+                        isShowMore
+                          ? {
+                              transform: `translateX(calc(28px * ${
+                                participantsData.length
+                              } - 28px * ${index + 1} - (4px * ${
+                                participantsData.length - index - 1
+                              })))`,
+                              zIndex: `${participantsData.length - index}`,
+                            }
+                          : {}
+                      }
+                    >
+                      {participant.Username.slice(0, 1).toUpperCase()}
+                    </span>
+                  );
+                })}
               {isShowMore ? (
                 <>
                   {/* <button className={styles.addToChatButton}>+</button> */}
                   <button
                     onClick={handleShowLess}
                     className={styles.showLessAvatarsButton}
+                    // style={{
+                    //   left: `calc( 28px * ${participantsData.length} - 4px * ${participantsData.length - 1})`,
+                    //   right: "auto",
+                    // }}
                   >
                     x
                   </button>
@@ -112,8 +127,12 @@ export function Chat() {
               )}
             </div>
             <div className={isShowMore ? "hidden" : styles.infoWrapper}>
-              <p className={styles.participantsInfo}>{participantsData?.length} participants</p>
-              <p className={styles.onlineInfo}>{activeUsers?.total_active} Online</p>
+              <p className={styles.participantsInfo}>
+                {participantsData?.length} participants
+              </p>
+              <p className={styles.onlineInfo}>
+                {activeUsers?.total_active} Online
+              </p>
             </div>
           </div>
           <div className={isShowMore ? "hidden" : styles.headerRight}>

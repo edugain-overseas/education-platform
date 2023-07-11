@@ -3,6 +3,7 @@ import { Select, Checkbox } from "antd";
 import styles from "./MultipleSelect.module.scss";
 import { useSelector } from "react-redux";
 import { getParticipantsData } from "../../../redux/chat/chatSelectors";
+import { getUserId } from "../../../redux/user/userSelectors";
 
 // const options = [
 //   { label: "Student 1aaaaaaaaaaaaaaaaaaaaaa", value: "option1" },
@@ -19,11 +20,12 @@ import { getParticipantsData } from "../../../redux/chat/chatSelectors";
 // ];
 
 export function MultipleSelect({ onChange }) {
-
-  const options = useSelector(getParticipantsData)?.map((user) => ({
-    label: `${user.Name} ${user.Surname}`,
-    value: user.UserId,
-  })) || [];
+  const myId = useSelector(getUserId);
+  const options =
+    useSelector(getParticipantsData)?.filter(user => user.UserId !== myId).map((user) => ({
+      label: `${user.Name} ${user.Surname}`,
+      value: user.UserId,
+    })) || [];
   const allOption = { label: "Send All", value: "all" };
   const allOptions = [allOption, ...options];
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -46,6 +48,7 @@ export function MultipleSelect({ onChange }) {
   const handleSendAll = (e) => {
     if (e.target.checked) {
       setSelectedOptions(options.map((option) => option.value));
+      onChange(options.map((option) => option.value));
     } else {
       setSelectedOptions([]);
     }
@@ -54,6 +57,7 @@ export function MultipleSelect({ onChange }) {
   const handleClear = () => {
     console.log("clear");
     setSelectedOptions([]);
+    onChange([]);
   };
 
   const dropdownRender = (menu) => (

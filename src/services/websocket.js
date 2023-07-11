@@ -21,7 +21,6 @@ export const connectToWebSocket = (chatGroup, token) => {
       const data = JSON.parse(event.data);
       const participantsData = data.user_info;
       const messagesData = data.messages;
-      console.log(data);
       if (messagesData) {
         if (participantsData) {
           dispatch(setUsers(participantsData));
