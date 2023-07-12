@@ -39,16 +39,20 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       dispatch(getUserInfoThunk());
+    }
+  }, [dispatch, isAuth]);
+
+  useEffect(() => {
+    if (groupName) {
       dispatch(getScheduleThunk(groupName));
     }
-  }, [isAuth, dispatch, groupName]);
+  }, [dispatch, groupName]);
 
   return (
     <div className="App">
       <Router />
     </div>
     // <MainLayout />
-    // <AttachFiles />
   );
 }
 

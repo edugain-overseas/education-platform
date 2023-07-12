@@ -20,7 +20,7 @@ export function ChatFeed() {
     <div className={styles.feedWrapper}>
       {messages.map((message) => {
         const userData = participantsData.find(
-          (user) => user.UserId === message.sender_id
+          (user) => user.user_id === message.sender_id
         );
         const messageFullData = {
           ...message,
@@ -28,7 +28,6 @@ export function ChatFeed() {
           online: activeData.id_active_users.includes(message.sender_id),
         };
         const self = message.sender_id === userId;
-
         return (
           <MessageFromChat
             message={messageFullData}

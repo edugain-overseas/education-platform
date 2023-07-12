@@ -22,9 +22,9 @@ import { getUserId } from "../../../redux/user/userSelectors";
 export function MultipleSelect({ onChange }) {
   const myId = useSelector(getUserId);
   const options =
-    useSelector(getParticipantsData)?.filter(user => user.UserId !== myId).map((user) => ({
-      label: `${user.Name} ${user.Surname}`,
-      value: user.UserId,
+    useSelector(getParticipantsData)?.filter(user => user.user_id !== myId).map((user) => ({
+      label: `${user.name} ${user.surname}`,
+      value: user.user_id,
     })) || [];
   const allOption = { label: "Send All", value: "all" };
   const allOptions = [allOption, ...options];

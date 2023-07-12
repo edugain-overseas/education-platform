@@ -23,13 +23,13 @@ export const AttachModal = ({ type }) => {
         return (
           <ul>
             <li>
-              <button onClick={openModal}>
+              <button type="button" onClick={openModal}>
                 <PhotoIcon />
                 Camera
               </button>
             </li>
             <li>
-              <button>
+              <button type="button">
                 <PictureIcon />
                 Photo
               </button>
@@ -41,13 +41,13 @@ export const AttachModal = ({ type }) => {
         return (
           <ul>
             <li>
-              <button>
+              <button type="button">
                 <VideoIcon />
                 Camera
               </button>
             </li>
             <li>
-              <button>
+              <button type="button">
                 <PictureIcon />
                 Video
               </button>
@@ -59,13 +59,13 @@ export const AttachModal = ({ type }) => {
         return (
           <ul>
             <li>
-              <button>
+              <button type="button">
                 <AudioIcon />
                 Microphone
               </button>
             </li>
             <li>
-              <button>
+              <button type="button">
                 <PictureIcon />
                 Audio
               </button>
@@ -73,14 +73,18 @@ export const AttachModal = ({ type }) => {
           </ul>
         );
       }
-      default: return
+      default:
+        return null;
     }
   };
 
   return (
     <div className={styles.modalWrapper}>
       {chooseType()}
-      <WebcamModal isOpenModal={isOpenModal} closeModal={closeModal}/>
+      <WebcamModal
+        isOpenModal={isOpenModal}
+        closeModal={closeModal}
+      />
     </div>
   );
 };

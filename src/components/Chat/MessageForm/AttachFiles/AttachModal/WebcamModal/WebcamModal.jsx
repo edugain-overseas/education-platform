@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
+import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
 
 export const WebcamModal = ({ isOpenModal, closeModal }) => {
   const webcamRef = useRef(null);
 
   const [videoConstraints, setVideoConstraints] = useState({});
   const [image, setImage] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getVideoConstraints = async () => {
@@ -29,9 +34,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
 
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    // console.log(imageSrc);
     setImage(imageSrc);
-    // closeModal();
   };
 
   const resetCapture = () => {
@@ -40,9 +43,13 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
 
   const attachCapture = () => {
     const formData = new FormData();
-    formData.append("file", dataURItoBlob(image));
-    closeModal()
-  }
+    const uniqueId = uuidv4();
+    const fileName = `webcam-image_${uniqueId}.png`
+    formData.append("file", dataURItoBlob(image), fileName);
+    dispatch(attachFileToMessageThunk(formData));
+    setImage(null);
+    closeModal();
+  };
 
   return (
     <div>
@@ -65,8 +72,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
             <Button key="capture" type="primary" onClick={capture}>
               Capture
             </Button>
-          )
-          ,
+          ),
         ]}
       >
         {image ? (

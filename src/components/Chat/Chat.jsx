@@ -60,11 +60,11 @@ export function Chat() {
             >
               {participantsData &&
                 participantsData.map((participant, index) => {
-                  if (participant.ImagePath) {
+                  if (participant.image_path) {
                     return (
                       <img
-                        key={participant.UserId}
-                        src={`${serverName}${participant.ImagePath}`}
+                        key={participant.user_id}
+                        src={`${serverName}${participant.image_path}`}
                         alt={`${participant.Name} ${participant.Surname} avatar`}
                         className={styles.avatarImage}
                         style={
@@ -84,7 +84,7 @@ export function Chat() {
                   }
                   return (
                     <span
-                      key={participant.UserId}
+                      key={participant.user_id}
                       className={`${styles.avatarImage} ${styles.noImageAvatar}`}
                       style={
                         isShowMore
@@ -99,7 +99,7 @@ export function Chat() {
                           : {}
                       }
                     >
-                      {participant.Username.slice(0, 1).toUpperCase()}
+                      {participant.username.slice(0, 1).toUpperCase()}
                     </span>
                   );
                 })}

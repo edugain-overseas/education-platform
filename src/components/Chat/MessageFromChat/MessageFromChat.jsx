@@ -7,6 +7,7 @@ import { serverName } from "../../../constants/server";
 
 
 export function MessageFromChat({ message, type, self }) {
+  console.log(message);
   return (
     <div
       className={
@@ -23,8 +24,8 @@ export function MessageFromChat({ message, type, self }) {
       <div className={styles.avatarWrapper}>
         <img
           src={
-            message.userData.ImagePath
-              ? `${serverName}${message.userData.ImagePath}`
+            message.userData.image_path
+              ? `${serverName}${message.userData.image_path}`
               : user1Avatar
           }
           alt="avatar"
@@ -38,13 +39,16 @@ export function MessageFromChat({ message, type, self }) {
         <p className={styles.userName} style={self ? {
           textAlign: 'end'
         } : {}}>
-          {message.userData.Name} {message.message_datetime.slice(-8, -3)}
+          {message.userData.name} {message.message_datetime.slice(-8, -3)}
         </p>
         <div className={styles.contentWrapper}>
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: message.message_text }}
           ></div>
+          {message.attach_files.length !== 0 && message.attach_files.map(image=>(
+            <img key={image.fileId} src={`${serverName}${image.file_path}`} alt="from chat" width='100%' height='auto'/>
+          ))}
           <button className={styles.feedbackButton}>
             <span className={styles.feedbackButtonTitle}>Feedback</span>
             <SendFeedbackIcon />
