@@ -19,7 +19,6 @@ export const UserPanel = () => {
           src={
             userInfo?.image_path ? `${serverName}${userInfo.image_path}` : image
           }
-          // src={image}
           alt="user avatar"
           className={styles.userAvatar}
         />

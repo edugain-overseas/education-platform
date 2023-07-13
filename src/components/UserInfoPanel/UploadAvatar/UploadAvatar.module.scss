@@ -2,10 +2,10 @@
     position: absolute;
     width: 96px;
     height: 96px;
+    padding-bottom: 8px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     opacity: 0;
     transition: opacity 250ms ease-out;
     background: rgba(#000, 0.5);
@@ -16,4 +16,18 @@
     &:hover {
         opacity: 1;
     }
+}
+
+.icon {
+    margin-right: 4px;
+
+    & svg {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+.edit {
+    font-size: 12px;
+    line-height: 14.52px;
 }

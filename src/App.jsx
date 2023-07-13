@@ -6,10 +6,10 @@ import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
 import { useEffect } from "react";
-import { getIsAuthenticated } from "./redux/user/userSelectors";
+import { getIsAuthenticated, getUserGroup } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
-import { getSchedule } from "./services/schedule";
+import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
 // import { AttachFiles } from "./components/Chat/MessageForm/AttachFiles/AttachFiles";
 
 const Router = () => {
@@ -34,20 +34,25 @@ const Router = () => {
 function App() {
   const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuthenticated);
+  const groupName = useSelector(getUserGroup);
 
   useEffect(() => {
     if (isAuth) {
       dispatch(getUserInfoThunk());
-      getSchedule();
     }
-  }, [isAuth, dispatch]);
+  }, [dispatch, isAuth]);
+
+  useEffect(() => {
+    if (groupName) {
+      dispatch(getScheduleThunk(groupName));
+    }
+  }, [dispatch, groupName]);
 
   return (
     <div className="App">
       <Router />
     </div>
     // <MainLayout />
-    // <AttachFiles />
   );
 }
 

@@ -54,8 +54,15 @@
   border-radius: 50%;
   border: 2px solid #fff;
   left: 0;
-  transition: transform 500ms ease;
+  transition: transform 500ms ease-out;
   object-fit: cover;
+}
+
+.noImageAvatar {
+  background: #c2c2c2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .showMoreAvatarsButton {

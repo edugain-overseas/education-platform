@@ -1,20 +1,42 @@
-const websocketUrl =
-  "wss://df72-91-123-150-130.ngrok-free.app/api/v1/ws/Math23";
-// df72-91-123-150-130.ngrok-free.app
+import { webSocketUrl } from "../constants/server";
+import {
+  addMessage,
+  setActiveData,
+  setMessages,
+  setUsers,
+} from "../redux/chat/chatSlice";
+import { store } from "../redux/store";
+const dispatch = store.dispatch;
 
-export const connectToWebSocket = (token) => {
-  console.log(token);
-  if (token) {
+export const connectToWebSocket = (chatGroup, token) => {
+  if ((chatGroup, token)) {
     try {
-      const websocket = new WebSocket(`${websocketUrl}/${token}`);
+      const websocket = new WebSocket(`${webSocketUrl}${chatGroup}/${token}`);
       websocket.onopen = () => console.log("Connected");
+
       websocket.onclose = function (event) {
         console.log("Connection Closed");
       };
+
+      websocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const participantsData = data.user_info;
+        const messagesData = data.messages;
+        if (messagesData) {
+          if (participantsData) {
+            dispatch(setUsers(participantsData));
+          }
+          dispatch(setMessages(messagesData));
+        } else if (data.id_active_users) {
+          dispatch(setActiveData(data));
+        } else {
+          dispatch(addMessage(data));
+        }
+      };
+
       return websocket;
     } catch (error) {
       console.log("Error:", error.message);
     }
   }
-  return;
 };

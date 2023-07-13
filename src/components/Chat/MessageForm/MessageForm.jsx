@@ -3,38 +3,50 @@ import { ReactComponent as SendIcon } from "../../../images/icons/send.svg";
 import styles from "./MessageForm.module.scss";
 import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
-import { useSelector } from "react-redux";
-import { getUserId } from "../../../redux/user/userSelectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserId, getUserType } from "../../../redux/user/userSelectors";
 import { AttachFiles } from "./AttachFiles/AttachFiles";
+import { HtmlRegExp } from "../../../constants/regExp";
+import { getAttachedFiles, getParticipantsData } from "../../../redux/chat/chatSelectors";
+import { getMessageType } from "../../../helpers/getMessageType";
+import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
+import { clearAttachedFiles } from "../../../redux/chat/chatSlice";
 
 export function MessageForm({ socket }) {
   const [messageHTML, setMessageHTML] = useState("");
   const [sendTo, setSendTo] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+  const dispatch = useDispatch();
 
   const userId = useSelector(getUserId);
-
-  const HtmlRegExp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
+  const participantsData = useSelector(getParticipantsData);
+  const userType = useSelector(getUserType)
+  const attachedFiles = useSelector(getAttachedFiles);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(event);
 
-    if (messageHTML.replaceAll(HtmlRegExp, "").trim() === "") {
+    if (messageHTML.replaceAll(HtmlRegExp, "").trim() === "" && attachedFiles.length === 0) {
       console.log("Empty message");
       return;
     }
 
+    const chatUsers = participantsData.map(user=>user.user_id)
+    
+
     const data = {
-      type: "message", //[message || asnwer]
+      type: "message",
       message: messageHTML,
-      message_type: "everyone", //[everyone, several, alone]
-      recipient: null, // [null, [id..], id]
+      message_type: getMessageType(chatUsers, sendTo),
+      recipient: getMessageRecepients(chatUsers, sendTo),
       fixed: false,
       sender_id: userId,
-      sender_type: "student", // [curator, moder, student]
-      attach_file_path: null // [null, [URLs], URL]
+      sender_type: userType,
+      attach_file_path: attachedFiles,
     };
 
+    console.log(sendTo);
     console.log(data);
 
     try {
@@ -43,7 +55,7 @@ export function MessageForm({ socket }) {
     } catch (error) {
       console.log(error.message);
     }
-
+    dispatch(clearAttachedFiles())
     setMessageHTML("");
   };
 
@@ -64,7 +76,7 @@ export function MessageForm({ socket }) {
     }
 
     if (e.relatedTarget && e.relatedTarget.className.includes("AttachFiles")) {
-      return
+      return;
     }
 
     setIsFocused(false);

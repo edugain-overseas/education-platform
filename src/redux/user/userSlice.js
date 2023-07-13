@@ -3,6 +3,7 @@ import {
   changeUserAvatarThunk,
   getUserInfoThunk,
   loginThunk,
+  logoutThunk,
 } from "./userOperations";
 
 const initialState = {
@@ -23,7 +24,7 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginThunk.pending, (state, { payload }) => {
+      .addCase(loginThunk.pending, (state, _) => {
         state.isLoading = true;
       })
       .addCase(loginThunk.fulfilled, (state, { payload }) => {
@@ -39,7 +40,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-      .addCase(getUserInfoThunk.pending, (state, { payload }) => {
+      .addCase(getUserInfoThunk.pending, (state, _) => {
         state.isLoading = true;
       })
       .addCase(getUserInfoThunk.fulfilled, (state, { payload }) => {
@@ -47,11 +48,11 @@ export const userSlice = createSlice({
         state.error = null;
         state.info = payload.info;
       })
-      .addCase(getUserInfoThunk.rejected, (state, { payload }) => {
+      .addCase(getUserInfoThunk.rejected, (state, {payload}) => {
         state.isLoading = false;
         state.error = payload;
       })
-      .addCase(changeUserAvatarThunk.pending, (state, { payload }) => {
+      .addCase(changeUserAvatarThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
       })
@@ -62,6 +63,18 @@ export const userSlice = createSlice({
       .addCase(changeUserAvatarThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
-      });
+      })
+      .addCase(logoutThunk.pending, (state, _) => {
+        state.isLoading = true;
+      })
+      .addCase(logoutThunk.fulfilled, (state, _) => {
+        state.isLoading = false;
+        state = initialState;
+      })
+      .addCase(logoutThunk.rejected, (state, {payload}) => {
+        state.isLoading = false;
+        state.error = payload
+      })
+      
   },
 });
