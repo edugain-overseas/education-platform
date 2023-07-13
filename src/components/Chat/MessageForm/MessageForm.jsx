@@ -25,14 +25,17 @@ export function MessageForm({ socket }) {
     }
 
     const data = {
+      type: "message", //[message || asnwer]
       message: messageHTML,
-      sender_id: userId,
-      sender_type: "student",
+      message_type: "everyone", //[everyone, several, alone]
+      recipient: null, // [null, [id..], id]
       fixed: false,
-      type: "message",
+      sender_id: userId,
+      sender_type: "student", // [curator, moder, student]
+      attach_file_path: null // [null, [URLs], URL]
     };
 
-    console.log(sendTo);
+    console.log(data);
 
     try {
       socket.send(JSON.stringify(data));

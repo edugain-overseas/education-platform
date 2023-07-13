@@ -16,8 +16,12 @@ export const chatSlice = createSlice({
     setUsers(state, {payload}) {
       console.log(payload);
       state.participantsData = payload;
+    },
+    reciveMessage(state, {payload}) {
+      console.log(payload);
+      state.messages = [payload, ...state.messages];
     }
   },
 });
 
-export const { setMessages, setUsers } = chatSlice.actions;
+export const { setMessages, setUsers, reciveMessage } = chatSlice.actions;

@@ -1,9 +1,8 @@
 import React from "react";
 import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedback.svg";
-import styles from "./MessageFromChat.module.scss";
-
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
+import styles from "./MessageFromChat.module.scss";
 
 
 export function MessageFromChat({ message, type }) {

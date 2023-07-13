@@ -4,8 +4,8 @@ import avatar from "../../images/login-bg.png";
 import { useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/user/userSelectors";
 import { AvatarUpload } from "./UploadAvatar/UploadAvatar";
+import { serverName } from "../../constants/server";
 
-const serverName = "https://e54a-194-44-219-51.ngrok-free.app/";
 
 export function UserInfoPanel() {
   const [avatarSrc, setAvatarSrc] = useState("");

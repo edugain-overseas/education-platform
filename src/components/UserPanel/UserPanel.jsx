@@ -4,8 +4,8 @@ import { getUserName, getUserInfo } from "../../redux/user/userSelectors";
 import { ReactComponent as SettingsIcon } from "../../images/icons/settings.svg";
 import styles from "./UserPanel.module.scss";
 import image from "../../images/logo192.png";
+import { serverName } from "../../constants/server";
 
-const serverName = "https://e54a-194-44-219-51.ngrok-free.app/";
 
 export const UserPanel = () => {
   const username = useSelector(getUserName);

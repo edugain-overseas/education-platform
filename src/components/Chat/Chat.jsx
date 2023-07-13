@@ -5,8 +5,12 @@ import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
 import { connectToWebSocket } from "../../services/websocket";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserGroup } from "../../redux/user/userSelectors";
-import { setMessages, setUsers } from "../../redux/chat/chatSlice";
+import { getToken, getUserGroup } from "../../redux/user/userSelectors";
+import {
+  setMessages,
+  setUsers,
+  reciveMessage,
+} from "../../redux/chat/chatSlice";
 import { getParticipantsData } from "../../redux/chat/chatSelectors";
 import { serverName } from "../../constants/server";
 
@@ -19,22 +23,28 @@ export function Chat() {
 
   const chatGroup = useSelector(getUserGroup) || "";
   const participantsData = useSelector(getParticipantsData);
+  const token = useSelector(getToken);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    websocket.current = connectToWebSocket();
+    websocket.current = connectToWebSocket(token);
 
     websocket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log(data);
       const participantsData = data.user_info;
       const messagesData = data.messages;
       if (participantsData) {
         dispatch(setUsers(participantsData));
       }
-      dispatch(setMessages(messagesData));
+      if (messagesData) {
+        dispatch(setMessages(messagesData));
+      } else {
+        dispatch(reciveMessage(data));
+      }
     };
 
-    return () => websocket.current.close();
+    // return () => websocket.current.close();
   }, [dispatch]);
 
   useEffect(() => {
