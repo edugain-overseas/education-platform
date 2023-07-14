@@ -43,8 +43,9 @@ export const AttachFiles = ({show}) => {
           icon={null}
           okButtonProps={{ style: { display: "none" } }}
           overlayClassName='popconfirmOverlay'
+          zIndex={999}
         >
-          <button type="button" onClick={() => handleClick("video")}>
+          <button type="button" onClick={() => handleClick("video")} className={styles.openPopupButton}>
             <VideoIcon />
           </button>
         </Popconfirm>
@@ -58,14 +59,15 @@ export const AttachFiles = ({show}) => {
           icon={null}
           okButtonProps={{ style: { display: "none" } }}
           overlayClassName='popconfirmOverlay'
+          zIndex={999}
         >
-          <button type="button" onClick={() => handleClick("audio")}>
+          <button type="button" onClick={() => handleClick("audio")} className={styles.openPopupButton}>
             <AudioIcon />
           </button>
         </Popconfirm>
       </div>
       <div className={styles.btnWrapper}>
-        <button type="button">
+        <button type="button" className={styles.openPopupButton}>
           <FileIcon />
         </button>
       </div>

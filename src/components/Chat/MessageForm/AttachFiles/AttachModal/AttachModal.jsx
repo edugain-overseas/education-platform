@@ -4,7 +4,8 @@ import { ReactComponent as VideoIcon } from "../../../../../images/icons/video.s
 import { ReactComponent as AudioIcon } from "../../../../../images/icons/voice.svg";
 import { ReactComponent as PictureIcon } from "../../../../../images/icons/picture.svg";
 import styles from "./AttachModal.module.scss";
-import { WebcamModal } from "./WebcamModal/WebcamModal";
+import { WebcamPhotoModal } from "./WebcamPhotoModal/WebcamPhotoModal";
+import WebcamVideoModal from "./WebcamVideoModal/WebcamVideoModal";
 
 export const AttachModal = ({ type }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -41,7 +42,7 @@ export const AttachModal = ({ type }) => {
         return (
           <ul>
             <li>
-              <button type="button">
+              <button type="button" onClick={openModal}>
                 <VideoIcon />
                 Camera
               </button>
@@ -81,8 +82,12 @@ export const AttachModal = ({ type }) => {
   return (
     <div className={styles.modalWrapper}>
       {chooseType()}
-      <WebcamModal
-        isOpenModal={isOpenModal}
+      <WebcamPhotoModal
+        isOpenModal={isOpenModal && type === "photo"}
+        closeModal={closeModal}
+      />
+      <WebcamVideoModal
+        isOpenModal={isOpenModal && type === "video"}
         closeModal={closeModal}
       />
     </div>

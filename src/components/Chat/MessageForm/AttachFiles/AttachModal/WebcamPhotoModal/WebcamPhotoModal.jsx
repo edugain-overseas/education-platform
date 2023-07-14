@@ -6,7 +6,7 @@ import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
 import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
 
-export const WebcamModal = ({ isOpenModal, closeModal }) => {
+export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
   const webcamRef = useRef(null);
 
   const [videoConstraints, setVideoConstraints] = useState({});
@@ -90,7 +90,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
             audio={false}
             videoConstraints={videoConstraints}
             ref={webcamRef}
-            mirrored={true}
+            // mirrored={true}
             style={{ width: "100%", height: "auto", paddingTop: 32 }}
             screenshotFormat="image/png"
           />
