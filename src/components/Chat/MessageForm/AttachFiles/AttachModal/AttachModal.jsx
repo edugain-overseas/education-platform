@@ -6,6 +6,7 @@ import { ReactComponent as PictureIcon } from "../../../../../images/icons/pictu
 import styles from "./AttachModal.module.scss";
 import { WebcamPhotoModal } from "./WebcamPhotoModal/WebcamPhotoModal";
 import WebcamVideoModal from "./WebcamVideoModal/WebcamVideoModal";
+import MicModal from "./MicModal/MicModal";
 
 export const AttachModal = ({ type }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -60,7 +61,7 @@ export const AttachModal = ({ type }) => {
         return (
           <ul>
             <li>
-              <button type="button">
+              <button type="button" onClick={openModal}>
                 <AudioIcon />
                 Microphone
               </button>
@@ -88,6 +89,10 @@ export const AttachModal = ({ type }) => {
       />
       <WebcamVideoModal
         isOpenModal={isOpenModal && type === "video"}
+        closeModal={closeModal}
+      />
+      <MicModal
+        isOpenModal={isOpenModal && type === "audio"}
         closeModal={closeModal}
       />
     </div>

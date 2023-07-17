@@ -54,6 +54,7 @@ export const AttachFiles = ({show}) => {
         <Popconfirm
           placement="bottomLeft"
           title={null}
+          
           description={<AttachModal type={type} />}
           showCancel={false}
           icon={null}

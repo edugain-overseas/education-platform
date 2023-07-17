@@ -44,7 +44,7 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
   const attachCapture = () => {
     const formData = new FormData();
     const uniqueId = uuidv4();
-    const fileName = `webcam-image_${uniqueId}.png`
+    const fileName = `webcam-image_${uniqueId}.png`;
     formData.append("file", dataURItoBlob(image), fileName);
     dispatch(attachFileToMessageThunk(formData));
     setImage(null);

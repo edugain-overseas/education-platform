@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { Modal, Button } from "antd";
 import ReactPlayer from "react-player";
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
 import { getAttachFileLoading } from "../../../../../../redux/chat/chatSelectors";
@@ -13,7 +14,7 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
   const [recordedChunks, setRecordedChunks] = useState(null);
   const [videoURL, setVideoURL] = useState("");
 
-  const isLoading = useSelector(getAttachFileLoading)
+  const isLoading = useSelector(getAttachFileLoading);
 
   const dispatch = useDispatch();
 
@@ -34,9 +35,10 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
 
   const handleAttach = () => {
     const formData = new FormData();
-    formData.append("file", recordedChunks);
-    dispatch(attachFileToMessageThunk(formData))
-    
+    const uniqueId = uuidv4();
+    const fileName = `webcam-video_${uniqueId}.webm`;
+    formData.append("file", recordedChunks, fileName);
+    dispatch(attachFileToMessageThunk(formData));
   };
 
   const handleDataAvailable = ({ data }) => {
@@ -84,7 +86,12 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
               </Button>
             )}
             {!isRecording && recordedChunks && (
-              <Button key="attach" type="primary" onClick={handleAttach} loading={isLoading}>
+              <Button
+                key="attach"
+                type="primary"
+                onClick={handleAttach}
+                loading={isLoading}
+              >
                 Attach
               </Button>
             )}
