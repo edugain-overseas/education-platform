@@ -1,12 +1,42 @@
 import React from "react";
+import ReactPlayer from "react-player";
 import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedback.svg";
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
+import { getFileType } from "../../../helpers/getFileType";
+import ReactPlayer from "react-player";
 import styles from "./MessageFromChat.module.scss";
 
+const fileFromMessage = (file) => {
+  switch (getFileType(file.file_path)) {
+    case "image":
+      return (
+        <img
+          key={file.fileId}
+          src={`${serverName}${file.file_path}`}
+          alt="from chat"
+          width="100%"
+          height="auto"
+        />
+      );
+    case "video":
+      return (
+        <ReactPlayer
+          key={file.fileId}
+          url={`${serverName}${file.file_path}`}
+          controls={true}
+          width="100%"
+          height="auto"
+        />
+      );
+    default:
+      console.log(getFileType(file.file_path));
+      return;
+  }
+};
 
 export function MessageFromChat({ message, type, self }) {
-  console.log(message);
+  // console.log(message);
   return (
     <div
       className={
@@ -15,9 +45,11 @@ export function MessageFromChat({ message, type, self }) {
           : `${styles.messageWrapper} ${styles.feedback}`
       }
       style={
-        self ? {
-          flexDirection: 'row-reverse'
-        } : {}
+        self
+          ? {
+              flexDirection: "row-reverse",
+            }
+          : {}
       }
     >
       <div className={styles.avatarWrapper}>
@@ -31,23 +63,44 @@ export function MessageFromChat({ message, type, self }) {
           className={styles.avatar}
         />
         <span
-          className={message.online ? `${styles.status} ${styles.online}` : `${styles.status} ${styles.offline}`}
+          className={
+            message.online
+              ? `${styles.status} ${styles.online}`
+              : `${styles.status} ${styles.offline}`
+          }
         ></span>
       </div>
       <div className={styles.contentSubWrapper}>
-        <p className={styles.userName} style={self ? {
-          textAlign: 'end'
-        } : {}}>
+        <p
+          className={styles.userName}
+          style={
+            self
+              ? {
+                  textAlign: "end",
+                }
+              : {}
+          }
+        >
           {message.userData.name} {message.message_datetime.slice(-8, -3)}
         </p>
         <div className={styles.contentWrapper}>
+          {message.attach_files.length !== 0 &&
+            message.attach_files.map((file) => {
+              return fileFromMessage(file);
+              // return (
+              //   <img
+              //     key={file.fileId}
+              //     src={`${serverName}${file.file_path}`}
+              //     alt="from chat"
+              //     width="100%"
+              //     height="auto"
+              //   />
+              // );
+            })}
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: message.message_text }}
           ></div>
-          {message.attach_files.length !== 0 && message.attach_files.map(image=>(
-            <img key={image.fileId} src={`${serverName}${image.file_path}`} alt="from chat" width='100%' height='auto'/>
-          ))}
           <button className={styles.feedbackButton}>
             <span className={styles.feedbackButtonTitle}>Feedback</span>
             <SendFeedbackIcon />

@@ -6,7 +6,7 @@ import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
 import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
 
-export const WebcamModal = ({ isOpenModal, closeModal }) => {
+export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
   const webcamRef = useRef(null);
 
   const [videoConstraints, setVideoConstraints] = useState({});
@@ -44,7 +44,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
   const attachCapture = () => {
     const formData = new FormData();
     const uniqueId = uuidv4();
-    const fileName = `webcam-image_${uniqueId}.png`
+    const fileName = `webcam-image_${uniqueId}.png`;
     formData.append("file", dataURItoBlob(image), fileName);
     dispatch(attachFileToMessageThunk(formData));
     setImage(null);
@@ -90,7 +90,7 @@ export const WebcamModal = ({ isOpenModal, closeModal }) => {
             audio={false}
             videoConstraints={videoConstraints}
             ref={webcamRef}
-            mirrored={true}
+            // mirrored={true}
             style={{ width: "100%", height: "auto", paddingTop: 32 }}
             screenshotFormat="image/png"
           />
