@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
 // import { useEffect } from "react";
 
 export default function MicModal({ isOpenModal, closeModal }) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState({});
   const [audioSrc, setAudioSrc] = useState("");
+  const [clear, setClear] = useState(false);
+
+  const dispatch = useDispatch()
 
   const recorderControls = useAudioRecorder(
     {
@@ -18,6 +24,7 @@ export default function MicModal({ isOpenModal, closeModal }) {
 
   const handleStartRecording = () => {
     recorderControls.startRecording();
+    setClear(false)
     setIsRecording(true);
     console.log("recording...");
   };
@@ -32,19 +39,31 @@ export default function MicModal({ isOpenModal, closeModal }) {
     console.log(audioBlob, audioSrc);
     setAudioSrc("");
     setAudioBlob(null);
+    setClear(true)
   };
 
   const addAudioElement = (blob) => {
-    if (!audioBlob && audioSrc === "") {
-        console.log(audioBlob, audioSrc);
-        return
-    }
-    console.log(blob, audioBlob);
     recorderControls.recordingBlob = null;
+    if (clear) {
+      return
+    }
     setAudioBlob(blob);
     const url = URL.createObjectURL(blob);
     setAudioSrc(url);
   };
+
+  const handleAttach = () => {
+    console.log(audioBlob);
+
+    const formData = new FormData();
+    const uniqueId = uuidv4();
+    const fileName = `mic-audio_${uniqueId}.webm`;
+    formData.append("file", audioBlob, fileName);
+    dispatch(attachFileToMessageThunk(formData));
+    setAudioBlob({});
+    setAudioSrc('')
+    closeModal();
+  }
 
   return (
     <Modal
@@ -54,7 +73,10 @@ export default function MicModal({ isOpenModal, closeModal }) {
         isRecording ? (
           <Button onClick={handleStopRecording}>Stop recording</Button>
         ) : audioSrc ? (
-          <Button onClick={handleClear}>Clear</Button>
+          <>
+            <Button onClick={handleClear}>Clear</Button>
+            <Button onClick={handleAttach}>Attach</Button>
+          </>
         ) : (
           <Button onClick={handleStartRecording}>Start recording</Button>
         ),
@@ -66,6 +88,7 @@ export default function MicModal({ isOpenModal, closeModal }) {
         <AudioRecorder
           onRecordingComplete={(blob) => addAudioElement(blob)}
           recorderControls={recorderControls}
+          
           //   downloadFileExtension="mp3"
           showVisualizer={true}
         />

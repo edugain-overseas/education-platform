@@ -69,7 +69,14 @@ export const userSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state, _) => {
         state.isLoading = false;
-        state = initialState;
+        state.error = null
+        state.info = null
+        state.isAuthenticated = false
+        state.token = null
+        state.userAvatar = null
+        state.userId = null
+        state.userName = null
+        state.userType = null
       })
       .addCase(logoutThunk.rejected, (state, {payload}) => {
         state.isLoading = false;

@@ -16,6 +16,6 @@ export const changeAvatar = async (file) => {
 };
 
 export const logout = async () => {
-  const { data } = await instance.post("/logout");
+  const { data } = await instance.get("/logout");
   return data
 };

@@ -9,8 +9,10 @@ import { instance } from "../../services/instance";
 
 export const loginThunk = createAsyncThunk(
   "user/login",
-  async (credenrials, {rejectWithValue}) => {
+  async (credenrials, { rejectWithValue }) => {
     try {
+      instance.defaults.headers["Content-Type"] =
+        "application/x-wwww-form-urlencoded";
       const response = await login(credenrials);
 
       instance.defaults.headers["Content-Type"] = "application/json";
@@ -35,9 +37,7 @@ export const getUserInfoThunk = createAsyncThunk(
       }
 
       instance.defaults.headers["Content-Type"] = "application/json";
-      instance.defaults.headers[
-        "Authorization"
-      ] = `Bearer ${token}`;
+      instance.defaults.headers["Authorization"] = `Bearer ${token}`;
 
       const response = await getUserInfo();
       return response;
@@ -49,7 +49,7 @@ export const getUserInfoThunk = createAsyncThunk(
 
 export const changeUserAvatarThunk = createAsyncThunk(
   "user/changeAvatar",
-  async (file, {rejectWithValue}) => {
+  async (file, { rejectWithValue }) => {
     try {
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
       const response = await changeAvatar(file);
@@ -63,7 +63,7 @@ export const changeUserAvatarThunk = createAsyncThunk(
 
 export const logoutThunk = createAsyncThunk(
   "user/logout",
-  async (_, {rejectWithValue}) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await logout();
       instance.defaults.headers["Authorization"] = "";

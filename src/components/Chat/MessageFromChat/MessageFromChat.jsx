@@ -4,7 +4,6 @@ import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedba
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
 import { getFileType } from "../../../helpers/getFileType";
-import ReactPlayer from "react-player";
 import styles from "./MessageFromChat.module.scss";
 
 const fileFromMessage = (file) => {
@@ -36,7 +35,7 @@ const fileFromMessage = (file) => {
 };
 
 export function MessageFromChat({ message, type, self }) {
-  // console.log(message);
+  console.log(message);
   return (
     <div
       className={
@@ -110,14 +109,3 @@ export function MessageFromChat({ message, type, self }) {
     </div>
   );
 }
-
-// {
-//     id: 1,
-//     message: "hello wordld",
-//     gropId: 1,
-//     date: moment(),
-//     fixed: false,
-//     senderId: 1,
-//     senderType: "",
-//     feedbackTo: null
-//   },

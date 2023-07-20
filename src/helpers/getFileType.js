@@ -4,7 +4,6 @@ export const getFileType = (filePath) => {
   const isImage = imageFormats.some((imageFormat) =>
     filePath.includes(`.${imageFormat}`)
   );
-  console.log(isImage);
 
   if (isImage) {
     return "image";
