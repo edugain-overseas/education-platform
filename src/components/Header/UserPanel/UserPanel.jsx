@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { getUserName, getUserInfo } from "../../redux/user/userSelectors";
-import { ReactComponent as SettingsIcon } from "../../images/icons/settings.svg";
+import { getUserName, getUserInfo } from "../../../redux/user/userSelectors";
+import { ReactComponent as SettingsIcon } from "../../../images/icons/settings.svg";
 import styles from "./UserPanel.module.scss";
-import image from "../../images/logo192.png";
-import { serverName } from "../../constants/server";
+import image from "../../../images/logo192.png";
+import { serverName } from "../../../constants/server";
 
 
 export const UserPanel = () => {

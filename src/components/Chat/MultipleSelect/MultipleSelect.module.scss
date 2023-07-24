@@ -1,39 +1,39 @@
 .select {
-  min-width: 88px;
-  font-size: 14px;
-  line-height: 17px;
+  min-width: 88rem;
+  font-size: 14rem;
+  line-height: 17rem;
   color: #b3b3b3;
 
   & .ant-select-selection-search-input {
-    width: 80px;
+    width: 80rem;
   }
 }
 
 .customDropdown {
-  width: 183px;
-  max-height: 170px;
+  width: 183rem;
+  max-height: 170rem;
   overflow-x: hidden;
-  padding: 12px;
+  padding: 12rem;
 }
 
 .customOption {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 10rem;
   text-overflow: ellipsis;
 
   & label {
     display: flex;
-    gap: 8px;
+    gap: 8rem;
     justify-content: flex-start;
     width: 100%;
   }
 
   & label span + span {
     flex-grow: 1;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 13rem;
+    line-height: 16rem;
     text-overflow: ellipsis;
     display: inline-block;
     white-space: nowrap;

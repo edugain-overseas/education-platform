@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DetailsIcon } from "../../images/icons/details.svg";
+import { ReactComponent as DetailsIcon } from "../../../images/icons/details.svg";
 import styles from "./LessonsList.module.scss";
 
 export function LessonsList({ lessons }) {

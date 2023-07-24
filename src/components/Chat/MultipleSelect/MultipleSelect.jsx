@@ -98,7 +98,7 @@ export function MultipleSelect({ onChange }) {
       onClear={handleClear}
       maxTagCount={0}
       className={styles.select}
-      listHeight="170px"
+      listHeight="170rem"
       bordered={false}
       placeholder="Send all"
       popupMatchSelectWidth={false}

@@ -1,7 +1,7 @@
 import React from 'react'
-import { PrevLink } from '../PrevLink/PrevLink'
-import { Date } from '../Date/Date'
-import { UserPanel } from '../UserPanel/UserPanel'
+import { PrevLink } from './PrevLink/PrevLink'
+import { Date } from './Date/Date'
+import { UserPanel } from './UserPanel/UserPanel'
 import styles from './Header.module.scss'
 
 export const Header = () => {

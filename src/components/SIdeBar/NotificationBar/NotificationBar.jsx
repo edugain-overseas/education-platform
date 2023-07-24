@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as ChatIcon } from "../../images/icons/chat.svg";
+import { ReactComponent as ChatIcon } from "../../../images/icons/chat.svg";
 import styles from './NotificationBar.module.scss'
 
 export const NotificationBar = () => {

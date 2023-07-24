@@ -3,18 +3,18 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding-top: 16px;
+  padding-top: 16rem;
   align-items: center;
   background: #3a5cbd;
   color: #fff;
-  width: 12.6%;
-  min-width: 168px;
+  width: 182rem;
   overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .logo {
   font-weight: 600;
-  font-size: 32px;
-  line-height: 39px;
+  font-size: 32rem;
+  line-height: 39rem;
   text-transform: uppercase;
 }

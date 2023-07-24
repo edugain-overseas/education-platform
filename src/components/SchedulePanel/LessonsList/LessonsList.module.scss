@@ -1,8 +1,8 @@
 .lessonsList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-overflow: hidden;
+  gap: 8rem;
+  overflow: hidden;
 }
 
 .lessonsItem {
@@ -10,37 +10,36 @@ overflow: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 16px 32px 16px 16px;
+  padding: 16rem 32rem 16rem 16rem;
   background: #fff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
+  box-shadow: 0rem 0rem 4rem rgba(0, 0, 0, 0.12);
+  border-radius: 2rem;
 }
 
 .lessonSubject {
   font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 16rem;
+  line-height: 19rem;
   color: #000000;
-  height: 37px;
-  margin-bottom: 18px;
+  height: 37rem;
+  margin-bottom: 18rem;
 }
 
 .lessonTime,
 .lessonLecturer {
-  font-size: 13px;
-  line-height: 16px;
+  font-size: 13rem;
+  line-height: 16rem;
   color: rgba(0, 0, 0, 0.5);
 }
 
 .detailsButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 16px;
-  height: 16px;
+  top: 16rem;
+  right: 16rem;
+  width: 16rem;
+  height: 16rem;
   display: flex;
   justify-content: flex-end;
   background: none;
   border: none;
-  
 }

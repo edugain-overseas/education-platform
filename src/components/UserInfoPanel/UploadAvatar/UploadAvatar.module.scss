@@ -1,8 +1,8 @@
 .uploadButton {
     position: absolute;
-    width: 96px;
-    height: 96px;
-    padding-bottom: 8px;
+    width: 96rem;
+    height: 96rem;
+    padding-bottom: 8rem;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -19,15 +19,15 @@
 }
 
 .icon {
-    margin-right: 4px;
+    margin-right: 4rem;
 
     & svg {
-        width: 12px;
-        height: 12px;
+        width: 12rem;
+        height: 12rem;
     }
 }
 
 .edit {
-    font-size: 12px;
-    line-height: 14.52px;
+    font-size: 12rem;
+    line-height: 14.52rem;
 }

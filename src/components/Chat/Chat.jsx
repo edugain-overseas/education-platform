@@ -36,7 +36,6 @@ export function Chat() {
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
-    console.log(avatarsWrapperWidth);
   }, [isShowMore, avatarsWrapperWidth]);
 
   const handleShowMore = () => {
@@ -70,9 +69,9 @@ export function Chat() {
                         style={
                           isShowMore
                             ? {
-                                transform: `translateX(calc(28px * ${
+                                transform: `translateX(calc(28rem * ${
                                   participantsData.length
-                                } - 28px * ${index + 1} - (4px * ${
+                                } - 28rem * ${index + 1} - (4rem * ${
                                   participantsData.length - index - 1
                                 })))`,
                                 zIndex: `${participantsData.length - index}`,
@@ -89,9 +88,9 @@ export function Chat() {
                       style={
                         isShowMore
                           ? {
-                              transform: `translateX(calc(28px * ${
+                              transform: `translateX(calc(28rem * ${
                                 participantsData.length
-                              } - 28px * ${index + 1} - (4px * ${
+                              } - 28rem * ${index + 1} - (4rem * ${
                                 participantsData.length - index - 1
                               })))`,
                               zIndex: `${participantsData.length - index}`,
@@ -110,7 +109,7 @@ export function Chat() {
                     onClick={handleShowLess}
                     className={styles.showLessAvatarsButton}
                     // style={{
-                    //   left: `calc( 28px * ${participantsData.length} - 4px * ${participantsData.length - 1})`,
+                    //   left: `calc( 28rem * ${participantsData.length} - 4rem * ${participantsData.length - 1})`,
                     //   right: "auto",
                     // }}
                   >

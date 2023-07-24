@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import moment from "moment";
-import { LessonsList } from "../LessonsList/LessonsList";
+import { LessonsList } from "./LessonsList/LessonsList";
 import { ReactComponent as ShowMoreIcon } from "../../images/icons/show-more.svg";
 import { ReactComponent as ShowLessIcon } from "../../images/icons/show-less.svg";
 import styles from "./SchedulePanel.module.scss";

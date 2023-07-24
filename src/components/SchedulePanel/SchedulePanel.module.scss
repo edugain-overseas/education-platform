@@ -1,8 +1,8 @@
 .mainWrapper {
   position: relative;
-  padding: 14px 0;
-  width: 22.26%;
-  min-width: 240px;
+  padding: 14rem 0;
+  width: 280rem;
+  min-width: 240rem;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
@@ -10,15 +10,15 @@
 }
 
 .shownMore {
-  min-width: calc(22.26% * 3 + (16px * 2));
+  min-width: calc(280rem * 3 + (16rem * 2));
 }
 
 .title {
-  margin-left: 16px;
-  margin-bottom: 4px;
+  margin-left: 16rem;
+  margin-bottom: 4rem;
   font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 20rem;
+  line-height: 24rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: #000000;
@@ -27,9 +27,8 @@
 
 .scheduleWrapper {
   display: flex;
-  gap: 16px;
+  gap: 16rem;
   flex-grow: 1;
-  
 }
 
 .dayScheduleWrapper {
@@ -37,49 +36,44 @@
   min-width: 100%;
 }
 
-
-
 .dayShownMore {
-  min-width: calc(33.33% - (16px * 2 / 3));
+  min-width: calc(33.33% - (16rem * 2 / 3));
 }
 
 .dateWrapper {
-  padding-left: 16px;
+  padding-left: 16rem;
   display: flex;
   color: #545454;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 8px;
+  margin-bottom: 8rem;
 }
 
 .dayInfo {
-  font-size: 21px;
-  line-height: 25px;
-  margin-right: 2px;
-}
-
-.dateSubWrapper {
+  font-size: 21rem;
+  line-height: 25rem;
+  margin-right: 2rem;
 }
 
 .monthInfo {
-  font-size: 9.14286px;
-  line-height: 10px;
+  font-size: 9.14286rem;
+  line-height: 10rem;
 }
 
 .dayOfWeekInfo {
-  font-size: 10.4348px;
-  line-height: 11px;
+  font-size: 10.4348rem;
+  line-height: 11rem;
 }
 
 .toggleButton {
   position: absolute;
-  top: 18px;
-  right: 16px;
-  width: 40px;
-  height: 40px;
+  top: 18rem;
+  right: 16rem;
+  width: 40rem;
+  height: 40rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0.851064px solid rgba(0, 0, 0, 0.5);
-  border-radius: 3.40426px;
+  border: 0.851064rem solid rgba(0, 0, 0, 0.5);
+  border-radius: 3.40426rem;
 }

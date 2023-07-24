@@ -1,17 +1,17 @@
 .mainWrapper {
   display: flex;
   flex-direction: column;
-  gap: 56px;
-  padding: 40px 24px;
-  max-width: 232px;
-  min-width: 150px;
+  gap: 56rem;
+  padding: 40rem 24rem;
+  max-width: 232rem;
+  min-width: 150rem;
   width: 18.5%;
   flex-shrink: 0;
   max-height: 100%;
   overflow-y: auto;
   background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
+  box-shadow: 0rem 0rem 4rem rgba(0, 0, 0, 0.12);
+  border-radius: 2rem;
 }
 
 .userInfoWrapper {
@@ -25,32 +25,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 112px;
-  height: 112px;
-  border: 1.2px solid #001c54;
+  width: 112rem;
+  height: 112rem;
+  border: 1.2rem solid #001c54;
   border-radius: 50%;
-  margin-bottom: 16px;
+  margin-bottom: 16rem;
 }
 
 .avatar {
   display: block;
-  width: 96px;
-  height: 96px;
+  width: 96rem;
+  height: 96rem;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .userName {
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 16rem;
+  line-height: 19rem;
   color: #000000;
-  margin-bottom: 4px;
+  margin-bottom: 4rem;
   text-align: center;
 }
 
 .eduProgress {
-  font-size: 12px;
-  line-height: 15px;
+  font-size: 12rem;
+  line-height: 15rem;
   color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
@@ -60,7 +60,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 26px;
+  gap: 26rem;
   text-align: center;
 }
 
@@ -69,10 +69,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 4rem;
 
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 14rem;
+  line-height: 20rem;
   color: #000000;
 }
 

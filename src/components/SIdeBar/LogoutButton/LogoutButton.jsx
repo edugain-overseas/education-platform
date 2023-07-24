@@ -1,8 +1,8 @@
 import React from "react";
-import { ReactComponent as LogoutIcon } from "../../images/icons/logout.svg";
+import { ReactComponent as LogoutIcon } from "../../../images/icons/logout.svg";
 import styles from "./LogoutButton.module.scss";
 import { useDispatch } from "react-redux";
-import { logoutThunk } from "../../redux/user/userOperations";
+import { logoutThunk } from "../../../redux/user/userOperations";
 
 export const LogoutButton = () => {
   const dispatch = useDispatch();

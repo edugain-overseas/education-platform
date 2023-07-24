@@ -11,7 +11,6 @@ const initialState = {
   userId: null,
   userAvatar: null,
   userType: null,
-  isAuthenticated: false,
   error: null,
   isLoading: false,
   token: null,
@@ -34,7 +33,6 @@ export const userSlice = createSlice({
         state.userId = payload.user.id;
         state.userType = payload.user.type;
         state.token = payload.access_token;
-        state.isAuthenticated = true;
       })
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -48,9 +46,10 @@ export const userSlice = createSlice({
         state.error = null;
         state.info = payload.info;
       })
-      .addCase(getUserInfoThunk.rejected, (state, {payload}) => {
+      .addCase(getUserInfoThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload;
+        state.error = payload.message;
+        state.token = null;
       })
       .addCase(changeUserAvatarThunk.pending, (state, _) => {
         state.isLoading = true;
@@ -69,19 +68,17 @@ export const userSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state, _) => {
         state.isLoading = false;
-        state.error = null
-        state.info = null
-        state.isAuthenticated = false
-        state.token = null
-        state.userAvatar = null
-        state.userId = null
-        state.userName = null
-        state.userType = null
+        state.error = null;
+        state.info = null;
+        state.token = null;
+        state.userAvatar = null;
+        state.userId = null;
+        state.userName = null;
+        state.userType = null;
       })
-      .addCase(logoutThunk.rejected, (state, {payload}) => {
+      .addCase(logoutThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload
-      })
-      
+        state.error = payload;
+      });
   },
 });

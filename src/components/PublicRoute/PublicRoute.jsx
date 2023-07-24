@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getIsAuthenticated } from '../../redux/user/userSelectors';
+import { getToken } from '../../redux/user/userSelectors';
 
 export const PublicRoute = ({ component }) => {
-  const isAuth = useSelector(getIsAuthenticated);
-  return isAuth ? <Navigate to={'/'} /> : component;
+  const token = useSelector(getToken);
+  return token ? <Navigate to={'/'} /> : component;
 };
 

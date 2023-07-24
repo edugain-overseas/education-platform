@@ -8,20 +8,20 @@
 }
 
 .subWrapper {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
+  box-shadow: 0rem 0rem 4rem rgba(0, 0, 0, 0.12);
+  border-radius: 2rem;
 }
 
 .chatHeader {
   display: flex;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 24rem;
 }
 
 .headerLeft {
   display: flex;
-  gap: 16px;
-  padding: 16px 0;
+  gap: 16rem;
+  padding: 16rem 0;
   
   &.more {
     width: 100%;
@@ -31,8 +31,8 @@
 .avatarsWrapper {
   position: relative;
   display: flex;
-  border-radius: 2px;
-  width: 54px;
+  border-radius: 2rem;
+  width: 54rem;
   align-items: center;
 
   & :first-child {
@@ -48,11 +48,11 @@
 
 .avatarImage {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 28rem;
+  height: 28rem;
 
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2rem solid #fff;
   left: 0;
   transition: transform 500ms ease-out;
   object-fit: cover;
@@ -70,7 +70,7 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 18rem;
   color: #718da7;
 }
 
@@ -79,7 +79,7 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 18rem;
   color: #718da7;
 }
 
@@ -90,14 +90,14 @@
 }
 
 .participantsInfo {
-  font-size: 14px;
+  font-size: 14rem;
   line-height: 1;
   text-transform: uppercase;
   color: #718da7;
 }
 
 .onlineInfo {
-  font-size: 12px;
+  font-size: 12rem;
   line-height: 1;
   color: #74bb77;
 }
@@ -105,36 +105,36 @@
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 8rem;
 }
 
 .gridIconHeader {
-  width: 14px;
-  height: 14px;
+  width: 14rem;
+  height: 14rem;
   fill: #718DA7;
 }
 
 .chatname {
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 14rem;
+  line-height: 17rem;
   text-transform: uppercase;
   color: #718DA7;
 }
 
 .divider {
-  margin: 0 24px;
-  height: 1px;
+  margin: 0 24rem;
+  height: 1rem;
   background-color: #CFCFCF;
 }
 
 .formWrapper {
-  padding: 22px 24px;
+  padding: 22rem 24rem;
 }
 
 .chatFeedWrapper {
-  padding: 24px;
+  padding: 24rem;
   flex-grow: 1;
-  max-height: calc(100% - 155px);
-  min-height: calc(100% - 275px);
+  max-height: calc(100% - 155rem);
+  min-height: calc(100% - 275rem);
   overflow-y: auto;
 }

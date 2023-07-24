@@ -6,48 +6,48 @@
 
 .notification {
   font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 16rem;
+  line-height: 19rem;
   color: #718da7;
-  margin-right: 16px;
+  margin-right: 16rem;
 }
 
 .userWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-right: 26px;
+  gap: 10rem;
+  margin-right: 26rem;
 }
 
 .userAvatar {
-  width: 36px;
-  height: 36px;
+  width: 36rem;
+  height: 36rem;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .userName {
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 16rem;
+  line-height: 19rem;
   color: #0c2e4c;
 }
 
 .settingsButton {
-  width: 126px;
-  height: 38px;
+  width: 126rem;
+  height: 38rem;
   background: rgba(131, 131, 131, 0.2);
-  border-radius: 44px;
+  border-radius: 44rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 13px;
+  gap: 13rem;
   border: none;
 }
 
 .settings {
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 16rem;
+  line-height: 19rem;
   color: #718DA7;
   text-transform: capitalize;
 }
