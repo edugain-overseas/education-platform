@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.css": "/education-platform/static/css/main.1014ecf8.css",
-    "main.js": "/education-platform/static/js/main.2a1b18da.js",
+    "main.css": "/education-platform/static/css/main.39676cbd.css",
+    "main.js": "/education-platform/static/js/main.45d61b38.js",
     "static/js/850.9c78ccfc.chunk.js": "/education-platform/static/js/850.9c78ccfc.chunk.js",
     "static/js/353.ff33cc82.chunk.js": "/education-platform/static/js/353.ff33cc82.chunk.js",
     "static/media/login-bg.png": "/education-platform/static/media/login-bg.4363596cec990c8af020.png",
+    "static/media/noImage.jpeg": "/education-platform/static/media/noImage.ef2af602d5623e02718a.jpeg",
     "static/media/settings.svg": "/education-platform/static/media/settings.0f62f1f75595b07b4dab80aa57ba10e4.svg",
     "static/media/photo.svg": "/education-platform/static/media/photo.12d0bfaa00a023601b96f4020a8e796b.svg",
     "static/media/grid.svg": "/education-platform/static/media/grid.cb165eb850b911966f9b5c4b603467d4.svg",
@@ -23,13 +24,13 @@
     "static/media/show-less.svg": "/education-platform/static/media/show-less.5f02c10837f14132357ebbbf850563b1.svg",
     "static/media/details.svg": "/education-platform/static/media/details.38cecc8f9a27c79ef304df8fbfd46d46.svg",
     "static/media/feedback.svg": "/education-platform/static/media/feedback.04619657e92de14b870f1572f8bb1e16.svg",
-    "main.1014ecf8.css.map": "/education-platform/static/css/main.1014ecf8.css.map",
-    "main.2a1b18da.js.map": "/education-platform/static/js/main.2a1b18da.js.map",
+    "main.39676cbd.css.map": "/education-platform/static/css/main.39676cbd.css.map",
+    "main.45d61b38.js.map": "/education-platform/static/js/main.45d61b38.js.map",
     "850.9c78ccfc.chunk.js.map": "/education-platform/static/js/850.9c78ccfc.chunk.js.map",
     "353.ff33cc82.chunk.js.map": "/education-platform/static/js/353.ff33cc82.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1014ecf8.css",
-    "static/js/main.2a1b18da.js"
+    "static/css/main.39676cbd.css",
+    "static/js/main.45d61b38.js"
   ]
 }
