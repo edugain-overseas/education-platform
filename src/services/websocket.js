@@ -1,5 +1,6 @@
 import { webSocketUrl } from "../constants/server";
 import {
+  addFeedback,
   addMessage,
   setActiveData,
   setMessages,
@@ -22,6 +23,7 @@ export const connectToWebSocket = (chatGroup, token) => {
         const data = JSON.parse(event.data);
         const participantsData = data.user_info;
         const messagesData = data.messages;
+
         if (messagesData) {
           if (participantsData) {
             dispatch(setUsers(participantsData));
@@ -29,6 +31,8 @@ export const connectToWebSocket = (chatGroup, token) => {
           dispatch(setMessages(messagesData));
         } else if (data.id_active_users) {
           dispatch(setActiveData(data));
+        } else if (data.answer_id) {
+          dispatch(addFeedback(data))
         } else {
           dispatch(addMessage(data));
         }

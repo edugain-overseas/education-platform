@@ -7,6 +7,10 @@
   & .ant-select-selection-search-input {
     width: 80rem;
   }
+
+  & > div > div + span {
+    left: -2rem;
+  }
 }
 
 .customDropdown {

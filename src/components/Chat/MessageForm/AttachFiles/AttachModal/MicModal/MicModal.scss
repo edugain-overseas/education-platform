@@ -1,0 +1,11 @@
+.audio-recorder.recording .audio-recorder-mic {
+    display: none;
+}
+
+.audio-recorder-options~.audio-recorder-options[data-testid="ar_cancel"] {
+    display: none;
+}
+
+.audio-recorder-visualizer canvas {
+    flex-grow: 1;
+}

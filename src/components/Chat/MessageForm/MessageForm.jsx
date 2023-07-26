@@ -7,10 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserId, getUserType } from "../../../redux/user/userSelectors";
 import { AttachFiles } from "./AttachFiles/AttachFiles";
 import { HtmlRegExp } from "../../../constants/regExp";
-import { getAttachedFiles, getParticipantsData } from "../../../redux/chat/chatSelectors";
-import { getMessageType } from "../../../helpers/getMessageType";
+import {
+  getAttachedFiles,
+  getFeedbackData,
+  getParticipantsData,
+} from "../../../redux/chat/chatSelectors";
+import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
 import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
-import { clearAttachedFiles } from "../../../redux/chat/chatSlice";
+import { clearAttachedFiles, setFeedback } from "../../../redux/chat/chatSlice";
+import { getMessageType } from "../../../helpers/getMessageType";
 
 export function MessageForm({ socket }) {
   const [messageHTML, setMessageHTML] = useState("");
@@ -20,33 +25,40 @@ export function MessageForm({ socket }) {
 
   const userId = useSelector(getUserId);
   const participantsData = useSelector(getParticipantsData);
-  const userType = useSelector(getUserType)
+  const userType = useSelector(getUserType);
   const attachedFiles = useSelector(getAttachedFiles);
+  const replyTo = useSelector(getFeedbackData);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event);
 
-    if (messageHTML.replaceAll(HtmlRegExp, "").trim() === "" && attachedFiles.length === 0) {
+    if (
+      messageHTML.replaceAll(HtmlRegExp, "").trim() === "" &&
+      attachedFiles.length === 0
+    ) {
       console.log("Empty message");
       return;
     }
 
-    const chatUsers = participantsData.map(user=>user.user_id)
-    
+    const chatUsers = participantsData.map((user) => user.user_id);
 
     const data = {
-      type: "message",
+      type: getMessageType(replyTo),
       message: messageHTML,
-      message_type: getMessageType(chatUsers, sendTo),
+      message_type: getMessageTypeByRecepient(chatUsers, sendTo),
       recipient: getMessageRecepients(chatUsers, sendTo),
       fixed: false,
       sender_id: userId,
       sender_type: userType,
       attach_file_path: attachedFiles,
     };
-
-    console.log(sendTo);
+    console.log(data);
+    if (replyTo) {
+      delete data.message_type;
+      delete data.fixed;
+      delete data.recipient;
+      data.message_id = replyTo;
+    }
     console.log(data);
 
     try {
@@ -55,7 +67,8 @@ export function MessageForm({ socket }) {
     } catch (error) {
       console.log(error.message);
     }
-    dispatch(clearAttachedFiles())
+    dispatch(clearAttachedFiles());
+    dispatch(setFeedback(null));
     setMessageHTML("");
   };
 
@@ -66,7 +79,7 @@ export function MessageForm({ socket }) {
     setIsFocused(true);
   };
 
-  const handleBlurFrom = (e) => {
+  const handleBlurForm = (e) => {
     if (e.target.className.includes("ant")) {
       return;
     }
@@ -87,7 +100,7 @@ export function MessageForm({ socket }) {
       onSubmit={handleSubmit}
       className={styles.massageForm}
       onFocus={handleFocusForm}
-      onBlur={handleBlurFrom}
+      onBlur={handleBlurForm}
     >
       <Quill
         onChange={setMessageHTML}
@@ -96,11 +109,13 @@ export function MessageForm({ socket }) {
       />
       <AttachFiles show={isFocused} />
       <div className={styles.toolbarRight}>
-        <MultipleSelect
-          onChange={(values) => {
-            setSendTo(values);
-          }}
-        />
+        {!replyTo && (
+          <MultipleSelect
+            onChange={(values) => {
+              setSendTo(values);
+            }}
+          />
+        )}
         <button type="submit" className={styles.sendButton}>
           <SendIcon />
         </button>

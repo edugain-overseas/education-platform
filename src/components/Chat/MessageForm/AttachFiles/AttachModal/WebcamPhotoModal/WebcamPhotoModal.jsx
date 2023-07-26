@@ -41,12 +41,13 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
     setImage(null);
   };
 
-  const attachCapture = () => {
+  const attachCapture = async () => {
     const formData = new FormData();
     const uniqueId = uuidv4();
     const fileName = `webcam-image_${uniqueId}.png`;
-    formData.append("file", dataURItoBlob(image), fileName);
-    dispatch(attachFileToMessageThunk(formData));
+    const imageBlob = dataURItoBlob(image)
+    formData.append("file", imageBlob, fileName);
+    dispatch(attachFileToMessageThunk(formData))
     setImage(null);
     closeModal();
   };
@@ -90,7 +91,6 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
             audio={false}
             videoConstraints={videoConstraints}
             ref={webcamRef}
-            // mirrored={true}
             style={{ width: "100%", height: "auto", paddingTop: 32 }}
             screenshotFormat="image/png"
           />

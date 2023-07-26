@@ -2,23 +2,25 @@ import React from "react";
 import { MessageFromChat } from "../MessageFromChat/MessageFromChat";
 import styles from "./ChatFeed.module.scss";
 import { useSelector } from "react-redux";
+import MutationDots from "../../Loaders/MutationDots/MutationDots";
+import { getUserId } from "../../../redux/user/userSelectors";
 import {
   getActiveUsers,
   getMessages,
   getParticipantsData,
 } from "../../../redux/chat/chatSelectors";
-import MutationDots from "../../Loaders/MutationDots/MutationDots";
-import { getUserId } from "../../../redux/user/userSelectors";
 
 export function ChatFeed() {
+
   const messages = useSelector(getMessages);
   const participantsData = useSelector(getParticipantsData);
   const activeData = useSelector(getActiveUsers);
   const userId = useSelector(getUserId);
 
+
   return messages ? (
     <div className={styles.feedWrapper}>
-      {messages.map((message) => {
+      {messages.map((message, index) => {
         const userData = participantsData.find(
           (user) => user.user_id === message.sender_id
         );
@@ -28,13 +30,38 @@ export function ChatFeed() {
           online: activeData.id_active_users.includes(message.sender_id),
         };
         const self = message.sender_id === userId;
+        const readed = message.read_by.includes(userId)
         return (
-          <MessageFromChat
-            message={messageFullData}
-            type="origin"
-            self={self}
-            key={message.message_id}
-          />
+          <React.Fragment key={index}>
+            <MessageFromChat
+              key={message.message_id}
+              message={messageFullData}
+              type="origin"
+              self={self}
+              readed={readed}
+            />
+            {message.answers?.length !== 0 && message.answers &&
+              message.answers.map((answer, index, answersArray) => {
+                const userData = participantsData.find(
+                  (user) => user.user_id === message.sender_id
+                );
+                const messageFullData = {
+                  ...answer,
+                  userData,
+                  online: activeData.id_active_users.includes(answer.sender_id),
+                };
+
+                return (
+                <MessageFromChat
+                  message={messageFullData}
+                  type="answer"
+                  self={self}
+                  key={`${answer.answer_id}a`}
+                  lastElement={answersArray.length === index + 1}
+                />
+                )
+              })}
+          </React.Fragment>
         );
       })}
     </div>

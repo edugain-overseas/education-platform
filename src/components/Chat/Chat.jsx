@@ -11,6 +11,7 @@ import {
   getParticipantsData,
 } from "../../redux/chat/chatSelectors";
 import { serverName } from "../../constants/server";
+import { getFeedbackData } from "../../redux/chat/chatSelectors";
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
@@ -23,8 +24,8 @@ export function Chat() {
   const participantsData = useSelector(getParticipantsData);
   const token = useSelector(getToken);
   const activeUsers = useSelector(getActiveUsers);
+  const replyTo = useSelector(getFeedbackData);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (token && chatGroup) {
@@ -104,14 +105,10 @@ export function Chat() {
                 })}
               {isShowMore ? (
                 <>
-                  {/* <button className={styles.addToChatButton}>+</button> */}
                   <button
                     onClick={handleShowLess}
                     className={styles.showLessAvatarsButton}
-                    // style={{
-                    //   left: `calc( 28rem * ${participantsData.length} - 4rem * ${participantsData.length - 1})`,
-                    //   right: "auto",
-                    // }}
+
                   >
                     x
                   </button>
@@ -141,6 +138,7 @@ export function Chat() {
         </div>
         <div className={styles.divider}></div>
         <div className={styles.formWrapper}>
+          {replyTo && <p className={styles.replyTo}>Reply to</p>}
           <MessageForm socket={websocket.current} />
         </div>
       </div>

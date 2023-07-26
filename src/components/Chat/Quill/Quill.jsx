@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Quill.scss";
+import { useSelector } from "react-redux";
+import { getFeedbackData } from "../../../redux/chat/chatSelectors";
 
 export function Quill({ onChange, value, focused }) {
   const modules = {
@@ -9,7 +11,7 @@ export function Quill({ onChange, value, focused }) {
   };
 
   return (
-    <ReactQuill
+      <ReactQuill
       theme="snow"
       value={value}
       modules={modules}
@@ -17,5 +19,6 @@ export function Quill({ onChange, value, focused }) {
       className={focused ? "wrapper" : "wrapper wrapper--closed"}
       placeholder="Enter you message here"
     />
-  );
-}
+    )
+  }
+

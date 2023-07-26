@@ -63,6 +63,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 14rem;
 }
 
 .showMoreAvatarsButton {
@@ -128,7 +129,16 @@
 }
 
 .formWrapper {
+  position: relative;
   padding: 22rem 24rem;
+}
+
+.replyTo {
+  position: absolute;
+  top: 0;
+  font-size: 14rem;
+  line-height: 22rem;
+  color: #4171CD;
 }
 
 .chatFeedWrapper {

@@ -9,7 +9,11 @@ export const attachFileToMessageThunk = createAsyncThunk(
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
       const response = await attachFileToMessage(file);
       instance.defaults.headers["Content-Type"] = "application/json";
-      return response;
+      const mediaDataObj = {
+        "path": response,
+        "mime-type": file.get("file").type
+      }
+      return mediaDataObj;
     } catch (error) {
       return rejectWithValue(error);
     }

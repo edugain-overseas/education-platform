@@ -1,55 +1,50 @@
 import React from "react";
-import ReactPlayer from "react-player";
 import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedback.svg";
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
-import { getFileType } from "../../../helpers/getFileType";
+import { useDispatch, useSelector } from "react-redux";
+import { setFeedback } from "../../../redux/chat/chatSlice";
+import { getFeedbackData } from "../../../redux/chat/chatSelectors";
+import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
 import styles from "./MessageFromChat.module.scss";
 
-const fileFromMessage = (file) => {
-  switch (getFileType(file.file_path)) {
-    case "image":
-      return (
-        <img
-          key={file.fileId}
-          src={`${serverName}${file.file_path}`}
-          alt="from chat"
-          width="100%"
-          height="auto"
-        />
-      );
-    case "video":
-      return (
-        <ReactPlayer
-          key={file.fileId}
-          url={`${serverName}${file.file_path}`}
-          controls={true}
-          width="100%"
-          height="auto"
-        />
-      );
-    default:
-      console.log(getFileType(file.file_path));
-      return;
-  }
-};
+export function MessageFromChat({ message, type, self, lastElement, readed }) {
+  const dispatch = useDispatch();
 
-export function MessageFromChat({ message, type, self }) {
-  console.log(message);
+  const replyTo = useSelector(getFeedbackData);
+
+  const handleFeedback = () => {
+    if (replyTo !== message.message_id) {
+      dispatch(setFeedback(message.message_id));
+    } else {
+      dispatch(setFeedback(null));
+    }
+  };
+
+  const handleMouseEnter = () => {
+    console.log(message);
+  };
+
   return (
     <div
       className={
         type === "origin"
-          ? `${styles.messageWrapper}`
-          : `${styles.messageWrapper} ${styles.feedback}`
+          ? message.answers?.length === 0
+            ? self
+              ? `${styles.messageWrapper} ${styles.selfMessage}`
+              : `${styles.messageWrapper}`
+            : self
+            ? `${styles.messageWrapper} ${styles.messageWithAnswersSelf} ${styles.selfMessage}`
+            : `${styles.messageWrapper} ${styles.messageWithAnswers}`
+          : self
+          ? `${styles.messageWrapper} ${styles.feedbackSelf} ${
+              lastElement && styles.lastAnswer
+            } ${styles.selfMessage}`
+          : `${styles.messageWrapper} ${styles.feedback} ${
+              lastElement && styles.lastAnswer
+            }`
       }
-      style={
-        self
-          ? {
-              flexDirection: "row-reverse",
-            }
-          : {}
-      }
+      onMouseEnter={handleMouseEnter}
     >
       <div className={styles.avatarWrapper}>
         <img
@@ -80,30 +75,54 @@ export function MessageFromChat({ message, type, self }) {
               : {}
           }
         >
-          {message.userData.name} {message.message_datetime.slice(-8, -3)}
+          {message.userData.name}{" "}
+          {type === "origin"
+            ? message.message_datetime.slice(-8, -3)
+            : message.answer_datetime.slice(-8, -3)}
         </p>
-        <div className={styles.contentWrapper}>
-          {message.attach_files.length !== 0 &&
-            message.attach_files.map((file) => {
-              return fileFromMessage(file);
-              // return (
-              //   <img
-              //     key={file.fileId}
-              //     src={`${serverName}${file.file_path}`}
-              //     alt="from chat"
-              //     width="100%"
-              //     height="auto"
-              //   />
-              // );
-            })}
+        <div
+          className={
+            !readed
+              ? styles.contentWrapper
+              : `${styles.contentWrapper} ${styles.contentWrapperUnread}`
+          }
+          style={
+            replyTo === message.message_id
+              ? { border: "1px solid #4171CD" }
+              : { border: "1px solid transparent" }
+          }
+        >
+          {type === "origin"
+            ? message.attach_files.map((file) => {
+                return renderFileFromMessage(file);
+              })
+            : message.attach_file.map((file) => {
+                return renderFileFromMessage(file);
+              })}
           <div
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: message.message_text }}
+            dangerouslySetInnerHTML={{
+              __html: type === "origin" ? message.message_text : message.answer,
+            }}
           ></div>
-          <button className={styles.feedbackButton}>
-            <span className={styles.feedbackButtonTitle}>Feedback</span>
-            <SendFeedbackIcon />
-          </button>
+          {type === "origin" && (
+            <button
+              className={
+                self
+                  ? `${styles.feedbackButton} ${styles.feedbackButtonSelf}`
+                  : styles.feedbackButton
+              }
+              onClick={handleFeedback}
+              style={
+                replyTo === message.message_id
+                  ? { border: "1px solid #4171CD" }
+                  : {}
+              }
+            >
+              <span className={styles.feedbackButtonTitle}>Feedback</span>
+              <SendFeedbackIcon />
+            </button>
+          )}
         </div>
       </div>
     </div>
