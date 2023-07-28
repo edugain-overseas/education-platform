@@ -13,6 +13,7 @@ import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
 import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import { adjustFontSize } from "./helpers/adjustFornSize";
 import SubjectsList from "./components/SubjectsList/SubjectsList";
+import CourseDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseDetailPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,20 +52,17 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="schedule" element={<SchedulePage />} />
           <Route path="courses" element={<CoursesPage />}>
-            <Route
-              path={`${groupName}`}
-              element={<SubjectsList/>}
-            />
-            <Route
-              path={'dop'}
-              element={<div>{`${groupName}`}</div>}
-            />
-            <Route
-              path={'archive'}
-              element={<div>{`${groupName}`}</div>}
-            />
+            <Route path={`${groupName}`} element={<SubjectsList />} />
             <Route path="dopcourses" element={<div>Dop Courses</div>} />
             <Route path="archive" element={<div>Archive</div>} />
+            <Route path=":id" element={<CourseDetailPage/>}>
+              <Route path="tapes"/>
+              <Route path="tasks"/>
+              <Route path="participants"/>
+              <Route path="journal"/>
+              <Route path="about"/>
+              <Route path="instructions"/>
+            </Route>
           </Route>
           <Route path="task" element={<div>Task page</div>} />
           <Route path="register" element={<div>Register page</div>} />

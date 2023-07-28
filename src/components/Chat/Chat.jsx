@@ -8,10 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken, getUserGroup } from "../../redux/user/userSelectors";
 import {
   getActiveUsers,
+  getHistoryEnd,
+  getIsLoading,
+  getMessages,
   getParticipantsData,
 } from "../../redux/chat/chatSelectors";
 import { serverName } from "../../constants/server";
 import { getFeedbackData } from "../../redux/chat/chatSelectors";
+import { loadMoreMessagesThunk } from "../../redux/chat/chatOperations";
+import MutationDots from "../Loaders/MutationDots/MutationDots";
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
@@ -19,13 +24,25 @@ export function Chat() {
 
   const websocket = useRef(null);
   const avatarsWrapperRef = useRef(null);
+  const chatFeedWrapperRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const chatGroup = useSelector(getUserGroup) || "";
   const participantsData = useSelector(getParticipantsData);
   const token = useSelector(getToken);
   const activeUsers = useSelector(getActiveUsers);
   const replyTo = useSelector(getFeedbackData);
-  const dispatch = useDispatch();
+  const messages = useSelector(getMessages);
+  const targetMessage = messages?.find(
+    (messege) => messege.message_id === replyTo
+  );
+  const receiverUser = participantsData?.find(
+    (user) => user.user_id === targetMessage?.sender_id
+  );
+  const isLoading = useSelector(getIsLoading)
+  const historyEnd = useSelector(getHistoryEnd)
+  
 
   useEffect(() => {
     if (token && chatGroup) {
@@ -38,6 +55,30 @@ export function Chat() {
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
   }, [isShowMore, avatarsWrapperWidth]);
+
+  useEffect(() => {
+    
+    const handleScroll = () => {
+      console.log(historyEnd);
+      if (isLoading || historyEnd) {
+        return
+      }
+      const wrapper = chatFeedWrapperRef.current;
+      if (wrapper) {
+        const { scrollTop, scrollHeight, clientHeight } = wrapper;
+        if ((scrollTop + clientHeight) / scrollHeight >= 0.85) {
+          const lastMessageId = messages[messages.length - 1].message_id
+          dispatch(loadMoreMessagesThunk({groupName: chatGroup, lastMessageId}))
+        }
+      }
+    }
+
+    chatFeedWrapperRef.current?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      chatFeedWrapperRef.current?.removeEventListener("scroll", handleScroll);
+    }
+  }, [messages, historyEnd, isLoading]);
 
   const handleShowMore = () => {
     setIsShowMore(true);
@@ -108,7 +149,6 @@ export function Chat() {
                   <button
                     onClick={handleShowLess}
                     className={styles.showLessAvatarsButton}
-
                   >
                     x
                   </button>
@@ -138,11 +178,16 @@ export function Chat() {
         </div>
         <div className={styles.divider}></div>
         <div className={styles.formWrapper}>
-          {replyTo && <p className={styles.replyTo}>Reply to</p>}
+          {replyTo && (
+            <p className={styles.replyTo}>
+              Reply to {receiverUser.name} {receiverUser.surname}'s message at{" "}
+              {targetMessage.message_datetime.slice(-8, -3)}
+            </p>
+          )}
           <MessageForm socket={websocket.current} />
         </div>
       </div>
-      <div className={styles.chatFeedWrapper}>
+      <div className={styles.chatFeedWrapper} ref={chatFeedWrapperRef}>
         <ChatFeed />
       </div>
     </div>

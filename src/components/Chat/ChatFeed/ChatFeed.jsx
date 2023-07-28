@@ -17,7 +17,6 @@ export function ChatFeed() {
   const activeData = useSelector(getActiveUsers);
   const userId = useSelector(getUserId);
 
-
   return messages ? (
     <div className={styles.feedWrapper}>
       {messages.map((message, index) => {
@@ -30,7 +29,7 @@ export function ChatFeed() {
           online: activeData.id_active_users.includes(message.sender_id),
         };
         const self = message.sender_id === userId;
-        const readed = message.read_by.includes(userId)
+        const readed = message.read_by.includes(`${userId}`);
         return (
           <React.Fragment key={index}>
             <MessageFromChat
@@ -38,28 +37,30 @@ export function ChatFeed() {
               message={messageFullData}
               type="origin"
               self={self}
-              readed={readed}
+              readed={userId === message.sender_id ? true : readed}
             />
-            {message.answers?.length !== 0 && message.answers &&
+            {message.answers?.length !== 0 &&
+              message.answers &&
               message.answers.map((answer, index, answersArray) => {
                 const userData = participantsData.find(
-                  (user) => user.user_id === message.sender_id
+                  (user) => user.user_id === answer.sender_id
                 );
                 const messageFullData = {
                   ...answer,
                   userData,
                   online: activeData.id_active_users.includes(answer.sender_id),
                 };
-
+                const readed = answer.read_by.includes(`${userId}`);
                 return (
-                <MessageFromChat
-                  message={messageFullData}
-                  type="answer"
-                  self={self}
-                  key={`${answer.answer_id}a`}
-                  lastElement={answersArray.length === index + 1}
-                />
-                )
+                  <MessageFromChat
+                    message={messageFullData}
+                    type="answer"
+                    self={self}
+                    key={`${answer.answer_id}a`}
+                    lastElement={answersArray.length === index + 1}
+                    readed={userId === answer.sender_id ? true : readed}
+                  />
+                );
               })}
           </React.Fragment>
         );

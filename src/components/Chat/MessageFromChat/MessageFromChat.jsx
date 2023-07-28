@@ -7,6 +7,7 @@ import { setFeedback } from "../../../redux/chat/chatSlice";
 import { getFeedbackData } from "../../../redux/chat/chatSelectors";
 import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
 import styles from "./MessageFromChat.module.scss";
+import { readAnswerThunk, readMessageThunk } from "../../../redux/chat/chatOperations";
 
 export function MessageFromChat({ message, type, self, lastElement, readed }) {
   const dispatch = useDispatch();
@@ -22,7 +23,15 @@ export function MessageFromChat({ message, type, self, lastElement, readed }) {
   };
 
   const handleMouseEnter = () => {
-    console.log(message);
+    if (readed) {
+      return;
+    }
+
+    if (type === "origin") {
+      dispatch(readMessageThunk(message.message_id));
+    } else {
+      dispatch(readAnswerThunk(message.answer_id));
+    }
   };
 
   return (
@@ -82,7 +91,7 @@ export function MessageFromChat({ message, type, self, lastElement, readed }) {
         </p>
         <div
           className={
-            !readed
+            readed
               ? styles.contentWrapper
               : `${styles.contentWrapper} ${styles.contentWrapperUnread}`
           }

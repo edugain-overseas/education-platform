@@ -10,6 +10,7 @@ import { HtmlRegExp } from "../../../constants/regExp";
 import {
   getAttachedFiles,
   getFeedbackData,
+  getMessages,
   getParticipantsData,
 } from "../../../redux/chat/chatSelectors";
 import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";

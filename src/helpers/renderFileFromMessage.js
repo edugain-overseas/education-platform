@@ -35,6 +35,6 @@ export const renderFileFromMessage = (file) => {
           />
         );
       default:
-        return;
+        return null;
     }
   };

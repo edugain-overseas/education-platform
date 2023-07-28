@@ -1,1 +1,6 @@
-export const getFileType = (type) => type.split("/")[0];
+export const getFileType = (type) => {
+    if (!type) {
+        return null
+    }
+  return type.split("/")[0];
+};

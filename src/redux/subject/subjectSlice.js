@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllSubjects } from "./subjectOperations";
+import { getAllSubjects, getNextThreeLessonsThunk, getTeachersForSubjectThunk } from "./subjectOperations";
 
 
 
@@ -26,6 +26,34 @@ export const subjectSlice = createSlice({
       .addCase(getAllSubjects.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
-      });
+      })
+
+      .addCase(getTeachersForSubjectThunk.pending, (state, _) => {
+        state.isLoading = true
+        state.error = null
+      })  
+      .addCase(getTeachersForSubjectThunk.fulfilled, (state, {payload}) => {
+        // state.groupSubjects = state.groupSubjects.map(subject=>{
+        //   if (subject.id === payload.subjectId) {
+        //     subject.
+        //   }
+        // })
+      })
+      .addCase(getTeachersForSubjectThunk.rejected, (state, {payload}) => {
+        state.isLoading = false
+        state.error = payload
+      })
+
+      .addCase(getNextThreeLessonsThunk.pending, (state, _) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(getNextThreeLessonsThunk.fulfilled, (state, {payload}) => {
+        
+      })
+      .addCase(getNextThreeLessonsThunk.rejected, (state, {payload}) => {
+        state.isLoading = false
+        state.error = payload
+      })
   },
 });

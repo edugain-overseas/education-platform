@@ -1,31 +1,38 @@
 import React from "react";
-import styles from "./CoursesPage.module.scss";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserGroup } from "../../redux/user/userSelectors";
+import NavLinksPanel from "../../components/NavLinksPanel/NavLinksPanel";
 
 export default function CoursesPage() {
   const groupName = useSelector(getUserGroup);
+  const params = useParams()
 
-  const navLinkActiveHandler = ({ isActive }) => {
-    const classes = [styles.navLink];
-    if (isActive) classes.push(styles["navLink--active"]);
-    return classes.join(" ");
-  };
+  const renderLinks = [
+    {
+      to: groupName,
+      content: `courses grup ${groupName}`,
+    },
+    {
+      to: "dopcourses",
+      content: "dop courses",
+    },
+    {
+      to: "archive",
+      content: "archive",
+    },
+  ];
+
   return (
-    <div>
-      <div className={styles.navBarWrapper}>
-        <NavLink className={navLinkActiveHandler} to={groupName}>
-          courses group {groupName}
-        </NavLink>
-        <NavLink className={navLinkActiveHandler} to="dopcourses">
-          dop courses
-        </NavLink>
-        <NavLink className={navLinkActiveHandler} to="archive">
-          archive
-        </NavLink>
+    params.id ? (
+      <div>
+        <Outlet />
       </div>
-      <Outlet/>
+    ) : (
+      <div>
+      <NavLinksPanel renderLinks={renderLinks}/>
+      <Outlet />
     </div>
+    )
   );
 }

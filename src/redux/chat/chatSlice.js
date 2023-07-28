@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { attachFileToMessageThunk } from "./chatOperations";
+import {
+  attachFileToMessageThunk,
+  loadMoreMessagesThunk,
+  readAnswerThunk,
+  readMessageThunk,
+} from "./chatOperations";
 
 const initialState = {
   messages: null,
@@ -12,6 +17,9 @@ const initialState = {
   },
   isFeedback: false,
   feedbackTo: null,
+  isLoading: false,
+  error: null,
+  historyEnd: false,
 };
 
 export const chatSlice = createSlice({
@@ -30,8 +38,8 @@ export const chatSlice = createSlice({
     addMessage(state, { payload }) {
       const newMessage = {
         ...payload,
-        answers: []
-      }
+        answers: [],
+      };
       state.messages = [newMessage, ...state.messages];
     },
     setFeedback(state, { payload }) {
@@ -56,7 +64,7 @@ export const chatSlice = createSlice({
 
       state.messages.forEach((message) => {
         if (message.message_id === payload.message_id) {
-          message.answers = [...message.answers, newAnswer]
+          message.answers = [...message.answers, newAnswer];
         }
       });
     },
@@ -81,6 +89,60 @@ export const chatSlice = createSlice({
       .addCase(attachFileToMessageThunk.rejected, (state, { payload }) => {
         state.attachedFilesToMessage.isLoading = false;
         state.attachedFilesToMessage.error = payload;
+      })
+
+      .addCase(readMessageThunk.pending, (state, _) => {
+        state.error = null;
+      })
+      .addCase(readMessageThunk.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        const updatedMessages = state.messages.map((message) => {
+          if (message.message_id === payload.id) {
+            return { ...message, read_by: payload.read_by.split(", ") };
+          }
+          return message;
+        });
+        state.messages = updatedMessages;
+      })
+      .addCase(readMessageThunk.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+
+      .addCase(readAnswerThunk.pending, (state, _) => {
+        state.error = null;
+      })
+      .addCase(readAnswerThunk.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        const updatedMessages = state.messages.map((message) => {
+          message.answers = message.answers.map((answer) => {
+            if (answer.answer_id === payload.id) {
+              return { ...answer, read_by: payload.read_by.split(", ") };
+            }
+            return answer;
+          });
+          return message;
+        });
+        state.messages = updatedMessages;
+      })
+      .addCase(readAnswerThunk.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+
+      .addCase(loadMoreMessagesThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loadMoreMessagesThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        if (payload.messages.length === 0) {
+          state.historyEnd = true;
+          return;
+        }
+        state.messages = [...state.messages, ...payload.messages];
+      })
+      .addCase(loadMoreMessagesThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
   },
 });
