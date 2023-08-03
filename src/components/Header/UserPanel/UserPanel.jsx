@@ -2,18 +2,19 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { getUserName, getUserInfo } from "../../../redux/user/userSelectors";
 import { ReactComponent as SettingsIcon } from "../../../images/icons/settings.svg";
-import styles from "./UserPanel.module.scss";
-import image from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
+import NotificationButton from "./NotificationButton/NotificationButton";
+import image from "../../../images/logo192.png";
+import styles from "./UserPanel.module.scss";
 
 
 export const UserPanel = () => {
   const username = useSelector(getUserName);
   const userInfo = useSelector(getUserInfo);
-  const notification = 2;
+
   return (
     <div className={styles.wrapper}>
-      <p className={styles.notification}>Notification: {notification}</p>
+      <NotificationButton/>
       <div className={styles.userWrapper}>
         <img
           src={

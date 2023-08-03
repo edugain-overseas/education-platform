@@ -8,7 +8,7 @@ import {
   getActiveUsers,
   getMessages,
   getParticipantsData,
-} from "../../../redux/chat/chatSelectors";
+} from "../../../redux/groupChat/groupChatSelectors";
 
 export function ChatFeed() {
 

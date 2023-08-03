@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Quill.scss";
 import { useSelector } from "react-redux";
-import { getFeedbackData } from "../../../redux/chat/chatSelectors";
+import { getFeedbackData } from "../../../redux/groupChat/groupChatSelectors";
 
 export function Quill({ onChange, value, focused }) {
   const modules = {

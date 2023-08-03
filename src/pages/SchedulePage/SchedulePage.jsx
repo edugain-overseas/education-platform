@@ -2,6 +2,7 @@ import React from "react";
 import { LessonsList } from "../../components/SchedulePanel/LessonsList/LessonsList";
 import styles from "./SchedulePage.module.scss";
 import moment from "moment";
+import DayDisplay from "../../components/shared/DayDisplay/DayDisplay";
 
 export function SchedulePage() {
   const nextFiveDays = [
@@ -166,13 +167,7 @@ export function SchedulePage() {
       <div className={styles.subWrapper}>
         {nextFiveDays.map((day) => (
           <div key={day} className={styles.dayScheduleWrapper}>
-            <div className={styles.dateWrapper}>
-              <p className={styles.dayInfo}>{day.format("DD")} /</p>
-              <div className={styles.dateSubWrapper}>
-                <p className={styles.monthInfo}>{day.format("MM")}</p>
-                <p className={styles.dayOfWeekInfo}>{day.format("dddd")}</p>
-              </div>
-            </div>
+            <DayDisplay day={day} styles={styles}/>
             <LessonsList lessons={getLessonsForOneDay(day)} />
           </div>
         ))}

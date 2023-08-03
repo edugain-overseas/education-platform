@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Select, Checkbox } from "antd";
 import styles from "./MultipleSelect.module.scss";
 import { useSelector } from "react-redux";
-import { getParticipantsData } from "../../../redux/chat/chatSelectors";
+import { getParticipantsData } from "../../../redux/groupChat/groupChatSelectors";
 import { getUserId } from "../../../redux/user/userSelectors";
 
 // const options = [

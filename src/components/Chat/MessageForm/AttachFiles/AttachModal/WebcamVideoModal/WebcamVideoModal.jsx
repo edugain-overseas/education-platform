@@ -4,8 +4,8 @@ import { Modal, Button } from "antd";
 import ReactPlayer from "react-player";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
-import { getAttachFileLoading } from "../../../../../../redux/chat/chatSelectors";
+import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
+import { getAttachFileLoading } from "../../../../../../redux/groupChat/groupChatSelectors";
 
 export default function WebcamVideoModal({ isOpenModal, closeModal }) {
   const webcamRef = useRef(null);

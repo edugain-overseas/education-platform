@@ -13,8 +13,8 @@ export default function SubjectInfoPanel() {
       </div>
       <div className={styles.mainInfoWrapper}>
         <h2 className={styles.title}>Medicine</h2>
-        <p className={styles.teacher}></p>
-        <Link to="/">
+        <p className={styles.teacher}>Dr. Galliy Bogdan Viktorovich</p>
+        <Link to="/" className={styles.meetingLink}>
           Video meeting
           <CheckedIcon />
         </Link>

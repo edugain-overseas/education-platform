@@ -5,7 +5,7 @@ import {
   setActiveData,
   setMessages,
   setUsers,
-} from "../redux/chat/chatSlice";
+} from "../redux/groupChat/groupChatSlice";
 import { store } from "../redux/store";
 const dispatch = store.dispatch;
 

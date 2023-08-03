@@ -1,0 +1,48 @@
+.moduleSimestr {
+  padding: 16rem 2rem;
+  text-align: center;
+  color:  #b3b3b3;
+  font-family: Inter,sans-serif;
+  font-size: 16rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.moduleTitleWrapper {
+  padding: 16rem 2rem;
+  border-radius: 4rem;
+  background: #fff;
+  box-shadow: 0rem 0rem 3.7067272663116455rem 0rem rgba(0, 0, 0, 0.12);
+
+  .moduleTitle {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 18rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 16rem;
+    text-align: center;
+
+    & span {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .moduleDescription {
+    color: #b3b3b3;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 12rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+.antCollapse {
+  & div > div {
+    padding: 0 !important;
+  }
+}

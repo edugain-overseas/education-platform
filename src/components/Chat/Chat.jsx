@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./Chat.module.scss";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
@@ -12,11 +11,12 @@ import {
   getIsLoading,
   getMessages,
   getParticipantsData,
-} from "../../redux/chat/chatSelectors";
+} from "../../redux/groupChat/groupChatSelectors";
 import { serverName } from "../../constants/server";
-import { getFeedbackData } from "../../redux/chat/chatSelectors";
-import { loadMoreMessagesThunk } from "../../redux/chat/chatOperations";
-import MutationDots from "../Loaders/MutationDots/MutationDots";
+import { getFeedbackData } from "../../redux/groupChat/groupChatSelectors";
+import { loadMoreMessagesThunk } from "../../redux/groupChat/groupChatOperations";
+import styles from "./Chat.module.scss";
+
 
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
@@ -59,7 +59,6 @@ export function Chat() {
   useEffect(() => {
     
     const handleScroll = () => {
-      console.log(historyEnd);
       if (isLoading || historyEnd) {
         return
       }

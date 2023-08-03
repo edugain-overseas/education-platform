@@ -4,7 +4,7 @@ import {
   loadMoreMessagesThunk,
   readAnswerThunk,
   readMessageThunk,
-} from "./chatOperations";
+} from "./groupChatOperations";
 
 const initialState = {
   messages: null,
@@ -22,8 +22,8 @@ const initialState = {
   historyEnd: false,
 };
 
-export const chatSlice = createSlice({
-  name: "chat",
+export const groupChatSlice = createSlice({
+  name: "groupChat",
   initialState,
   reducers: {
     setUsers(state, { payload }) {
@@ -155,4 +155,4 @@ export const {
   setFeedback,
   addFeedback,
   clearAttachedFiles,
-} = chatSlice.actions;
+} = groupChatSlice.actions;

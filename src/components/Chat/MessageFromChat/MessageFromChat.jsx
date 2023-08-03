@@ -3,11 +3,11 @@ import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedba
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
 import { useDispatch, useSelector } from "react-redux";
-import { setFeedback } from "../../../redux/chat/chatSlice";
-import { getFeedbackData } from "../../../redux/chat/chatSelectors";
+import { setFeedback } from "../../../redux/groupChat/groupChatSlice";
+import { getFeedbackData } from "../../../redux/groupChat/groupChatSelectors";
 import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
+import { readAnswerThunk, readMessageThunk } from "../../../redux/groupChat/groupChatOperations";
 import styles from "./MessageFromChat.module.scss";
-import { readAnswerThunk, readMessageThunk } from "../../../redux/chat/chatOperations";
 
 export function MessageFromChat({ message, type, self, lastElement, readed }) {
   const dispatch = useDispatch();

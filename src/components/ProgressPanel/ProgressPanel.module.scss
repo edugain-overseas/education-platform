@@ -1,0 +1,134 @@
+.progressMainWrapper {
+  width: 234rem;
+  height: 100%;
+  border-radius: 2rem;
+  box-shadow: 0rem 0rem 3.321148633956909rem rgba(0, 0, 0, 0.12);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.progressSubWrapper {
+  padding: 0 16rem;
+  background: #fff;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28rem;
+
+  &:last-child {
+    flex: 1;
+  }
+
+  &:first-child {
+    padding-bottom: 24rem;
+  }
+}
+
+.progressTitle {
+  padding: 24rem 2rem 20rem;
+  text-transform: uppercase;
+  border-bottom: 1rem solid #cfcfcf;
+
+  color: rgba(0, 0, 0, 0.7);
+  font-family: Inter, sans-serif;
+  font-size: 16rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.64rem;
+}
+
+.outerProgressWrapper {
+  width: 140rem;
+  height: 140rem;
+  border-radius: 50%;
+  // background: #d9d9d9;
+  background: #f4f6fc;
+  box-shadow: inset 0 0 3rem rgba(0, 0, 0, 0.12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerProgressWrapper {
+  position: relative;
+  width: 120rem;
+  height: 120rem;
+  border-radius: 50%;
+  // background: #d9d9d9;
+  background: #f4f6fc;
+  border: 3rem solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::before {
+    content: "";
+    box-sizing: content-box;
+    position: absolute;
+    border-radius: 50%;
+    inset: -3rem;
+    box-shadow: 0 0 3rem rgba(0, 0, 0, 0.12);
+  }
+}
+
+.contentWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90rem;
+  height: 90rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 3rem rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.subtitle {
+  color: #74bb77;
+  font-family: Inter, sans-serif;
+  font-size: 11.325rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+.progressValue {
+  color: #0c2e4c;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 22.651rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  & span {
+    font-size: 0.5em;
+  }
+}
+
+.examInfoWrapper {
+  margin-top: 50rem;
+
+  color: rgba(0, 0, 0, 0.6);
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
+
+  & .examTitle {
+    text-transform: uppercase;
+    margin-bottom: 16rem;
+  }
+}
+

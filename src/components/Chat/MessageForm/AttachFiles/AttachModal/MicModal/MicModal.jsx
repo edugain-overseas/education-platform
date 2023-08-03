@@ -3,7 +3,7 @@ import { Modal, Button } from "antd";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
+import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 import "./MicModal.scss";
 
 export default function MicModal({ isOpenModal, closeModal }) {

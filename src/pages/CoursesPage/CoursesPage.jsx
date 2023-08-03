@@ -3,6 +3,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserGroup } from "../../redux/user/userSelectors";
 import NavLinksPanel from "../../components/NavLinksPanel/NavLinksPanel";
+import styles from './CoursesPage.module.scss'
 
 export default function CoursesPage() {
   const groupName = useSelector(getUserGroup);
@@ -25,11 +26,11 @@ export default function CoursesPage() {
 
   return (
     params.id ? (
-      <div>
+      <div className={styles.courseMainPageWrapper}>
         <Outlet />
       </div>
     ) : (
-      <div>
+      <div className={styles.courseMainPageWrapper}>
       <NavLinksPanel renderLinks={renderLinks}/>
       <Outlet />
     </div>

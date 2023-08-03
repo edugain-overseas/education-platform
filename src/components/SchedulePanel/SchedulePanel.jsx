@@ -11,6 +11,7 @@ import {
   isScheduleLoading,
 } from "../../redux/schedule/scheduleSelectors";
 import MutationDots from "../Loaders/MutationDots/MutationDots";
+import DayDisplay from "../shared/DayDisplay/DayDisplay";
 
 export function SchedulePanel() {
   const [isShownMore, setIsShownMore] = useState(false);
@@ -50,13 +51,7 @@ export function SchedulePanel() {
                     : styles.dayScheduleWrapper
                 }
               >
-                <div className={styles.dateWrapper}>
-                  <p className={styles.dayInfo}>{day.format("DD")} /</p>
-                  <div className={styles.dateSubWrapper}>
-                    <p className={styles.monthInfo}>{day.format("MM")}</p>
-                    <p className={styles.dayOfWeekInfo}>{day.format("dddd")}</p>
-                  </div>
-                </div>
+                <DayDisplay day={day} styles={styles}/>
                 {schedule && <LessonsList lessons={getLessonsForOneDay(day)} />}
               </div>
             ))}

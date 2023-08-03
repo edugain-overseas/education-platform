@@ -5,10 +5,10 @@ import {
   loadMoreMessages,
   readAnswer,
   readMessage,
-} from "../../services/chatServices";
+} from "../../services/groupChatServices";
 
 export const attachFileToMessageThunk = createAsyncThunk(
-  "chat/attachFile",
+  "groupChat/attachFile",
   async (file, { rejectWithValue }) => {
     try {
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
@@ -26,7 +26,7 @@ export const attachFileToMessageThunk = createAsyncThunk(
 );
 
 export const readMessageThunk = createAsyncThunk(
-  "chat/readMessage",
+  "groupChat/readMessage",
   async (messageId, { rejectWithValue }) => {
     try {
       const response = await readMessage(messageId);
@@ -38,7 +38,7 @@ export const readMessageThunk = createAsyncThunk(
 );
 
 export const readAnswerThunk = createAsyncThunk(
-  "chat/readAnswer",
+  "groupChat/readAnswer",
   async (answerId, { rejectWithValue }) => {
     try {
       const response = await readAnswer(answerId);
@@ -50,7 +50,7 @@ export const readAnswerThunk = createAsyncThunk(
 );
 
 export const loadMoreMessagesThunk = createAsyncThunk(
-  "chat/loadMoreMessages",
+  "groupChat/loadMoreMessages",
   async ({ groupName, lastMessageId }, { rejectWithValue }) => {
     try {
       console.log(groupName, lastMessageId);

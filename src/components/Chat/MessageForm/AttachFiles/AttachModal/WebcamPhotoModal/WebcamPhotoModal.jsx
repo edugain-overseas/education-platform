@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
-import { attachFileToMessageThunk } from "../../../../../../redux/chat/chatOperations";
+import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 
 export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
   const webcamRef = useRef(null);

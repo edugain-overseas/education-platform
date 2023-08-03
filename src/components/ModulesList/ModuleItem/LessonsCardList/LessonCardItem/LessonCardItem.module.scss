@@ -1,0 +1,83 @@
+.lessonCard {
+  flex-basis: calc(25% - (30rem / 4));
+  background: #fff;
+  padding: 16rem;
+  border-radius: 4rem;
+  box-shadow: 0rem 0rem 3.7067272663116455rem 0rem rgba(0, 0, 0, 0.12);
+  height: 178rem;
+
+  & .cardHeader {
+    padding-bottom: 16rem;
+    margin-bottom: 12rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1rem solid rgba(0, 0, 0, 0.5);
+
+    & .lessonTypeWrapper {
+      display: flex;
+      gap: 16rem;
+      align-items: center;
+
+      & .lessonType {
+        color: #000;
+        font-family: Inter, sans-serif;
+        font-size: 14rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.dateWrapper {
+  display: flex;
+  color: #545454;
+  align-items: flex-end;
+}
+
+.dayInfo {
+  font-family: Inter, sans-serif;
+  font-size: 14.722rem;
+  line-height: normal;
+  margin-right: 2rem;
+}
+
+.monthInfo {
+  font-size: 6.41rem;
+  line-height: normal;
+}
+
+.dayOfWeekInfo {
+  font-size: 7.35rem;
+  line-height: normal;
+}
+
+.lessonTitle {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 12rem;
+
+  & span {
+    color: #000;
+  }
+}
+
+.lessonDesc {
+  color: #b3b3b3;
+  font-family: Inter, sans-serif;
+  font-size: 10rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  & span {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}

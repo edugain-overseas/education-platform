@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import { rootReducer } from "./rootReducer";
 import { userSlice } from "./user/userSlice";
-import { chatSlice } from "./chat/chatSlice";
+import { groupChatSlice } from "./groupChat/groupChatSlice";
 
 import {
   persistReducer,
@@ -28,7 +28,7 @@ const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
-    chat: chatSlice.reducer,
+    groupChat: groupChatSlice.reducer,
     schedule: scheduleSlice.reducer,
     subject: subjectSlice.reducer
   },

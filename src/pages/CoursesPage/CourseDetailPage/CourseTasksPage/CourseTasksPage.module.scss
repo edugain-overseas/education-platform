@@ -1,0 +1,68 @@
+.tasksPageMainWrapper {
+  padding: 0 2rem;
+  height: 100%;
+}
+
+.primaryTitleWrapper {
+  padding: 20rem 24rem 20rem 28rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & h1 {
+    color: rgba(0, 0, 0, 0.7);
+    font-family: Inter, sans-serif;
+    font-size: 20rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 6rem;
+    text-transform: uppercase;
+  }
+
+  & select {
+    width: 115rem;
+    height: 28rem;
+    padding: 0 10rem;
+    background: #fff;
+    border-radius: 4rem;
+    box-shadow: 0rem 0rem 3.7067272663116455rem 0rem rgba(0, 0, 0, 0.12);
+    border: none;
+
+    color: #b3b3b3;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
+
+.secondaryTitleWrapper {
+  padding: 20rem 24rem 20rem 28rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0rem 0rem 4rem 0rem rgba(0, 0, 0, 0.12);
+
+  & h2 {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    & span {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  & .buttonsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16rem;
+  }
+}

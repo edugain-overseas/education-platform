@@ -12,10 +12,10 @@ import {
   getFeedbackData,
   getMessages,
   getParticipantsData,
-} from "../../../redux/chat/chatSelectors";
+} from "../../../redux/groupChat/groupChatSelectors";
 import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
 import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
-import { clearAttachedFiles, setFeedback } from "../../../redux/chat/chatSlice";
+import { clearAttachedFiles, setFeedback } from "../../../redux/groupChat/groupChatSlice";
 import { getMessageType } from "../../../helpers/getMessageType";
 
 export function MessageForm({ socket }) {
