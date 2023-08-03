@@ -9,10 +9,15 @@ export default function NotificationButton() {
   const userId = useSelector(getUserId);
   const messages = useSelector(getMessages);
 
-  const messagesToNotify = messages && messages.filter(
-    (message) =>
-      message.sender_id !== userId && !message.read_by?.includes(`${userId}`)
-  ) || [];
+  const messagesToNotify =
+    (messages &&
+      messages.filter(
+        (message) =>
+          message.sender_id !== userId &&
+          !message.read_by?.includes(`${userId}`)
+      )) ||
+    [];
+
   return (
     <button className={styles.wrapperBtn}>
       <BellIcon />

@@ -17,7 +17,6 @@ import { getFeedbackData } from "../../redux/groupChat/groupChatSelectors";
 import { loadMoreMessagesThunk } from "../../redux/groupChat/groupChatOperations";
 import styles from "./Chat.module.scss";
 
-
 export function Chat() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
@@ -40,9 +39,8 @@ export function Chat() {
   const receiverUser = participantsData?.find(
     (user) => user.user_id === targetMessage?.sender_id
   );
-  const isLoading = useSelector(getIsLoading)
-  const historyEnd = useSelector(getHistoryEnd)
-  
+  const isLoading = useSelector(getIsLoading);
+  const historyEnd = useSelector(getHistoryEnd);
 
   useEffect(() => {
     if (token && chatGroup) {
@@ -57,27 +55,33 @@ export function Chat() {
   }, [isShowMore, avatarsWrapperWidth]);
 
   useEffect(() => {
-    
     const handleScroll = () => {
       if (isLoading || historyEnd) {
-        return
+        return;
       }
       const wrapper = chatFeedWrapperRef.current;
       if (wrapper) {
         const { scrollTop, scrollHeight, clientHeight } = wrapper;
         if ((scrollTop + clientHeight) / scrollHeight >= 0.85) {
-          const lastMessageId = messages[messages.length - 1].message_id
-          dispatch(loadMoreMessagesThunk({groupName: chatGroup, lastMessageId}))
+          const lastMessageId = messages[messages.length - 1].message_id;
+          dispatch(
+            loadMoreMessagesThunk({ groupName: chatGroup, lastMessageId })
+          );
         }
       }
-    }
+    };
 
-    chatFeedWrapperRef.current?.addEventListener("scroll", handleScroll);
+    const scrollWrapper = chatFeedWrapperRef.current;
+    if (scrollWrapper) {
+      scrollWrapper.addEventListener("scroll", handleScroll);
+    }
 
     return () => {
-      chatFeedWrapperRef.current?.removeEventListener("scroll", handleScroll);
-    }
-  }, [messages, historyEnd, isLoading]);
+      if (scrollWrapper) {
+        scrollWrapper.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [messages, historyEnd, isLoading, chatFeedWrapperRef, dispatch, chatGroup]);
 
   const handleShowMore = () => {
     setIsShowMore(true);
