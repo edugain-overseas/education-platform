@@ -1,8 +1,10 @@
 import React from "react";
 import { LessonsList } from "../../components/SchedulePanel/LessonsList/LessonsList";
-import styles from "./SchedulePage.module.scss";
 import moment from "moment";
 import DayDisplay from "../../components/shared/DayDisplay/DayDisplay";
+import { useSelector } from "react-redux";
+import { getSchedule } from "../../redux/schedule/scheduleSelectors";
+import styles from "./SchedulePage.module.scss";
 
 export function SchedulePage() {
   const nextFiveDays = [
@@ -12,162 +14,19 @@ export function SchedulePage() {
     moment().add(3, "d"),
     moment().add(4, "d"),
   ];
-  const lessons = [
-    // {
-    //   id: 1,
-    //   date: "2023-07-24",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 2,
-    //   date: "2023-07-24",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 3,
-    //   date: "2023-07-24",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 4,
-    //   date: "2023-07-24",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 5,
-    //   date: "2023-07-24",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 6,
-    //   date: "2023-07-25",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 7,
-    //   date: "2023-07-25",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 8,
-    //   date: "2023-07-25",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 9,
-    //   date: "2023-07-26",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 10,
-    //   date: "2023-07-26",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 11,
-    //   date: "2023-07-26",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 12,
-    //   date: "2023-07-26",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 13,
-    //   date: "2023-07-27",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 14,
-    //   date: "2023-07-27",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 15,
-    //   date: "2023-07-27",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 16,
-    //   date: "2023-07-28",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 17,
-    //   date: "2023-07-28",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-    // {
-    //   id: 18,
-    //   date: "2023-07-28",
-    //   startTime: "10:10",
-    //   endTime: "12:10",
-    //   subject: "Bio-chemistry",
-    //   lecturer: "Galliy Bogdan Viktorovich",
-    // },
-  ];
+  const lessons = useSelector(getSchedule);
 
   const getLessonsForOneDay = (day) =>
-    lessons.filter((lesson) => lesson.date === day.format("YYYY-MM-DD"));
+    lessons.filter(
+      (lesson) => lesson.lesson_date.slice(0, 10) === day.format("YYYY-MM-DD")
+    );
 
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.subWrapper}>
         {nextFiveDays.map((day) => (
           <div key={day} className={styles.dayScheduleWrapper}>
-            <DayDisplay day={day} styles={styles}/>
+            <DayDisplay day={day} styles={styles} />
             <LessonsList lessons={getLessonsForOneDay(day)} />
           </div>
         ))}

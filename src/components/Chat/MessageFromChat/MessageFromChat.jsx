@@ -9,7 +9,7 @@ import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
 import { readAnswerThunk, readMessageThunk } from "../../../redux/groupChat/groupChatOperations";
 import styles from "./MessageFromChat.module.scss";
 
-export function MessageFromChat({ message, type, self, lastElement, readed }) {
+export function MessageFromChat({ message = [], type = 'origin', self = false, lastElement = false, readed = false }) {
   const dispatch = useDispatch();
 
   const replyTo = useSelector(getFeedbackData);

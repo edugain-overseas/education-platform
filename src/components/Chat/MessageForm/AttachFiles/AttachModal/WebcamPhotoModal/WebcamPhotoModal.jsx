@@ -61,14 +61,14 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
         }}
         footer={[
           image ? (
-            <>
+            <React.Fragment key='isImage'>
               <Button key="reset" type="default" onClick={resetCapture}>
                 Capture Again
               </Button>
               <Button key="attach" type="primary" onClick={attachCapture}>
                 Attach
               </Button>
-            </>
+            </React.Fragment>
           ) : (
             <Button key="capture" type="primary" onClick={capture}>
               Capture

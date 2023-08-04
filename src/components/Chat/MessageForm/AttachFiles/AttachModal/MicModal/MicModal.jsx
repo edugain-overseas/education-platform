@@ -78,14 +78,14 @@ export default function MicModal({ isOpenModal, closeModal }) {
       }}
       footer={[
         isRecording ? (
-          <Button onClick={handleStopRecording}>Stop recording</Button>
+          <Button onClick={handleStopRecording} key='stop'>Stop recording</Button>
         ) : audioSrc ? (
           <>
-            <Button onClick={handleClear}>Clear</Button>
-            <Button onClick={handleAttach}>Attach</Button>
+            <Button onClick={handleClear} key='clear'>Clear</Button>
+            <Button onClick={handleAttach} key='attach'>Attach</Button>
           </>
         ) : (
-          <Button onClick={handleStartRecording}>Start recording</Button>
+          <Button onClick={handleStartRecording} key='start'>Start recording</Button>
         ),
       ]}
     >

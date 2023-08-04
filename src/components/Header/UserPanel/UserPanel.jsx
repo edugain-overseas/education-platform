@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { getUserName, getUserInfo } from "../../../redux/user/userSelectors";
+import { getUserName, getUserInfo, getUserType } from "../../../redux/user/userSelectors";
 import { ReactComponent as SettingsIcon } from "../../../images/icons/settings.svg";
 import { serverName } from "../../../constants/server";
 import NotificationButton from "./NotificationButton/NotificationButton";
@@ -11,6 +11,7 @@ import styles from "./UserPanel.module.scss";
 export const UserPanel = () => {
   const username = useSelector(getUserName);
   const userInfo = useSelector(getUserInfo);
+  const userType = useSelector(getUserType)
 
   return (
     <div className={styles.wrapper}>
@@ -25,10 +26,10 @@ export const UserPanel = () => {
         />
         <span className={styles.userName}>{username}</span>
       </div>
-      <button className={styles.settingsButton}>
+      {userType !== 'student' && <button className={styles.settingsButton}>
         <span className={styles.settings}>settings</span>
         <SettingsIcon />
-      </button>
+      </button>}
     </div>
   );
 };

@@ -11,8 +11,8 @@ export default function ProgressPanel() {
   const strokeWidthInRem = 3;
   const strokeWidthInPx = strokeWidthInRem * rootFontSize;
 
-  const avarage = 112;
-  const progress = 95;
+  const average = 112;
+  const progress = 25;
 
   const handleFormatProgress = (percent) => (
     <div className={styles.contentWrapper}>
@@ -27,7 +27,7 @@ export default function ProgressPanel() {
   const handleFormatRating = () => (
     <div className={styles.contentWrapper}>
       <h4 className={styles.subtitle}>Average</h4>
-      <p className={styles.progressValue}>{avarage}(B)</p>
+      <p className={styles.progressValue}>{average}(B)</p>
     </div>
   );
 
@@ -57,7 +57,7 @@ export default function ProgressPanel() {
             <Progress
               type="circle"
               format={handleFormatRating}
-              percent={avarage / 2}
+              percent={0.5 * average}
               size={sizeInPx}
               style={{ position: "absolute" }}
               strokeWidth={strokeWidthInPx}

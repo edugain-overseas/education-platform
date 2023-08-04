@@ -64,7 +64,7 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
           closeModal();
         }}
         footer={[
-          <>
+          <React.Fragment key='default'>
             {!videoURL ? (
               <Button
                 key="record"
@@ -95,7 +95,7 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
                 Attach
               </Button>
             )}
-          </>,
+          </React.Fragment>,
         ]}
       >
         {videoURL ? (

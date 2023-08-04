@@ -27,4 +27,66 @@
   font-size: 7rem;
   font-weight: 500;
   letter-spacing: 0em;
+  text-overflow: ellipsis;
+}
+
+.card:not(:last-child) {
+  margin-bottom: 10rem;
+}
+
+.cardHead {
+  display: flex;
+  gap: 10rem;
+  align-items: center;
+  padding: 4rem 0;
+}
+
+.cardAvatar {
+  width: 30rem;
+  height: 30rem;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.cardHeadInfoWrapper {
+  display: flex;
+  flex: 1;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+.cardHeadName {
+  font-family: Inter, sans-serif;
+  font-size: 16rem;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+}
+
+.cardHeadTime {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 14rem;
+  line-height: normal;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.cardBody {
+  padding-right: 100rem;
+  position: relative;
+}
+
+.content {
+  font-style: italic;
+}
+
+.mediaInfo {
+  position: absolute;
+  right: 0;
+  top: 0;
+  max-width: 90rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #3965ba;
 }
