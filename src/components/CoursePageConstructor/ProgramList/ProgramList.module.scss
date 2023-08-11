@@ -1,0 +1,118 @@
+.programList {
+  padding: 40rem 88rem;
+  border-radius: 5rem;
+  background: #fafbff;
+  box-shadow: 0 0 11rem 0px rgba(0, 28, 176, 0.11);
+
+  & button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.programItem {
+  position: relative;
+}
+
+div.programItemTitleWrapper {
+  height: 40rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 24rem;
+  border-radius: 2rem;
+  position: relative;
+  box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
+  background: #fff;
+  margin-bottom: 16rem;
+
+  & h4 {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  & input {
+    padding: 0 24rem;
+    border-radius: 2rem;
+    text-align: start;
+
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+.programChildList {
+  padding-left: 32rem;
+}
+
+.programChildItem {
+  position: relative;
+}
+
+div.programChildText {
+  height: 32rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 24rem;
+  border-radius: 2rem;
+  position: relative;
+  box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
+  background: #fff;
+  margin-bottom: 16rem;
+
+  & p {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  & input {
+    padding: 0 24rem;
+    border-radius: 2rem;
+    text-align: start;
+
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+.deleteBtn {
+  right: calc(100% + 48rem);
+}
+
+.dragBtn {
+  right: calc(100% + 16rem);
+}
+
+.editBtn {
+  left: calc(100% + 16rem);
+
+  & svg path {
+    fill: #5e5e5e;
+  }
+}
+
+.submitBtn {
+    left: calc(100% + 16rem);
+}
+
+.cancelBtn {
+    left: calc(100% + 36rem);
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProgramList from "./ProgramList/ProgramList";
 
-export default function SectionProgram({ styles }) {
+export default function SectionProgram({ styles, data }) {
   const [programTitle, setProgramTitle] = useState("Training program");
   const [programDesc, setProgramDesc] = useState("Description");
   return (
@@ -24,7 +24,7 @@ export default function SectionProgram({ styles }) {
             onChange={(e) => setProgramDesc(e.target.value)}
           />
         </div>
-        <ProgramList />
+        <ProgramList listData={data}/>
       </div>
     </section>
   );
