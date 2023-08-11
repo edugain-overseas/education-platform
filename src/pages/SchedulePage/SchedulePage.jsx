@@ -16,11 +16,14 @@ export function SchedulePage() {
   ];
   const lessons = useSelector(getSchedule);
 
-  const getLessonsForOneDay = (day) =>
-    lessons.filter(
+  const getLessonsForOneDay = (day) => {
+    if (!lessons) {
+      return [];
+    }
+    return lessons.filter(
       (lesson) => lesson.lesson_date.slice(0, 10) === day.format("YYYY-MM-DD")
     );
-
+  };
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.subWrapper}>

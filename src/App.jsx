@@ -1,3 +1,4 @@
+import { useEffect, createContext, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { PublicRoute } from "./components/PublicRoute/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
@@ -5,22 +6,27 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
-import { useEffect } from "react";
 import { getToken, getUserGroup } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
 import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
-import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import { adjustFontSize } from "./helpers/adjustFornSize";
+import { connectToWebSocket } from "./services/websocket";
+import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import SubjectsList from "./components/SubjectsList/SubjectsList";
 import CourseDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseDetailPage";
 import CourseTapesPage from "./pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/CourseTasksPage";
+import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
+
+export const WebsocketContext = createContext(null);
 
 function App() {
-  const dispatch = useDispatch();
+  const [websocket, setWebsocket] = useState(null);
+
   const groupName = useSelector(getUserGroup);
   const token = useSelector(getToken);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     adjustFontSize();
@@ -43,6 +49,18 @@ function App() {
     }
   }, [dispatch, groupName]);
 
+  useEffect(() => {
+    if (websocket) {
+      return;
+    }
+    if (token && groupName) {
+      setWebsocket(connectToWebSocket(groupName, token));
+    }
+    return () => {
+      websocket?.close();
+    };
+  }, [dispatch, token, groupName, websocket]);
+
   const Router = () => {
     return (
       <Routes>
@@ -62,7 +80,7 @@ function App() {
               <Route path="tasks" element={<CourseTasksPage />} />
               <Route path="participants" />
               <Route path="journal" />
-              <Route path="about" />
+              <Route path="about" element={<CourseItemPage />} />
               <Route path="instructions" />
             </Route>
           </Route>
@@ -75,10 +93,11 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Router />
-    </div>
-    // <MainLayout />
+    <WebsocketContext.Provider value={websocket}>
+      <div className="App">
+        <Router />
+      </div>
+    </WebsocketContext.Provider>
   );
 }
 

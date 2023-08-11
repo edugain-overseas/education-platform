@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
-import { connectToWebSocket } from "../../services/websocket";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, getUserGroup } from "../../redux/user/userSelectors";
+import { getUserGroup } from "../../redux/user/userSelectors";
 import {
   getActiveUsers,
   getHistoryEnd,
@@ -29,7 +28,6 @@ export function Chat() {
 
   const chatGroup = useSelector(getUserGroup) || "";
   const participantsData = useSelector(getParticipantsData);
-  const token = useSelector(getToken);
   const activeUsers = useSelector(getActiveUsers);
   const replyTo = useSelector(getFeedbackData);
   const messages = useSelector(getMessages);
@@ -41,14 +39,6 @@ export function Chat() {
   );
   const isLoading = useSelector(getIsLoading);
   const historyEnd = useSelector(getHistoryEnd);
-
-  useEffect(() => {
-    if (token && chatGroup) {
-      websocket.current = connectToWebSocket(chatGroup, token);
-
-      return () => websocket.current.close();
-    }
-  }, [dispatch, token, chatGroup]);
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -81,7 +71,14 @@ export function Chat() {
         scrollWrapper.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [messages, historyEnd, isLoading, chatFeedWrapperRef, dispatch, chatGroup]);
+  }, [
+    messages,
+    historyEnd,
+    isLoading,
+    chatFeedWrapperRef,
+    dispatch,
+    chatGroup,
+  ]);
 
   const handleShowMore = () => {
     setIsShowMore(true);

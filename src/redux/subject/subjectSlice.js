@@ -5,6 +5,7 @@ import { getAllSubjects, getNextThreeLessonsThunk, getTeachersForSubjectThunk } 
 
 const initialState = {
   groupSubjects: null,
+  subjectsData: null,
   isLoading: false,
   error: null,
 };

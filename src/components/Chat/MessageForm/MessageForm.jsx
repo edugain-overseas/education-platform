@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ReactComponent as SendIcon } from "../../../images/icons/send.svg";
-import styles from "./MessageForm.module.scss";
 import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserId, getUserType } from "../../../redux/user/userSelectors";
 import { AttachFiles } from "./AttachFiles/AttachFiles";
 import { HtmlRegExp } from "../../../constants/regExp";
+import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
+import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
+import { clearAttachedFiles, setFeedback } from "../../../redux/groupChat/groupChatSlice";
+import { getMessageType } from "../../../helpers/getMessageType";
 import {
   getAttachedFiles,
   getFeedbackData,
   getParticipantsData,
 } from "../../../redux/groupChat/groupChatSelectors";
-import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
-import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
-import { clearAttachedFiles, setFeedback } from "../../../redux/groupChat/groupChatSlice";
-import { getMessageType } from "../../../helpers/getMessageType";
+import { WebsocketContext } from "../../../App";
+import styles from "./MessageForm.module.scss";
 
-export function MessageForm({ socket }) {
+export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
   const [sendTo, setSendTo] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+
+  const socket = useContext(WebsocketContext)
   const dispatch = useDispatch();
 
   const userId = useSelector(getUserId);
