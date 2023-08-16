@@ -1,49 +1,46 @@
 import React from "react";
 import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-import { Outlet } from "react-router-dom";
-// import { getTeachersForSubjectThunk } from "../../../redux/subject/subjectOperations";
+import { useDispatch } from "react-redux";
+import { Outlet, useParams } from "react-router-dom";
 import styles from "./CourseDetailPage.module.scss";
-// import SubjectInfoPanel from "../../../components/SubjectInfoPanel/SubjectInfoPanel";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
+import { getSubjectTapesByIdThunk } from "../../../redux/subject/subjectOperations";
+
+const renderLinks = [
+  {
+    to: "tapes",
+    content: "tapes",
+  },
+  {
+    to: "tasks",
+    content: "tasks",
+  },
+  {
+    to: "participants",
+    content: "participants",
+  },
+  {
+    to: "journal",
+    content: "journal",
+  },
+  {
+    to: "about",
+    content: "item page",
+  },
+  {
+    to: "instructions",
+    content: "instructions",
+  },
+];
+
 
 export default function CourseDetailPage() {
-  // const location = useLocation();
-  // const { id } = useParams();
-  // const dispatch = useDispatch()
-
-  const renderLinks = [
-    {
-      to: "tapes",
-      content: "tapes",
-    },
-    {
-      to: "tasks",
-      content: "tasks",
-    },
-    {
-      to: "participants",
-      content: "participants",
-    },
-    {
-      to: "journal",
-      content: "journal",
-    },
-    {
-      to: "about",
-      content: "item page",
-    },
-    {
-      to: "instructions",
-      content: "instructions",
-    },
-  ];
-
-
+  const { id } = useParams();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    // dispatch(getTeachersForSubjectThunk(id))
-  }, []);
+    dispatch(getSubjectTapesByIdThunk(id))
+  }, [id, dispatch]);
 
   return (
     <div className={styles.mainWrapper}>

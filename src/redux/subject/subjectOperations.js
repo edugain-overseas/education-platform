@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllSubjectsByGroupName,
-  getNextThreeLessons,
-  getTeachersForSubject,
+  getSubjectTapesById,
 } from "../../services/subjectServices";
 
-export const getAllSubjects = createAsyncThunk(
+
+export const getAllSubjectsThunk = createAsyncThunk(
   "subject/getAll",
   async (groupName, { rejectWithValue }) => {
     try {
@@ -17,26 +17,14 @@ export const getAllSubjects = createAsyncThunk(
   }
 );
 
-export const getTeachersForSubjectThunk = createAsyncThunk(
-  "subject/getTeachers",
+export const getSubjectTapesByIdThunk = createAsyncThunk(
+  "subject/getTapesById",
   async (subjectId, { rejectWithValue }) => {
     try {
-      const response = await getTeachersForSubject(subjectId);
-      return {response, subjectId};
+      const response = await getSubjectTapesById(subjectId);
+      return { response, subjectId };
     } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
-
-export const getNextThreeLessonsThunk = createAsyncThunk(
-  "subject/getNextThreeLessons",
-  async (subjectId, { rejectWithValue }) => {
-    try {
-      const response = await getNextThreeLessons(subjectId);
-      return {response, subjectId};
-    } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   }
 );

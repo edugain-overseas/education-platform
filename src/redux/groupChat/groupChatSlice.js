@@ -84,7 +84,6 @@ export const groupChatSlice = createSlice({
           ...state.attachedFilesToMessage.filesData,
           payload,
         ];
-        console.log(JSON.stringify(state.attachedFilesToMessage.filesData));
       })
       .addCase(attachFileToMessageThunk.rejected, (state, { payload }) => {
         state.attachedFilesToMessage.isLoading = false;
@@ -112,7 +111,6 @@ export const groupChatSlice = createSlice({
         state.error = null;
       })
       .addCase(readAnswerThunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
         const updatedMessages = state.messages.map((message) => {
           message.answers = message.answers.map((answer) => {
             if (answer.answer_id === payload.id) {

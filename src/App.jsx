@@ -18,6 +18,7 @@ import CourseDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseDetailP
 import CourseTapesPage from "./pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/CourseTasksPage";
 import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
+import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
 
 export const WebsocketContext = createContext(null);
 
@@ -44,10 +45,11 @@ function App() {
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (groupName) {
+    if (groupName && token) {
       dispatch(getScheduleThunk(groupName));
+      dispatch(getAllSubjectsThunk(groupName));
     }
-  }, [dispatch, groupName]);
+  }, [dispatch, groupName, token]);
 
   useEffect(() => {
     if (websocket) {

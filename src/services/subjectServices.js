@@ -5,12 +5,9 @@ export const getAllSubjectsByGroupName = async (groupName) => {
   return data;
 };
 
-export const getTeachersForSubject = async (subjectId) => {
-  const { data } = await instance.get(`/subject/${subjectId}/teachers`);
+export const getSubjectTapesById= async (subjectId) => {
+  const { data } = await instance.get(`/subject-tapes/${subjectId}`);
   return data;
 };
 
-export const getNextThreeLessons = async (subjectId) => {
-  const { data } = await instance.get(`/subject/${subjectId}/next-lesson`);
-  return data;
-};
+

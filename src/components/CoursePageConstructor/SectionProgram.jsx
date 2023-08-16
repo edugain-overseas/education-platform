@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProgramList from "./ProgramList/ProgramList";
+import ProgramList from "./ProgramList/ProgramList/ProgramList";
 
 export default function SectionProgram({ styles, data }) {
   const [programTitle, setProgramTitle] = useState("Training program");

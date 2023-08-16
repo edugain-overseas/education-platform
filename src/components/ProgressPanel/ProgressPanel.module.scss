@@ -3,10 +3,11 @@
   height: 100%;
   border-radius: 2rem;
   box-shadow: 0rem 0rem 3.321148633956909rem rgba(0, 0, 0, 0.12);
-  background: transparent;
+  background: #fff;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow-y: auto;
 }
 
 .progressSubWrapper {
@@ -20,6 +21,7 @@
 
   &:last-child {
     flex: 1;
+    padding-bottom: 64rem;
   }
 
   &:first-child {

@@ -1,12 +1,62 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllSubjects, getNextThreeLessonsThunk, getTeachersForSubjectThunk } from "./subjectOperations";
+import {
+  getAllSubjectsThunk,
+  getSubjectTapesByIdThunk,
+} from "./subjectOperations";
+import { v4 } from "uuid";
 
-
+const subjectAbout = [
+  {
+    id: v4(),
+    text: "Title1",
+    items: [
+      {
+        id: v4(),
+        text: "text1",
+      },
+      {
+        id: v4(),
+        text: "text2",
+      },
+      {
+        id: v4(),
+        text: "text3",
+      },
+      {
+        id: v4(),
+        text: "text4",
+      },
+    ],
+  },
+  {
+    id: v4(),
+    text: "Title2",
+    items: [
+      {
+        id: v4(),
+        text: "text1",
+      },
+      {
+        id: v4(),
+        text: "text2",
+      },
+      {
+        id: v4(),
+        text: "text3",
+      },
+    ],
+  },
+  {
+    id: v4(),
+    text: "ExamTitle",
+  },
+];
 
 const initialState = {
-  groupSubjects: null,
-  subjectsData: null,
+  groupSubjects: [],
+  subjectsData: [],
   isLoading: false,
+  subjectAbout,
   error: null,
 };
 
@@ -16,45 +66,36 @@ export const subjectSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllSubjects.pending, (state, _) => {
+      .addCase(getAllSubjectsThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getAllSubjects.fulfilled, (state, { payload }) => {
+      .addCase(getAllSubjectsThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.groupSubjects = payload;
       })
-      .addCase(getAllSubjects.rejected, (state, { payload }) => {
+      .addCase(getAllSubjectsThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       })
 
-      .addCase(getTeachersForSubjectThunk.pending, (state, _) => {
-        state.isLoading = true
-        state.error = null
-      })  
-      .addCase(getTeachersForSubjectThunk.fulfilled, (state, {payload}) => {
-        // state.groupSubjects = state.groupSubjects.map(subject=>{
-        //   if (subject.id === payload.subjectId) {
-        //     subject.
-        //   }
-        // })
+      .addCase(getSubjectTapesByIdThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
       })
-      .addCase(getTeachersForSubjectThunk.rejected, (state, {payload}) => {
-        state.isLoading = false
-        state.error = payload
-      })
+      .addCase(getSubjectTapesByIdThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
 
-      .addCase(getNextThreeLessonsThunk.pending, (state, _) => {
-        state.isLoading = true
-        state.error = null
+        const { response, subjectId } = payload;
+        state.subjectsData = state.subjectsData.filter(subject=>subject.id !== subjectId)
+        state.subjectsData = [
+          ...state.subjectsData,
+          { id: subjectId, ...response },
+        ];
       })
-      .addCase(getNextThreeLessonsThunk.fulfilled, (state, {payload}) => {
-        
-      })
-      .addCase(getNextThreeLessonsThunk.rejected, (state, {payload}) => {
-        state.isLoading = false
-        state.error = payload
-      })
+      .addCase(getSubjectTapesByIdThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      });
   },
 });

@@ -1,6 +1,8 @@
 .mainWrapper {
   width: 280rem;
   height: 100%;
+  background: #fff;
+  overflow-y: auto;
 }
 
 .imageWrapper {
@@ -52,15 +54,21 @@
   margin-bottom: 8rem;
 }
 
+.teachers {
+  min-height: 42rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  margin-bottom: 16rem;
+}
+
 .teacher {
-  height: 42rem;
   color: rgba(0, 0, 0, 0.5);
   font-family: Inter, sans-serif;
   font-size: 14rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-bottom: 16rem;
 }
 
 .meetingLink {
@@ -119,11 +127,12 @@
   color: #545454;
   align-items: flex-end;
   margin-bottom: 16rem;
+  flex-basis: 30%;
 }
 
 .dayInfo {
   font-family: Inter, sans-serif;
-  font-size: 14.722rem;
+  font-size: 14rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -132,7 +141,7 @@
 
 .monthInfo {
   font-family: Inter, sans-serif;
-  font-size: 6.409rem;
+  font-size: 7rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -140,7 +149,7 @@
 
 .dayOfWeekInfo {
   font-family: Inter, sans-serif;
-  font-size: 7.315rem;
+  font-size: 7rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -157,4 +166,5 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  text-transform: capitalize;
 }
