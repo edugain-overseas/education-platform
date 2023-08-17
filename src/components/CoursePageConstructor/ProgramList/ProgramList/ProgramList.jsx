@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { v4 } from "uuid";
+// import { v4 } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styles from "./ProgramList.module.scss";
 import ParentItem from "./ParentList/ParentItem/ParentItem";
 import { useSelector } from "react-redux";
 import { getSubjectAbout } from "../../../../redux/subject/subjectSelectors";
 
-const defaultData = [
-  {
-    id: v4(),
-    title: "Example title",
-    items: [{ id: v4(), text: "example text" }],
-  },
-];
+// const defaultData = [
+//   {
+//     id: v4(),
+//     title: "Example title",
+//     items: [{ id: v4(), text: "example text" }],
+//   },
+// ];
 
 export default function ProgramList() {
   const [data, setData] = useState([]);
