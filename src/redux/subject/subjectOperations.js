@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllSubjectsByGroupName,
+  getSubjectAbout,
   getSubjectTapesById,
 } from "../../services/subjectServices";
-
 
 export const getAllSubjectsThunk = createAsyncThunk(
   "subject/getAll",
@@ -22,6 +22,18 @@ export const getSubjectTapesByIdThunk = createAsyncThunk(
   async (subjectId, { rejectWithValue }) => {
     try {
       const response = await getSubjectTapesById(subjectId);
+      return { response, subjectId };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSubjectAboutThunk = createAsyncThunk(
+  "subject/getAbout",
+  async (subjectId, { rejectWithValue }) => {
+    try {
+      const response = await getSubjectAbout(subjectId);
       return { response, subjectId };
     } catch (error) {
       return rejectWithValue(error.message);

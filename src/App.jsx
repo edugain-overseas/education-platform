@@ -30,6 +30,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (token) {
+      dispatch(getUserInfoThunk());
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
     adjustFontSize();
     window.addEventListener("resize", adjustFontSize);
 
@@ -37,12 +43,6 @@ function App() {
       window.removeEventListener("resize", adjustFontSize);
     };
   }, []);
-
-  useEffect(() => {
-    if (token) {
-      dispatch(getUserInfoThunk());
-    }
-  }, [dispatch, token]);
 
   useEffect(() => {
     if (groupName && token) {

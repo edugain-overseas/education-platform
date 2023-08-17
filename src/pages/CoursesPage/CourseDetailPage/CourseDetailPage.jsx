@@ -2,9 +2,12 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import styles from "./CourseDetailPage.module.scss";
+import { instance } from "../../../services/instance";
+import { getSubjectAboutThunk, getSubjectTapesByIdThunk } from "../../../redux/subject/subjectOperations";
+import { useSelector } from "react-redux";
+import { getToken } from "../../../redux/user/userSelectors";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
-import { getSubjectTapesByIdThunk } from "../../../redux/subject/subjectOperations";
+import styles from "./CourseDetailPage.module.scss";
 
 const renderLinks = [
   {
@@ -33,14 +36,20 @@ const renderLinks = [
   },
 ];
 
-
 export default function CourseDetailPage() {
   const { id } = useParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const token = useSelector(getToken);
 
   useEffect(() => {
-    dispatch(getSubjectTapesByIdThunk(id))
-  }, [id, dispatch]);
+    if (token) {
+      instance.defaults.headers["Content-Type"] = "application/json";
+      instance.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+      dispatch(getSubjectTapesByIdThunk(id));
+      dispatch(getSubjectAboutThunk(id))
+    }
+  }, [id, dispatch, token]);
 
   return (
     <div className={styles.mainWrapper}>

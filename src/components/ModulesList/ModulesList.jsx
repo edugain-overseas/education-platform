@@ -114,14 +114,16 @@ import ModuleItem from "./ModuleItem/ModuleItem";
 //   },
 // ];
 
-export default function ModulesList({modules}) {
+export default function ModulesList({ modules }) {
   return (
     <div className={styles.modulesListWrapper}>
-      <ul className={styles.modulesList}>
-        {modules.map((module) => (
-          <ModuleItem key={module.module_id} module={module} />
-        ))}
-      </ul>
+      {modules && (
+        <ul className={styles.modulesList}>
+          {modules.map((module) => (
+            <ModuleItem key={module.module_id} module={module} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

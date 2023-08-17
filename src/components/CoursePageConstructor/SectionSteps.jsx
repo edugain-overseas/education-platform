@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {v4} from 'uuid'
 import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg";
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
@@ -9,16 +10,32 @@ import MonitorIcon from "../../images/icons/monitor.svg";
 // import { ReactComponent as KnowledgeIcon } from "../../images/icons/knowledge.svg";
 
 const defaultLearnItem = {
-  imagePath: MonitorIcon,
+  id: v4(),
+  image_path: MonitorIcon,
   title: "Item title",
   text: "Item Text",
 };
 
-export default function SectionSteps({ styles }) {
-  const [stepsTitle, setStepsTitle] = useState("Title");
-  const [stepsDescription, setStepsDescription] = useState("Description");
-  const [stepsItems, setStepItems] = useState([defaultLearnItem]);
-  const [showSteps, setShowSteps] = useState(true);
+export default function SectionSteps({ styles, data, setStepsSectionData }) {
+  const [stepsTitle, setStepsTitle] = useState(data.section_title);
+  const [stepsDescription, setStepsDescription] = useState(
+    data.section_description
+  );
+  const [stepsItems, setStepItems] = useState(data.section_items);
+  const [showSteps, setShowSteps] = useState(data.section_display);
+
+  const handleTitleChange = (e) => {
+    setStepsTitle(e.target.value);
+    setStepsSectionData((prev) => ({ ...prev, section_title: e.target.value }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    setStepsDescription(e.target.value);
+    setStepsSectionData((prev) => ({
+      ...prev,
+      section_description: e.target.value,
+    }));
+  };
 
   const handleLearnInputChange = (index, name, value) => {
     const updatedItems = [...stepsItems];
@@ -28,10 +45,13 @@ export default function SectionSteps({ styles }) {
     };
 
     setStepItems(updatedItems);
+    setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleAddLearnItem = () => {
-    setStepItems([...stepsItems, defaultLearnItem]);
+    const updatedItems = [...stepsItems, defaultLearnItem];
+    setStepItems(updatedItems);
+    setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleDeleteItem = (index) => {
@@ -39,6 +59,7 @@ export default function SectionSteps({ styles }) {
     updatedItems.splice(index, 1);
 
     setStepItems(updatedItems);
+    setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   return (
@@ -49,11 +70,7 @@ export default function SectionSteps({ styles }) {
       >
         <div className={styles.toLearnTitleWrapper}>
           <h2>{stepsTitle}</h2>
-          <input
-            type="text"
-            onChange={(e) => setStepsTitle(e.target.value)}
-            value={stepsTitle}
-          />
+          <input type="text" onChange={handleTitleChange} value={stepsTitle} />
         </div>
         <div className={styles.toLearnDescWrapper}>
           <p className={styles.toLearnDesc}>{stepsDescription}</p>
@@ -61,12 +78,16 @@ export default function SectionSteps({ styles }) {
             type="text"
             rows={2}
             value={stepsDescription}
-            onChange={(e) => setStepsDescription(e.target.value)}
+            onChange={handleDescriptionChange}
           />
         </div>
         <ul className={styles.stepsList}>
           {stepsItems.map((item, index, array) => (
-            <li className={styles.stepItem} key={index} style={{zIndex: array.length - index}}>
+            <li
+              className={styles.stepItem}
+              key={index}
+              style={{ zIndex: array.length - index }}
+            >
               <div className={styles.cardWrapper}>
                 <div className={styles.StepsIconWrapper}>
                   <img src={item.imagePath} alt="icon" />
@@ -104,8 +125,8 @@ export default function SectionSteps({ styles }) {
                   />
                 </div>
                 <div className={styles.stepNumberWrapper}>
-                    <span className={styles.step}>step</span>
-                    <span className={styles.number}>{`0${index + 1}`}</span>
+                  <span className={styles.step}>step</span>
+                  <span className={styles.number}>{`0${index + 1}`}</span>
                 </div>
                 <button
                   className={styles.deleteBtn}

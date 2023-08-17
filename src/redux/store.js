@@ -16,6 +16,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { scheduleSlice } from "./schedule/scheduleSlice";
 import { subjectSlice } from "./subject/subjectSlice";
+import { configSlice } from "./config/configSlice";
 
 const persistConfig = {
   key: "persisted-user",
@@ -30,7 +31,8 @@ export const store = configureStore({
     user: persistedReducer,
     groupChat: groupChatSlice.reducer,
     schedule: scheduleSlice.reducer,
-    subject: subjectSlice.reducer
+    subject: subjectSlice.reducer,
+    config: configSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

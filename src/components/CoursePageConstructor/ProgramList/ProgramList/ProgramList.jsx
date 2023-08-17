@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // import { v4 } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styles from "./ProgramList.module.scss";
 import ParentItem from "./ParentList/ParentItem/ParentItem";
-import { useSelector } from "react-redux";
-import { getSubjectAbout } from "../../../../redux/subject/subjectSelectors";
 
 // const defaultData = [
 //   {
 //     id: v4(),
-//     title: "Example title",
+//     text: "Example title",
 //     items: [{ id: v4(), text: "example text" }],
 //   },
 // ];
 
-export default function ProgramList() {
-  const [data, setData] = useState([]);
+export default function ProgramList({ listData, setProgramSectionData }) {
+  const [data, setData] = useState(listData || []);
+  const [inputValues, setInputValues] = useState(listData || []);
   const [edit, setEdit] = useState([]);
-  const [inputValues, setInputValues] = useState([]);
-
-  const listData = useSelector(getSubjectAbout);
-
-  useEffect(() => {
-    setData(listData);
-    setInputValues(listData);
-  }, [listData]);
 
   const handleEdit = (id) => {
     setEdit((prev) => [...prev, id]);
@@ -69,6 +60,10 @@ export default function ProgramList() {
       );
 
       setData(updatedData);
+      setProgramSectionData((prev) => ({
+        ...prev,
+        section_items: updatedData,
+      }));
     } else {
       const value = inputValues
         .find((parent) => parent.id === parentId)
@@ -85,6 +80,10 @@ export default function ProgramList() {
       );
 
       setData(updatedData);
+      setProgramSectionData((prev) => ({
+        ...prev,
+        section_items: updatedData,
+      }));
     }
 
     setEdit((prev) => prev.filter((itemId) => itemId !== id));
@@ -113,12 +112,14 @@ export default function ProgramList() {
       console.log(updatedData);
       setData(updatedData);
       setInputValues(updatedData);
+      setProgramSectionData((prev) => ({
+        ...prev,
+        section_items: updatedData,
+      }));
     }
   };
 
   const handleDragEnd = ({ destination, source, draggableId, type }) => {
-    console.log(destination, source, draggableId);
-
     if (!destination) {
       return;
     }
@@ -130,16 +131,20 @@ export default function ProgramList() {
       return;
     }
 
-    if (type === 'parent') {
-      const updatedData = [...data]
-      const draggable = updatedData.find(item=>item.id === draggableId)
+    if (type === "parent") {
+      const updatedData = [...data];
+      const draggable = updatedData.find((item) => item.id === draggableId);
 
-      updatedData.splice(source.index, 1)
-      updatedData.splice(destination.index, 0, draggable)
-      
-      setData(updatedData)
-      setInputValues(updatedData)
-      return
+      updatedData.splice(source.index, 1);
+      updatedData.splice(destination.index, 0, draggable);
+
+      setData(updatedData);
+      setInputValues(updatedData);
+      setProgramSectionData((prev) => ({
+        ...prev,
+        section_items: updatedData,
+      }));
+      return;
     }
 
     const draggableItem = [...data]
@@ -147,7 +152,7 @@ export default function ProgramList() {
       .items.find((child) => child.id === draggableId);
 
     const withoutDraggable = [...data].map((parent) =>
-    `childList-${parent.id}` === source.droppableId
+      `childList-${parent.id}` === source.droppableId
         ? {
             ...parent,
             items: parent.items.filter((child) => child.id !== draggableId),
@@ -165,6 +170,10 @@ export default function ProgramList() {
     });
     setData(updatedData);
     setInputValues(updatedData);
+    setProgramSectionData((prev) => ({
+      ...prev,
+      section_items: updatedData,
+    }));
   };
 
   return (

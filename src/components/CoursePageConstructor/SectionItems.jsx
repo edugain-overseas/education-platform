@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { v4 } from "uuid";
 import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg";
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
@@ -6,30 +7,40 @@ import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
 import pointIcon from "../../images/icons/pointIcon.png";
 
 const defaultLearnItem = {
+  id: v4(),
   imagePath: pointIcon,
   title: "Item title",
   text: "Item Text",
 };
 
-export default function SectionItems({ styles }) {
-  const [toLearnTitle, setToLearnTitle] = useState("Title");
-  const [toLearnText, setToLearnText] = useState("Description");
-  const [toLearnItems, setLearnItems] = useState([defaultLearnItem]);
-  const [showToLearn, setShowToLearn] = useState(true);
+export default function SectionItems({ styles, data, setItemsSectionData }) {
+  const [toLearnTitle, setToLearnTitle] = useState(data.section_title);
+  const [toLearnText, setToLearnText] = useState(data.section_description);
+  const [toLearnItems, setLearnItems] = useState(data.section_items);
+  const [showToLearn, setShowToLearn] = useState(data.section_display || true);
 
   useEffect(() => {
     if (!toLearnItems.length) {
       setLearnItems([defaultLearnItem]);
+      setItemsSectionData((prev) => ({
+        ...prev,
+        section_items: [defaultLearnItem],
+      }));
     }
-    // const sectionData = {
-    //     section_id: 1, //id coming from server or index of subject_items element array 
-    //     section_type: "items",
-    //     section_title: toLearnTitle,
-    //     section_description: toLearnText,
-    //     section_display: showToLearn,
-    //     section_items: toLearnItems
-    // }
-  }, [toLearnItems.length]);
+  }, [toLearnItems.length, setItemsSectionData]);
+
+  const handleTitleChange = (e) => {
+    setToLearnTitle(e.target.value);
+    setItemsSectionData((prev) => ({ ...prev, section_title: e.target.value }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    setToLearnText(e.target.value);
+    setItemsSectionData((prev) => ({
+      ...prev,
+      section_description: e.target.value,
+    }));
+  };
 
   const handleLearnInputChange = (index, name, value) => {
     const updatedItems = [...toLearnItems];
@@ -39,6 +50,7 @@ export default function SectionItems({ styles }) {
     };
 
     setLearnItems(updatedItems);
+    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleAddLearnItem = (index) => {
@@ -46,6 +58,7 @@ export default function SectionItems({ styles }) {
     updatedItems.splice(index + 1, 0, defaultLearnItem);
 
     setLearnItems(updatedItems);
+    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleDeleteItem = (index) => {
@@ -53,7 +66,12 @@ export default function SectionItems({ styles }) {
     updatedItems.splice(index, 1);
 
     setLearnItems(updatedItems);
+    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
+
+  const handleDisplayClick = () => {
+    setShowToLearn((prev)=>!prev)
+  }
 
   return (
     <section className={styles.toLearn}>
@@ -65,7 +83,7 @@ export default function SectionItems({ styles }) {
           <h2>{toLearnTitle}</h2>
           <input
             type="text"
-            onChange={(e) => setToLearnTitle(e.target.value)}
+            onChange={handleTitleChange}
             value={toLearnTitle}
           />
         </div>
@@ -75,7 +93,7 @@ export default function SectionItems({ styles }) {
             type="text"
             rows={2}
             value={toLearnText}
-            onChange={(e) => setToLearnText(e.target.value)}
+            onChange={handleDescriptionChange}
           />
         </div>
         <ul className={styles.toLearnCardList}>
@@ -138,7 +156,7 @@ export default function SectionItems({ styles }) {
         </ul>
       </div>
       <button className={styles.displayBtn}>
-        <DisplayOffIcon onClick={() => setShowToLearn((prev) => !prev)} />
+        <DisplayOffIcon onClick={handleDisplayClick} />
       </button>
     </section>
   );

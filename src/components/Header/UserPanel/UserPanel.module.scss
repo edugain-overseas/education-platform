@@ -36,7 +36,7 @@
 .settingsButton {
   width: 126rem;
   height: 38rem;
-  background: rgba(131, 131, 131, 0.2);
+  background-color: rgba(131, 131, 131, 0.2);
   border-radius: 44rem;
   display: flex;
   justify-content: center;
@@ -48,6 +48,43 @@
 .settings {
   font-size: 16rem;
   line-height: 19rem;
-  color: #718DA7;
+  color: #718da7;
   text-transform: capitalize;
+}
+
+.edit {
+  background-color: #fcc400;
+  transition: background-color 300ms ease-out;
+
+  & .settings {
+    color: #fff;
+  }
+
+  & svg,
+  & path {
+    fill: #fff;
+  }
+
+  &:hover,
+  &.animate {
+    background: #39ba6d;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  &.animate svg {
+    animation: rotate 1s linear infinite;
+  }
+
+  &:disabled {
+    background-color: rgba($color: #39ba6d, $alpha: 0.7);
+    cursor: wait;
+  }
 }

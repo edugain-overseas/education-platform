@@ -5,9 +5,14 @@ export const getAllSubjectsByGroupName = async (groupName) => {
   return data;
 };
 
-export const getSubjectTapesById= async (subjectId) => {
+export const getSubjectTapesById = async (subjectId) => {
   const { data } = await instance.get(`/subject-tapes/${subjectId}`);
   return data;
 };
 
-
+export const getSubjectAbout = async (subjectId) => {
+  const { data } = await instance.get(`subject-item/read`, {
+    params: { subject_id: subjectId },
+  });
+  return data;
+};
