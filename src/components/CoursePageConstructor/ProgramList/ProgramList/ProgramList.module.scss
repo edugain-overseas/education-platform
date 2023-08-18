@@ -9,10 +9,33 @@
     top: 50%;
     transform: translateY(-50%);
   }
+
+  & .programItemTitleWrapper,
+  & .programChildText {
+    background-color: #fff;
+    transition: background-color 300ms ease-out;
+  }
+
+  & li:last-child .programItemTitleWrapper,
+  & li ul li:last-child .programChildText {
+    background-color: #4171cd;
+    & p,
+    & h4,
+    & input {
+      color: #fff;
+    }
+  }
 }
 
 .programItem {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16rem;
+
+  &:not(:last-child) {
+    padding-bottom: 24rem;
+  }
 }
 
 div.programItemTitleWrapper {
@@ -24,8 +47,6 @@ div.programItemTitleWrapper {
   border-radius: 2rem;
   position: relative;
   box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
-  background: #fff;
-  margin-bottom: 16rem;
 
   & h4 {
     color: rgba(0, 0, 0, 0.5);
@@ -57,6 +78,10 @@ div.programItemTitleWrapper {
 
 .programChildItem {
   position: relative;
+
+  &:not(:last-child) {
+    padding-bottom: 16rem;
+  }
 }
 
 div.programChildText {
@@ -69,7 +94,7 @@ div.programChildText {
   position: relative;
   box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
   background: #fff;
-  margin-bottom: 16rem;
+  // margin-bottom: 16rem;
 
   & p {
     color: rgba(0, 0, 0, 0.5);
@@ -111,9 +136,9 @@ div.programChildText {
 }
 
 .submitBtn {
-    left: calc(100% + 16rem);
+  left: calc(100% + 16rem);
 }
 
 .cancelBtn {
-    left: calc(100% + 36rem);
+  left: calc(100% + 36rem);
 }

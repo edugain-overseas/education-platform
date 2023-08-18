@@ -19,6 +19,7 @@ import CourseTapesPage from "./pages/CoursesPage/CourseDetailPage/CourseTapesPag
 import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/CourseTasksPage";
 import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
 import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
+import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CourseParticipantPage/CourseParticipantPage";
 
 export const WebsocketContext = createContext(null);
 
@@ -80,7 +81,7 @@ function App() {
             <Route path=":id" element={<CourseDetailPage />}>
               <Route path="tapes" element={<CourseTapesPage />} />
               <Route path="tasks" element={<CourseTasksPage />} />
-              <Route path="participants" />
+              <Route path="participants" element={<CourseParticipantPage />} />
               <Route path="journal" />
               <Route path="about" element={<CourseItemPage />} />
               <Route path="instructions" />

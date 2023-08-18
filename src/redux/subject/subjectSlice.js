@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getAllSubjectsThunk,
+  getListOfParticipantsThunk,
   getSubjectAboutThunk,
   getSubjectTapesByIdThunk,
+  updateSubjectAboutThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -138,6 +140,7 @@ const initialState = {
   subjectsData: [],
   isLoading: false,
   subjectsAbout: [{ id: 0, data: subjectAbout }],
+  subjectsParticipants: [],
   error: null,
 };
 
@@ -199,6 +202,44 @@ export const subjectSlice = createSlice({
         ];
       })
       .addCase(getSubjectAboutThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(updateSubjectAboutThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateSubjectAboutThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+
+        const { response, id } = payload;
+
+        state.subjectsAbout = [
+          ...state.subjectsAbout.filter((item) => item.id !== id),
+          { id, data: response },
+        ];
+      })
+      .addCase(updateSubjectAboutThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(getListOfParticipantsThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getListOfParticipantsThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+
+        const { response, subjectId } = payload;
+
+        state.subjectsParticipants = [
+          ...state.subjectsParticipants.filter(item=>item.id !== subjectId),
+          { id: subjectId, data: response },
+        ];
+      })
+      .addCase(getListOfParticipantsThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

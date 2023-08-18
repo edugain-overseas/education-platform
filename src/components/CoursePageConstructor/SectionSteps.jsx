@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {v4} from 'uuid'
 import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg";
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
@@ -9,7 +9,7 @@ import MonitorIcon from "../../images/icons/monitor.svg";
 // import { ReactComponent as DiplomaIcon } from "../../images/icons/diploma.svg";
 // import { ReactComponent as KnowledgeIcon } from "../../images/icons/knowledge.svg";
 
-const defaultLearnItem = {
+const defaultStepsItem = {
   id: v4(),
   image_path: MonitorIcon,
   title: "Item title",
@@ -23,6 +23,20 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
   );
   const [stepsItems, setStepItems] = useState(data.section_items);
   const [showSteps, setShowSteps] = useState(data.section_display);
+
+  useEffect(() => {
+    if (!stepsItems.length) {
+      setStepItems([defaultStepsItem]);
+      setStepsSectionData((prev) => ({
+        ...prev,
+        section_items: [defaultStepsItem],
+      }));
+    }
+  }, [stepsItems.length, setStepsSectionData]);
+
+  useEffect(() => {
+    setStepsSectionData((prev) => ({ ...prev, section_display: showSteps }));
+  }, [showSteps, setStepsSectionData]);
 
   const handleTitleChange = (e) => {
     setStepsTitle(e.target.value);
@@ -49,7 +63,7 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
   };
 
   const handleAddLearnItem = () => {
-    const updatedItems = [...stepsItems, defaultLearnItem];
+    const updatedItems = [...stepsItems, defaultStepsItem];
     setStepItems(updatedItems);
     setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
@@ -90,7 +104,7 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
             >
               <div className={styles.cardWrapper}>
                 <div className={styles.StepsIconWrapper}>
-                  <img src={item.imagePath} alt="icon" />
+                  <img src={item.image_path} alt="icon" />
                   <button className={styles.stepsUploadIconBtn}>
                     <DownloadIcon />
                   </button>

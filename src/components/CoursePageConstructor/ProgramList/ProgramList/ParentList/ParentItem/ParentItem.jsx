@@ -73,8 +73,12 @@ export default function ParentItem({
               </button>
             )}
           </div>
-          {parentItem.items && (
-            <Droppable droppableId={`childList-${parentItem.id}`} key={parentItem.id} type="child">
+          {parentItem.items && parentItem.items.length !== 0 && (
+            <Droppable
+              droppableId={`childList-${parentItem.id}`}
+              key={parentItem.id}
+              type="child"
+            >
               {(provided) => (
                 <ul
                   className={styles.programChildList}

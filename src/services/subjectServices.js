@@ -11,8 +11,20 @@ export const getSubjectTapesById = async (subjectId) => {
 };
 
 export const getSubjectAbout = async (subjectId) => {
-  const { data } = await instance.get(`subject-item/read`, {
-    params: { subject_id: subjectId },
-  });
+  const { data } = await instance.get(
+    `subject-item/read?subject_id=${subjectId}`
+  );
   return data;
 };
+
+export const updateSubjectAbout = async (subjectID, subjectAbout) => {
+  const { data } = await instance.put(`subject-item/update?subject_id=${subjectID}`, subjectAbout);
+  return data
+};
+
+export const getListOfParticipant = async (groupId, subjectId) => {
+  console.log(groupId, subjectId);
+  const {data} = await instance.get(`list-members?group_id=${groupId}&subject_id=${subjectId}`)
+  console.log(data);
+  return data
+}

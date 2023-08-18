@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { setDefault } from "../../redux/config/configSlice";
 import { useDispatch } from "react-redux";
 import { getIsSubmit } from "../../redux/config/configSelectors";
+import { updateSubjectAboutThunk } from "../../redux/subject/subjectOperations";
+import SectionTeachers from "./SectionTeachers";
 
 export default function CoursePageConstructor({ styles }) {
   const dispatch = useDispatch();
@@ -29,14 +31,14 @@ export default function CoursePageConstructor({ styles }) {
   const programData = aboutSubjectData.find(
     (section) => section.section_type === "program"
   );
-  // const teachersData = aboutSubjectData.find(
-  //   (section) => section.section_type === "teachers"
-  // );
+  const teachersData = aboutSubjectData.find(
+    (section) => section.section_type === "teachers"
+  );
 
   const [itemsSectionData, setItemsSectionData] = useState(itemsData);
   const [stepsSectionData, setStepsSectionData] = useState(stepsData);
   const [programSectionData, setProgramSectionData] = useState(programData);
-  // const [itemData, setItemData] = useState([])
+  const [teachersSectionData, setTeachersSectionData] = useState(teachersData);
 
   useEffect(() => {
     return () => {
@@ -50,13 +52,14 @@ export default function CoursePageConstructor({ styles }) {
         itemsSectionData,
         stepsSectionData,
         programSectionData,
+        teachersSectionData,
       ];
-      console.log(updatedSubjectAbout);
+      dispatch(updateSubjectAboutThunk({ id, updatedSubjectAbout }));
     };
     if (isSubmit) {
       handleSumbit();
     }
-  }, [isSubmit,itemsSectionData,stepsSectionData,programSectionData]);
+  }, [isSubmit, itemsSectionData, stepsSectionData, programSectionData, teachersSectionData, id, dispatch]);
 
   return (
     <>
@@ -75,7 +78,11 @@ export default function CoursePageConstructor({ styles }) {
         data={programData}
         setProgramSectionData={setProgramSectionData}
       />
-      <section className={styles.teachers}></section>
+      <SectionTeachers
+        styles={styles}
+        data={teachersData}
+        setTeachersSectionData={setTeachersSectionData}
+      />
     </>
   );
 }

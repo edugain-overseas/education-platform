@@ -37,7 +37,7 @@ export const UserPanel = () => {
     setTimeout(() => {
       dispatch(setDefault());
       setIsAnimateSvg(false);
-    }, 3000);
+    }, 1500);
   };
 
   return (

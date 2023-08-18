@@ -3,7 +3,11 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import { instance } from "../../../services/instance";
-import { getSubjectAboutThunk, getSubjectTapesByIdThunk } from "../../../redux/subject/subjectOperations";
+import {
+  getListOfParticipantsThunk,
+  getSubjectAboutThunk,
+  getSubjectTapesByIdThunk,
+} from "../../../redux/subject/subjectOperations";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/user/userSelectors";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
@@ -36,6 +40,8 @@ const renderLinks = [
   },
 ];
 
+const groupId = 3;
+
 export default function CourseDetailPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -47,7 +53,8 @@ export default function CourseDetailPage() {
       instance.defaults.headers["Authorization"] = `Bearer ${token}`;
 
       dispatch(getSubjectTapesByIdThunk(id));
-      dispatch(getSubjectAboutThunk(id))
+      dispatch(getSubjectAboutThunk(id));
+      dispatch(getListOfParticipantsThunk({groupId, subjectId: id}));
     }
   }, [id, dispatch, token]);
 

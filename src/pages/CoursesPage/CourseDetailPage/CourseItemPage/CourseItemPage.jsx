@@ -1,12 +1,21 @@
 import React from "react";
 import CoursePageConstructor from "../../../../components/CoursePageConstructor/CoursePageConstructor";
-import { ReactComponent as DownloadIcon } from "../../../../images/icons/download.svg";
 import bg from "../../../../images/MedicineBackground.png";
+import { ReactComponent as DownloadIcon } from "../../../../images/icons/download.svg";
+import { ReactComponent as ArrowUpIcon } from "../../../../images/icons/arrowUp.svg";
 import styles from "./CourseItemPage.module.scss";
 
 export default function CourseItemPage() {
+  const scrollToTop = () => {
+    console.log('asdasdasd');
+    document.getElementById('main').scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
-    <div className={styles.mainWrapper}>
+    <div className={styles.mainWrapper} id="main">
       <section
         className={styles.hero}
         style={{
@@ -67,6 +76,7 @@ export default function CourseItemPage() {
         </div>
       </section>
       <CoursePageConstructor styles={styles} />
+      <button onClick={scrollToTop} className={styles.arrowUp}><ArrowUpIcon/></button>
     </div>
   );
 }

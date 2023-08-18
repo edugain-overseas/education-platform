@@ -4,105 +4,105 @@ import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg"
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
 import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
-import pointIcon from "../../images/icons/pointIcon.png";
+import unknownPerson from "../../images/icons/unknownPerson.svg";
 
 const defaultLearnItem = {
   id: v4(),
-  image_path: pointIcon,
-  title: "Item title",
+  image_path: unknownPerson,
+  title: "Name",
   text: "Item Text",
 };
 
-export default function SectionItems({ styles, data, setItemsSectionData }) {
-  const [toLearnTitle, setToLearnTitle] = useState(data.section_title);
-  const [toLearnText, setToLearnText] = useState(data.section_description);
-  const [toLearnItems, setLearnItems] = useState(data.section_items);
-  const [showToLearn, setShowToLearn] = useState(data.section_display);
+export default function SectionTeachers({ styles, data, setTeachersSectionData }) {
+  const [teachersTitle, setTeachersTitle] = useState(data.section_title);
+  const [teachersText, setTeachersText] = useState(data.section_description);
+  const [teachersItems, setTeachersItems] = useState(data.section_items);
+  const [showTeachers, setShowTeachers] = useState(data.section_display);
 
   useEffect(() => {
-    if (!toLearnItems.length) {
-      setLearnItems([defaultLearnItem]);
-      setItemsSectionData((prev) => ({
+    if (!teachersItems.length) {
+        setTeachersItems([defaultLearnItem]);
+        setTeachersSectionData((prev) => ({
         ...prev,
         section_items: [defaultLearnItem],
       }));
     }
-  }, [toLearnItems.length, setItemsSectionData]);
+  }, [teachersItems.length, setTeachersSectionData]);
 
   useEffect(() => {
-    setItemsSectionData((prev) => ({ ...prev, section_display: showToLearn }));
-  }, [showToLearn, setItemsSectionData]);
+    setTeachersSectionData((prev) => ({ ...prev, section_display: showTeachers }));
+  }, [showTeachers, setTeachersSectionData]);
 
   const handleTitleChange = (e) => {
-    setToLearnTitle(e.target.value);
-    setItemsSectionData((prev) => ({ ...prev, section_title: e.target.value }));
+    setTeachersTitle(e.target.value);
+    setTeachersSectionData((prev) => ({ ...prev, section_title: e.target.value }));
   };
 
   const handleDescriptionChange = (e) => {
-    setToLearnText(e.target.value);
-    setItemsSectionData((prev) => ({
+    setTeachersText(e.target.value);
+    setTeachersSectionData((prev) => ({
       ...prev,
       section_description: e.target.value,
     }));
   };
 
   const handleLearnInputChange = (index, name, value) => {
-    const updatedItems = [...toLearnItems];
+    const updatedItems = [...teachersItems];
     updatedItems[index] = {
       ...updatedItems[index],
       [name]: value,
     };
 
-    setLearnItems(updatedItems);
-    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+    teachersItems(updatedItems);
+    setTeachersSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleAddLearnItem = (index) => {
-    const updatedItems = [...toLearnItems];
+    const updatedItems = [...teachersItems];
     updatedItems.splice(index + 1, 0, defaultLearnItem);
 
-    setLearnItems(updatedItems);
-    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+    setTeachersItems(updatedItems);
+    setTeachersSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleDeleteItem = (index) => {
-    const updatedItems = [...toLearnItems];
+    const updatedItems = [...teachersItems];
     updatedItems.splice(index, 1);
 
-    setLearnItems(updatedItems);
-    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+    setTeachersItems(updatedItems);
+    setTeachersSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
 
   const handleDisplayClick = () => {
-    setShowToLearn((prev) => !prev);
+    setShowTeachers((prev) => !prev);
   };
 
   return (
     <section className={styles.toLearn}>
       <div
         className={styles.container}
-        style={{ display: showToLearn ? "block" : "none" }}
+        style={{ display: showTeachers ? "block" : "none" }}
       >
         <div className={styles.toLearnTitleWrapper}>
-          <h2>{toLearnTitle}</h2>
+          <h2>{teachersTitle}</h2>
           <input
             type="text"
             onChange={handleTitleChange}
-            value={toLearnTitle}
+            value={teachersTitle}
           />
         </div>
         <div className={styles.toLearnDescWrapper}>
-          <p className={styles.toLearnDesc}>{toLearnText}</p>
+          <p className={styles.toLearnDesc}>{teachersText}</p>
           <textarea
             type="text"
             rows={2}
-            value={toLearnText}
+            value={teachersText}
             onChange={handleDescriptionChange}
           />
         </div>
         <ul className={styles.toLearnCardList}>
-          {toLearnItems.length &&
-            toLearnItems.map((item, index) => (
+          {teachersItems.length &&
+            teachersItems.map((item, index) => (
               <li key={index}>
                 <div className={styles.cardWrapper}>
                   <div className={styles.toLearnIconWrapper}>
@@ -147,7 +147,7 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
                     <TrashIcon />
                   </button>
                 </div>
-                {toLearnItems.length <= 4 && index !== toLearnItems.length && (
+                {teachersItems.length <= 2 && index !== teachersItems.length && (
                   <button
                     className={styles.addItemBtn}
                     onClick={() => handleAddLearnItem(index)}

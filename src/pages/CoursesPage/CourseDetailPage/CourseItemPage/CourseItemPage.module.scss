@@ -426,6 +426,7 @@
   & .toLearnSteps {
     position: relative;
     margin-bottom: 64rem;
+    min-height: 24rem;
   }
 
   & .stepsList {
@@ -534,5 +535,16 @@
       letter-spacing: -1.587rem;
       text-transform: uppercase;
     }
+  }
+
+  .program {
+    position: relative;
+    min-height: 24rem;
+    margin-bottom: 64rem;
+  }
+
+  .arrowUp {
+    display: block;
+    margin: 0 auto;
   }
 }
