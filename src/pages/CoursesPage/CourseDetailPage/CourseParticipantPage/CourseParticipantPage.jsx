@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { getSubjectsParticipants } from "../../../../redux/subject/subjectSelectors";
 import styles from "./CourseParticipantPage.module.scss";
 import { useParams } from "react-router-dom";
+import { serverName } from "../../../../constants/server";
 
 export default function CourseParticipantPage() {
   const { id } = useParams();
@@ -36,22 +37,44 @@ export default function CourseParticipantPage() {
             {participantsData?.teachers &&
               participantsData?.teachers.map((teacher) => (
                 <li key={teacher.id} className={styles.teacherItemBody}>
-                  <div
-                    className={styles.teacherName}
-                  >{`${teacher.name} ${teacher.surname}`}</div>
+                  <div className={styles.teacherName}>
+                    <div className={styles.avatarWrapper}>
+                      {teacher.image_path ? (
+                        <img
+                          src={`${serverName}${teacher.image_path}`}
+                          alt="teacher avatar"
+                        />
+                      ) : (
+                        <span>{teacher.name[0]}</span>
+                      )}
+                    </div>
+                    {`${teacher.name} ${teacher.surname}`}
+                  </div>
                   <div className={styles.teacherEmail}>{teacher.email}</div>
-                  <div>-</div>
+                  <div>20.08.2023</div>
                 </li>
               ))}
-            <li className={styles.teacherItemBody}>
-              <div
-                className={styles.teacherName}
-              >{`${participantsData.curator.name} ${participantsData.curator.surname}`}</div>
-              <div className={styles.teacherEmail}>
-                {participantsData.curator.email}
-              </div>
-              <div>-</div>
-            </li>
+            {participantsData?.curator && (
+              <li className={styles.teacherItemBody}>
+                <div className={styles.teacherName}>
+                  <div className={styles.avatarWrapper}>
+                    {participantsData.curator?.image_path ? (
+                      <img
+                        src={`${serverName}${participantsData.curator.image_path}`}
+                        alt="curator avatar"
+                      />
+                    ) : (
+                      <span>{participantsData?.curator.name[0]}</span>
+                    )}
+                  </div>
+                  {`${participantsData?.curator.name} ${participantsData?.curator.surname}`}
+                </div>
+                <div className={styles.teacherEmail}>
+                  {participantsData.curator.email}
+                </div>
+                <div>20.08.2023</div>
+              </li>
+            )}
           </ul>
         </div>
         <div className={styles.studentsWrapper}>
@@ -63,34 +86,41 @@ export default function CourseParticipantPage() {
               Students
             </span>
           </div>
-          <ul className={styles.teacherList}>
-            <li className={styles.teachersItemHeader}>
-              <div>Name</div>
-              <div>Email</div>
-              <div>Activity</div>
-              <div>Activity</div>
-              <div>Activity</div>
-            </li>
-            {participantsData?.teachers &&
-              participantsData?.teachers.map((teacher) => (
-                <li key={teacher.id} className={styles.teacherItemBody}>
-                  <div
-                    className={styles.teacherName}
-                  >{`${teacher.name} ${teacher.surname}`}</div>
-                  <div className={styles.teacherEmail}>{teacher.email}</div>
-                  <div>-</div>
-                </li>
-              ))}
-            <li className={styles.teacherItemBody}>
-              <div
-                className={styles.teacherName}
-              >{`${participantsData.curator.name} ${participantsData.curator.surname}`}</div>
-              <div className={styles.teacherEmail}>
-                {participantsData.curator.email}
-              </div>
-              <div>-</div>
-            </li>
-          </ul>
+          <div className={styles.studentListWrapper}>
+            <ul className={styles.studentsList}>
+              <li className={styles.studentsItemHeader}>
+                <div>Name</div>
+                <div>Email</div>
+                <div>Activity</div>
+                <div>Progress</div>
+                <div>Average rating</div>
+                <div>A comment</div>
+              </li>
+              {participantsData?.students &&
+                participantsData?.students.map((student) => (
+                  <li key={student.id} className={styles.studentItemBody}>
+                    <div className={styles.studentName}>
+                      <div className={styles.avatarWrapper}>
+                        {student.image_path ? (
+                          <img
+                            src={`${serverName}${student.image_path}`}
+                            alt="student avatar"
+                          />
+                        ) : (
+                          <span>{student.name[0]}</span>
+                        )}
+                      </div>
+                      {`${student.name} ${student.surname}`}
+                    </div>
+                    <div className={styles.studentEmail}>{student.email}</div>
+                    <div>20.08.2023</div>
+                    <div>67%</div>
+                    <div>172 (B)</div>
+                    <div>Non comment</div>
+                  </li>
+                ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
