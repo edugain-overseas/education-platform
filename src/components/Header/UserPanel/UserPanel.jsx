@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
   getUserName,
@@ -17,6 +17,8 @@ import {
   setSumbit,
 } from "../../../redux/config/configSlice";
 import { useDispatch } from "react-redux";
+import { getIsLoading } from "../../../redux/subject/subjectSelectors";
+import { useLocation } from "react-router-dom";
 
 export const UserPanel = () => {
   const dispatch = useDispatch();
@@ -24,20 +26,20 @@ export const UserPanel = () => {
   const userInfo = useSelector(getUserInfo);
   const userType = useSelector(getUserType);
   const isEdit = useSelector(getIsEdit);
-  const [isAnimateSvg, setIsAnimateSvg] = useState(false);
+  const isLoading = useSelector(getIsLoading);
+  const { pathname } = useLocation();
 
   const handleSubmit = () => {
-    if (isAnimateSvg) {
+    if (pathname === "/") {
+      dispatch(setDefault());
+      return;
+    }
+
+    if (isLoading) {
       return;
     }
 
     dispatch(setSumbit());
-    setIsAnimateSvg(true);
-
-    setTimeout(() => {
-      dispatch(setDefault());
-      setIsAnimateSvg(false);
-    }, 1500);
   };
 
   return (
@@ -65,12 +67,12 @@ export const UserPanel = () => {
         ) : (
           <button
             className={
-              isAnimateSvg
+              isLoading
                 ? `${styles.animate} ${styles.settingsButton} ${styles.edit}`
                 : `${styles.settingsButton} ${styles.edit}`
             }
             onClick={handleSubmit}
-            disabled={isAnimateSvg}
+            disabled={isLoading}
           >
             <span className={styles.settings}>settings</span>
             <SettingsIcon />

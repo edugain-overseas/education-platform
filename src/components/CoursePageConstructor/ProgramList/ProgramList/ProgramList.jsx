@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-// import { v4 } from "uuid";
+import { v4 } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styles from "./ProgramList.module.scss";
 import ParentItem from "./ParentList/ParentItem/ParentItem";
 
-// const defaultData = [
-//   {
-//     id: v4(),
-//     text: "Example title",
-//     items: [{ id: v4(), text: "example text" }],
-//   },
-// ];
+const defaultParentItem = {
+  id: v4(),
+  text: "Example title",
+  items: [{ id: v4(), text: "example text" }],
+};
+
+const defaultChildItem = {
+  id: v4(),
+  text: "example text",
+};
 
 export default function ProgramList({ listData, setProgramSectionData }) {
   const [data, setData] = useState(listData || []);
@@ -30,7 +33,6 @@ export default function ProgramList({ listData, setProgramSectionData }) {
       .items.find((child) => child.id === childId).text;
 
   const handleParentChange = (id, value) => {
-    console.log(inputValues);
     const updatedInputValues = inputValues.map((item) =>
       item.id === id ? { ...item, text: value } : item
     );
@@ -95,7 +97,6 @@ export default function ProgramList({ listData, setProgramSectionData }) {
   };
 
   const handleDelete = (parentId, id) => {
-    console.log("parentId", parentId, "/n", "id", id);
     if (parentId === id) {
       const updatedData = [...data].filter((parent) => parent.id !== id);
       setData(updatedData);
@@ -109,7 +110,6 @@ export default function ProgramList({ listData, setProgramSectionData }) {
             }
           : parent
       );
-      console.log(updatedData);
       setData(updatedData);
       setInputValues(updatedData);
       setProgramSectionData((prev) => ({
@@ -176,6 +176,17 @@ export default function ProgramList({ listData, setProgramSectionData }) {
     }));
   };
 
+  const handleAddItem = (parent, index, parentIndex) => {
+    let updatedData = [...data];
+    if (parent) {
+      updatedData.splice(index + 1, 0, defaultParentItem);
+    } else {
+      updatedData[parentIndex].items.splice(index + 1, 0, defaultChildItem);
+    }
+    setData(updatedData);
+    setInputValues(updatedData);
+  };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="programList" type="parent">
@@ -200,6 +211,7 @@ export default function ProgramList({ listData, setProgramSectionData }) {
                   handleSubmit={handleSubmit}
                   handleCancel={handleCancel}
                   handleDelete={handleDelete}
+                  handleAddItem={handleAddItem}
                   key={parentItem.id}
                 />
               ))}

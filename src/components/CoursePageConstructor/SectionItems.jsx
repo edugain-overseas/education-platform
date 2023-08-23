@@ -5,6 +5,8 @@ import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
 import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
 import pointIcon from "../../images/icons/pointIcon.png";
+import { useSelector } from "react-redux";
+import { getIsEdit } from "../../redux/config/configSelectors";
 
 const defaultLearnItem = {
   id: v4(),
@@ -18,6 +20,7 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
   const [toLearnText, setToLearnText] = useState(data.section_description);
   const [toLearnItems, setLearnItems] = useState(data.section_items);
   const [showToLearn, setShowToLearn] = useState(data.section_display);
+  const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
     if (!toLearnItems.length) {
@@ -84,84 +87,103 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
         style={{ display: showToLearn ? "block" : "none" }}
       >
         <div className={styles.toLearnTitleWrapper}>
-          <h2>{toLearnTitle}</h2>
-          <input
-            type="text"
-            onChange={handleTitleChange}
-            value={toLearnTitle}
-          />
+          {isEdit ? (
+            <input
+              type="text"
+              onChange={handleTitleChange}
+              value={toLearnTitle}
+            />
+          ) : (
+            <h2>{toLearnTitle}</h2>
+          )}
         </div>
         <div className={styles.toLearnDescWrapper}>
-          <p className={styles.toLearnDesc}>{toLearnText}</p>
-          <textarea
-            type="text"
-            rows={2}
-            value={toLearnText}
-            onChange={handleDescriptionChange}
-          />
+          {isEdit ? (
+            <textarea
+              type="text"
+              value={toLearnText}
+              onChange={handleDescriptionChange}
+            />
+          ) : (
+            <p className={styles.toLearnDesc}>{toLearnText}</p>
+          )}
         </div>
         <ul className={styles.toLearnCardList}>
           {toLearnItems.length &&
             toLearnItems.map((item, index) => (
-              <li key={index}>
+              <li key={index} className={isEdit ? styles.itemEdit : null}>
                 <div className={styles.cardWrapper}>
                   <div className={styles.toLearnIconWrapper}>
                     <img src={item.image_path} alt="icon" />
-                    <button className={styles.uploadIconBtn}>
-                      <DownloadIcon />
-                    </button>
+                    {isEdit && (
+                      <button className={styles.uploadIconBtn}>
+                        <DownloadIcon />
+                      </button>
+                    )}
                   </div>
                   <div className={styles.toLearnCardTitleWrapper}>
-                    <h3>{item.title}</h3>
-                    <input
-                      type="text"
-                      value={item.title}
-                      name="title"
-                      onChange={(e) =>
-                        handleLearnInputChange(
-                          index,
-                          e.target.name,
-                          e.target.value
-                        )
-                      }
-                    />
+                    {isEdit ? (
+                      <input
+                        type="text"
+                        value={item.title}
+                        name="title"
+                        onChange={(e) =>
+                          handleLearnInputChange(
+                            index,
+                            e.target.name,
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      <h3>{item.title}</h3>
+                    )}
                   </div>
                   <div className={styles.toLearnTextWrapper}>
-                    <p>{item.text}</p>
-                    <textarea
-                      name="text"
-                      value={item.text}
-                      onChange={(e) =>
-                        handleLearnInputChange(
-                          index,
-                          e.target.name,
-                          e.target.value
-                        )
-                      }
-                    />
+                    {isEdit ? (
+                      <textarea
+                        name="text"
+                        value={item.text}
+                        onChange={(e) =>
+                          handleLearnInputChange(
+                            index,
+                            e.target.name,
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      <p>{item.text}</p>
+                    )}
                   </div>
-                  <button
-                    className={styles.deleteBtn}
-                    onClick={() => handleDeleteItem(index)}
-                  >
-                    <TrashIcon />
-                  </button>
+                  {isEdit && (
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => handleDeleteItem(index)}
+                    >
+                      <TrashIcon />
+                    </button>
+                  )}
                 </div>
-                {toLearnItems.length <= 4 && index !== toLearnItems.length && (
-                  <button
-                    className={styles.addItemBtn}
-                    onClick={() => handleAddLearnItem(index)}
-                  >
-                    <AddItemIcon />
-                  </button>
-                )}
+                {toLearnItems.length <= 4 &&
+                  index !== toLearnItems.length &&
+                  isEdit && (
+                    <button
+                      className={styles.addItemBtn}
+                      onClick={() => handleAddLearnItem(index)}
+                    >
+                      <AddItemIcon />
+                    </button>
+                  )}
               </li>
             ))}
         </ul>
       </div>
-      <button className={styles.displayBtn}>
-        <DisplayOffIcon onClick={handleDisplayClick} />
-      </button>
+      {isEdit && (
+        <button className={styles.displayBtn}>
+          <DisplayOffIcon onClick={handleDisplayClick} />
+        </button>
+      )}
     </section>
   );
 }

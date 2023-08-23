@@ -5,6 +5,8 @@ import { ReactComponent as DragIcon } from "../../../../../../images/icons/burge
 import { ReactComponent as SubmitIcon } from "../../../../../../images/icons/check.svg";
 import { ReactComponent as CancelIcon } from "../../../../../../images/icons/cross.svg";
 import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/minus.svg";
+import { useSelector } from "react-redux";
+import { getIsEdit } from "../../../../../../redux/config/configSelectors";
 
 export default function ParentItem({
   parentItem,
@@ -19,17 +21,24 @@ export default function ParentItem({
   handleSubmit,
   handleCancel,
   handleDelete,
+  handleAddItem,
 }) {
+  const isEdit = useSelector(getIsEdit);
+
   return (
     <Draggable draggableId={parentItem.id} index={index}>
       {(provided) => (
         <li
-          className={styles.programItem}
+          className={
+            isEdit
+              ? `${styles.programItem} ${styles.itemActive}`
+              : styles.programItem
+          }
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
           <div className={styles.programItemTitleWrapper}>
-            {edit.includes(parentItem.id) ? (
+            {edit.includes(parentItem.id) && isEdit ? (
               <input
                 type="text"
                 value={findParentValue(parentItem.id)}
@@ -41,38 +50,54 @@ export default function ParentItem({
               <h4>{parentItem.text}</h4>
             )}
             <button
-              className={styles.deleteBtn}
-              onClick={() => handleDelete(parentItem.id, parentItem.id)}
+              className={styles.dragBtn}
+              {...provided.dragHandleProps}
+              style={!isEdit ? { display: "none" } : {}}
             >
-              <DeleteIcon />
-            </button>
-            <button className={styles.dragBtn} {...provided.dragHandleProps}>
               <DragIcon />
             </button>
-            {edit.includes(parentItem.id) ? (
+            {isEdit && (
               <>
                 <button
-                  className={styles.submitBtn}
-                  onClick={() => handleSubmit(parentItem.id, parentItem.id)}
+                  className={styles.deleteBtn}
+                  onClick={() => handleDelete(parentItem.id, parentItem.id)}
                 >
-                  <SubmitIcon />
+                  <DeleteIcon />
                 </button>
-                <button
-                  className={styles.cancelBtn}
-                  onClick={() => handleCancel(parentItem.id)}
-                >
-                  <CancelIcon />
-                </button>
+                {edit.includes(parentItem.id) ? (
+                  <>
+                    <button
+                      className={styles.submitBtn}
+                      onClick={() => handleSubmit(parentItem.id, parentItem.id)}
+                    >
+                      <SubmitIcon />
+                    </button>
+                    <button
+                      className={styles.cancelBtn}
+                      onClick={() => handleCancel(parentItem.id)}
+                    >
+                      <CancelIcon />
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => handleEdit(parentItem.id, parentItem.title)}
+                  >
+                    <EditIcon />
+                  </button>
+                )}
               </>
-            ) : (
-              <button
-                className={styles.editBtn}
-                onClick={() => handleEdit(parentItem.id, parentItem.title)}
-              >
-                <EditIcon />
-              </button>
             )}
           </div>
+          {isEdit && (
+            <button
+              className={styles.addItemParentBtn}
+              onClick={() => handleAddItem(true, index, index)}
+            >
+              +
+            </button>
+          )}
           {parentItem.items && parentItem.items.length !== 0 && (
             <Droppable
               droppableId={`childList-${parentItem.id}`}
@@ -85,20 +110,24 @@ export default function ParentItem({
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {parentItem.items.map((childItem, index) => (
+                  {parentItem.items.map((childItem, childIndex) => (
                     <Draggable
                       key={childItem.id}
                       draggableId={childItem.id}
-                      index={index}
+                      index={childIndex}
                     >
                       {(provided) => (
                         <li
-                          className={styles.programChildItem}
+                          className={
+                            isEdit
+                              ? `${styles.programChildItem} ${styles.itemActive}`
+                              : styles.programChildItem
+                          }
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                         >
                           <div className={styles.programChildText}>
-                            {edit.includes(childItem.id) ? (
+                            {edit.includes(childItem.id) && isEdit ? (
                               <input
                                 type="text"
                                 value={findChildValue(
@@ -117,47 +146,65 @@ export default function ParentItem({
                               <p>{childItem.text}</p>
                             )}
                             <button
-                              className={styles.deleteBtn}
-                              onClick={() =>
-                                handleDelete(parentItem.id, childItem.id)
-                              }
-                            >
-                              <DeleteIcon />
-                            </button>
-                            <button
                               className={styles.dragBtn}
                               {...provided.dragHandleProps}
+                              style={!isEdit ? { display: "none" } : {}}
                             >
                               <DragIcon />
                             </button>
-                            {edit.includes(childItem.id) ? (
+                            {isEdit && (
                               <>
                                 <button
-                                  className={styles.submitBtn}
+                                  className={styles.deleteBtn}
                                   onClick={() =>
-                                    handleSubmit(parentItem.id, childItem.id)
+                                    handleDelete(parentItem.id, childItem.id)
                                   }
                                 >
-                                  <SubmitIcon />
+                                  <DeleteIcon />
                                 </button>
-                                <button
-                                  className={styles.cancelBtn}
-                                  onClick={() => handleCancel(childItem.id)}
-                                >
-                                  <CancelIcon />
-                                </button>
+                                {edit.includes(childItem.id) ? (
+                                  <>
+                                    <button
+                                      className={styles.submitBtn}
+                                      onClick={() =>
+                                        handleSubmit(
+                                          parentItem.id,
+                                          childItem.id
+                                        )
+                                      }
+                                    >
+                                      <SubmitIcon />
+                                    </button>
+                                    <button
+                                      className={styles.cancelBtn}
+                                      onClick={() => handleCancel(childItem.id)}
+                                    >
+                                      <CancelIcon />
+                                    </button>
+                                  </>
+                                ) : (
+                                  <button
+                                    className={styles.editBtn}
+                                    onClick={() =>
+                                      handleEdit(childItem.id, childItem.text)
+                                    }
+                                  >
+                                    <EditIcon />
+                                  </button>
+                                )}
                               </>
-                            ) : (
-                              <button
-                                className={styles.editBtn}
-                                onClick={() =>
-                                  handleEdit(childItem.id, childItem.text)
-                                }
-                              >
-                                <EditIcon />
-                              </button>
                             )}
                           </div>
+                          {isEdit && (
+                            <button
+                              className={styles.addItemChildBtn}
+                              onClick={() =>
+                                handleAddItem(false, childIndex, index)
+                              }
+                            >
+                              +
+                            </button>
+                          )}
                         </li>
                       )}
                     </Draggable>

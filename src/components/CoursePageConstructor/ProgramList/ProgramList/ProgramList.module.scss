@@ -36,10 +36,11 @@
   &:not(:last-child) {
     padding-bottom: 24rem;
   }
+  transition: all 200ms ease-in-out;
 }
 
 div.programItemTitleWrapper {
-  height: 40rem;
+  height: 32rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -78,6 +79,9 @@ div.programItemTitleWrapper {
 
 .programChildItem {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16rem;
 
   &:not(:last-child) {
     padding-bottom: 16rem;
@@ -142,3 +146,43 @@ div.programChildText {
 .cancelBtn {
   left: calc(100% + 36rem);
 }
+
+li.programItem button.addItemParentBtn,
+li.programChildItem button.addItemChildBtn {
+  inset: 0;
+  transform: translateY(calc(100% + 16rem));
+  width: 100%;
+  height: 32rem;
+  border-radius: 2.087rem;
+  background: #f1f1f1;
+  color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: 14rem;
+  font-family: Inter, sans-serif;
+  height: 0;
+  opacity: 0;
+  transition: all 300ms ease-out;
+}
+
+li.itemActive:hover {
+  gap: 64rem;
+
+  & button.addItemParentBtn {
+    transform: translateY(calc(100% + 16rem));
+    height: 32rem;
+    opacity: 1;
+  }
+}
+
+li.itemActive:hover {
+  padding-bottom: 64rem;
+
+  & button.addItemChildBtn {
+    transform: translateY(calc(100% + 16rem));
+    height: 32rem;
+    opacity: 1;
+  }
+}
+

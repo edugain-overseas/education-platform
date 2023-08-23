@@ -54,10 +54,11 @@ export default function CoursePageConstructor({ styles }) {
         programSectionData,
         teachersSectionData,
       ];
-      dispatch(updateSubjectAboutThunk({ id, updatedSubjectAbout }));
+      dispatch(updateSubjectAboutThunk({ id, updatedSubjectAbout })).then(dispatch(setDefault()));
     };
     if (isSubmit) {
       handleSumbit();
+
     }
   }, [isSubmit, itemsSectionData, stepsSectionData, programSectionData, teachersSectionData, id, dispatch]);
 

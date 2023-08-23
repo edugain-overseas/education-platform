@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ProgramList from "./ProgramList/ProgramList/ProgramList";
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
+import { useSelector } from "react-redux";
+import { getIsEdit } from "../../redux/config/configSelectors";
 
 export default function SectionProgram({
   styles,
@@ -10,9 +12,13 @@ export default function SectionProgram({
   const [programTitle, setProgramTitle] = useState(data.section_title);
   const [programDesc, setProgramDesc] = useState(data.section_description);
   const [showProgram, setShowProgram] = useState(data.section_display);
+  const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
-    setProgramSectionData((prev) => ({ ...prev, section_display: showProgram }));
+    setProgramSectionData((prev) => ({
+      ...prev,
+      section_display: showProgram,
+    }));
   }, [showProgram, setProgramSectionData]);
 
   const handleTitleChange = (e) => {
@@ -38,30 +44,37 @@ export default function SectionProgram({
         style={{ display: showProgram ? "block" : "none" }}
       >
         <div className={styles.toLearnTitleWrapper}>
-          <h2>{programTitle}</h2>
-          <input
-            type="text"
-            onChange={handleTitleChange}
-            value={programTitle}
-          />
+          {isEdit ? (
+            <input
+              type="text"
+              onChange={handleTitleChange}
+              value={programTitle}
+            />
+          ) : (
+            <h2>{programTitle}</h2>
+          )}
         </div>
         <div className={styles.toLearnDescWrapper}>
-          <p className={styles.toLearnDesc}>{programDesc}</p>
-          <textarea
-            type="text"
-            rows={2}
-            value={programDesc}
-            onChange={handleDescriptionChange}
-          />
+          {isEdit ? (
+            <textarea
+              type="text"
+              value={programDesc}
+              onChange={handleDescriptionChange}
+            />
+          ) : (
+            <p className={styles.toLearnDesc}>{programDesc}</p>
+          )}
         </div>
         <ProgramList
           listData={data.section_items}
           setProgramSectionData={setProgramSectionData}
         />
       </div>
-      <button className={styles.displayBtn}>
-        <DisplayOffIcon onClick={() => setShowProgram((prev) => !prev)} />
-      </button>
+      {isEdit && (
+        <button className={styles.displayBtn}>
+          <DisplayOffIcon onClick={() => setShowProgram((prev) => !prev)} />
+        </button>
+      )}
     </section>
   );
 }

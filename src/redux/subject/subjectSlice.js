@@ -210,10 +210,10 @@ export const subjectSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(updateSubjectAboutThunk.fulfilled, (state, { payload }) => {
+      .addCase(updateSubjectAboutThunk.fulfilled, (state, action) => {
         state.isLoading = false;
 
-        const { response, id } = payload;
+        const { response, id } = action.payload;
 
         state.subjectsAbout = [
           ...state.subjectsAbout.filter((item) => item.id !== id),
@@ -235,7 +235,7 @@ export const subjectSlice = createSlice({
         const { response, subjectId } = payload;
 
         state.subjectsParticipants = [
-          ...state.subjectsParticipants.filter(item=>item.id !== subjectId),
+          ...state.subjectsParticipants.filter((item) => item.id !== subjectId),
           { id: subjectId, data: response },
         ];
       })
