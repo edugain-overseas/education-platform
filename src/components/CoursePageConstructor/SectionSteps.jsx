@@ -4,19 +4,18 @@ import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg"
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
 import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
-import MonitorIcon from "../../images/icons/monitor.svg";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../redux/config/configSelectors";
-// import { ReactComponent as MonitorIcon } from "../../images/icons/monitor.svg";
-// import { ReactComponent as DiplomaIcon } from "../../images/icons/diploma.svg";
-// import { ReactComponent as KnowledgeIcon } from "../../images/icons/knowledge.svg";
+import MonitorIcon from "../../images/icons/monitor.svg";
+import IconModal from "../shared/IconModal/IconModal";
+import { serverName } from "../../constants/server";
 
-const defaultStepsItem = {
+const defaultStepsItem = () => ({
   id: v4(),
   image_path: MonitorIcon,
   title: "Item title",
   text: "Item Text",
-};
+});
 
 export default function SectionSteps({ styles, data, setStepsSectionData }) {
   const [stepsTitle, setStepsTitle] = useState(data.section_title);
@@ -25,14 +24,16 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
   );
   const [stepsItems, setStepItems] = useState(data.section_items);
   const [showSteps, setShowSteps] = useState(data.section_display);
+  const [isOpenIconModalId, setIsOpenIconModalId] = useState(null);
   const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
     if (!stepsItems.length) {
-      setStepItems([defaultStepsItem]);
+      const defailtItem = defaultStepsItem();
+      setStepItems([defailtItem]);
       setStepsSectionData((prev) => ({
         ...prev,
-        section_items: [defaultStepsItem],
+        section_items: [defailtItem],
       }));
     }
   }, [stepsItems.length, setStepsSectionData]);
@@ -66,7 +67,7 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
   };
 
   const handleAddLearnItem = () => {
-    const updatedItems = [...stepsItems, defaultStepsItem];
+    const updatedItems = [...stepsItems, defaultStepsItem()];
     setStepItems(updatedItems);
     setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
   };
@@ -77,6 +78,18 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
 
     setStepItems(updatedItems);
     setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+  };
+
+  const setNewIcon = (id, iconPath) => {
+    const updatedItems = [...stepsItems].map((item) => {
+      if (item.id === id) {
+        return { ...item, image_path: iconPath };
+      }
+      return { ...item };
+    });
+    setStepItems(updatedItems);
+    setStepsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+    setIsOpenIconModalId(null);
   };
 
   return (
@@ -116,11 +129,33 @@ export default function SectionSteps({ styles, data, setStepsSectionData }) {
             >
               <div className={styles.cardWrapper}>
                 <div className={styles.StepsIconWrapper}>
-                  <img src={item.image_path} alt="icon" />
+                  <img
+                    src={
+                      item.image_path === MonitorIcon
+                        ? MonitorIcon
+                        : `${serverName}${item.image_path}`
+                    }
+                    alt="icon"
+                  />
                   {isEdit && (
-                    <button className={styles.stepsUploadIconBtn}>
-                      <DownloadIcon />
-                    </button>
+                    <>
+                      <button
+                        className={styles.stepsUploadIconBtn}
+                        onClick={() => setIsOpenIconModalId(item.id)}
+                      >
+                        <DownloadIcon />
+                      </button>
+                      {isOpenIconModalId === item.id && (
+                        <IconModal
+                          itemId={item.id}
+                          isOpen={isOpenIconModalId === item.id}
+                          closeModal={() => {
+                            setIsOpenIconModalId(null);
+                          }}
+                          setNewIcon={setNewIcon}
+                        />
+                      )}
+                    </>
                   )}
                 </div>
                 <div className={styles.StepsCardTitleWrapper}>

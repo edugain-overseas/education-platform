@@ -3,9 +3,12 @@ import {
   getAllSubjectsByGroupName,
   getListOfParticipant,
   getSubjectAbout,
+  getSubjectIcons,
   getSubjectTapesById,
   updateSubjectAbout,
+  uploadSubjectIcon,
 } from "../../services/subjectServices";
+import { instance } from "../../services/instance";
 
 export const getAllSubjectsThunk = createAsyncThunk(
   "subject/getAll",
@@ -62,6 +65,33 @@ export const getListOfParticipantsThunk = createAsyncThunk(
     try {
       const response = await getListOfParticipant(groupId, subjectId);
       return { response, subjectId };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSubjectIconsThunk = createAsyncThunk(
+  "subject/getIcons",
+  async (subjectId, { rejectWithValue }) => {
+    try {
+      const response = await getSubjectIcons(subjectId);
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const uploadSubjectIconThunk = createAsyncThunk(
+  "subject/uploadIcon",
+  async ({ subjectId, file }, { rejectWithValue }) => {
+    try {
+      instance.defaults.headers["Content-Type"] = "multipart/form-data";
+      const response = await uploadSubjectIcon(subjectId, file);
+      instance.defaults.headers["Content-Type"] = "application/json";
+      return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }

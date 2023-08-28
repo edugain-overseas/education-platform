@@ -3,8 +3,10 @@ import {
   getAllSubjectsThunk,
   getListOfParticipantsThunk,
   getSubjectAboutThunk,
+  getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
   updateSubjectAboutThunk,
+  uploadSubjectIconThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -141,6 +143,7 @@ const initialState = {
   isLoading: false,
   subjectsAbout: [{ id: 0, data: subjectAbout }],
   subjectsParticipants: [],
+  icons: [],
   error: null,
 };
 
@@ -240,6 +243,32 @@ export const subjectSlice = createSlice({
         ];
       })
       .addCase(getListOfParticipantsThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(getSubjectIconsThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getSubjectIconsThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.icons = payload;
+      })
+      .addCase(getSubjectIconsThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(uploadSubjectIconThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(uploadSubjectIconThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.icons = [...state.icons, payload];
+      })
+      .addCase(uploadSubjectIconThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

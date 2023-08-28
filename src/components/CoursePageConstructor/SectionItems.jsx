@@ -7,27 +7,31 @@ import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
 import pointIcon from "../../images/icons/pointIcon.png";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../redux/config/configSelectors";
+import IconModal from "../shared/IconModal/IconModal";
+import { serverName } from "../../constants/server";
 
-const defaultLearnItem = {
+const defaultLearnItem = () => ({
   id: v4(),
   image_path: pointIcon,
   title: "Item title",
   text: "Item Text",
-};
+});
 
 export default function SectionItems({ styles, data, setItemsSectionData }) {
   const [toLearnTitle, setToLearnTitle] = useState(data.section_title);
   const [toLearnText, setToLearnText] = useState(data.section_description);
   const [toLearnItems, setLearnItems] = useState(data.section_items);
   const [showToLearn, setShowToLearn] = useState(data.section_display);
+  const [isOpenIconModalId, setIsOpenIconModalId] = useState(null);
   const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
     if (!toLearnItems.length) {
-      setLearnItems([defaultLearnItem]);
+      const defaultItem = defaultLearnItem();
+      setLearnItems([defaultItem]);
       setItemsSectionData((prev) => ({
         ...prev,
-        section_items: [defaultLearnItem],
+        section_items: [defaultItem],
       }));
     }
   }, [toLearnItems.length, setItemsSectionData]);
@@ -62,7 +66,7 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
 
   const handleAddLearnItem = (index) => {
     const updatedItems = [...toLearnItems];
-    updatedItems.splice(index + 1, 0, defaultLearnItem);
+    updatedItems.splice(index + 1, 0, defaultLearnItem());
 
     setLearnItems(updatedItems);
     setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
@@ -78,6 +82,18 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
 
   const handleDisplayClick = () => {
     setShowToLearn((prev) => !prev);
+  };
+
+  const setNewIcon = (id, iconPath) => {
+    const updatedItems = [...toLearnItems].map((item) => {
+      if (item.id === id) {
+        return { ...item, image_path: iconPath };
+      }
+      return { ...item };
+    });
+    setLearnItems(updatedItems);
+    setItemsSectionData((prev) => ({ ...prev, section_items: updatedItems }));
+    setIsOpenIconModalId(null)
   };
 
   return (
@@ -114,11 +130,33 @@ export default function SectionItems({ styles, data, setItemsSectionData }) {
               <li key={index} className={isEdit ? styles.itemEdit : null}>
                 <div className={styles.cardWrapper}>
                   <div className={styles.toLearnIconWrapper}>
-                    <img src={item.image_path} alt="icon" />
+                    <img
+                      src={
+                        item.image_path === pointIcon
+                          ? pointIcon
+                          : `${serverName}${item.image_path}`
+                      }
+                      alt="icon"
+                    />
                     {isEdit && (
-                      <button className={styles.uploadIconBtn}>
-                        <DownloadIcon />
-                      </button>
+                      <>
+                        <button
+                          className={styles.uploadIconBtn}
+                          onClick={() => setIsOpenIconModalId(item.id)}
+                        >
+                          <DownloadIcon />
+                        </button>
+                        {isOpenIconModalId === item.id && (
+                          <IconModal
+                            itemId={item.id}
+                            isOpen={isOpenIconModalId === item.id}
+                            closeModal={() => {
+                              setIsOpenIconModalId(null);
+                            }}
+                            setNewIcon={setNewIcon}
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                   <div className={styles.toLearnCardTitleWrapper}>

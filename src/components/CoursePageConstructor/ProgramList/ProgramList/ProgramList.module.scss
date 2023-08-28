@@ -6,18 +6,22 @@
 
   & button {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(calc((32rem - 16px) / 2));
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  & .programItemTitleWrapper,
-  & .programChildText {
+  & .programItemTitleWrapper > div,
+  & .programChildText > div {
     background-color: #fff;
     transition: background-color 300ms ease-out;
   }
 
-  & li:last-child .programItemTitleWrapper,
-  & li ul li:last-child .programChildText {
+  & li:last-child .programItemTitleWrapper > div,
+  & li ul li:last-child .programChildText > div {
     background-color: #4171cd;
     & p,
     & h4,
@@ -41,21 +45,29 @@
 
 div.programItemTitleWrapper {
   height: 32rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 24rem;
   border-radius: 2rem;
   position: relative;
-  box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
+
+  & div {
+    width: 100%;
+    height: 32rem;
+    box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
+    position: relative;
+    z-index: 2;
+  }
 
   & h4 {
+    padding: 0 24rem;
     color: rgba(0, 0, 0, 0.5);
     font-family: Inter, sans-serif;
-    font-size: 16rem;
+    font-size: 18rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   & input {
@@ -65,7 +77,7 @@ div.programItemTitleWrapper {
 
     color: rgba(0, 0, 0, 0.5);
     font-family: Inter, sans-serif;
-    font-size: 16rem;
+    font-size: 18rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -90,23 +102,29 @@ div.programItemTitleWrapper {
 
 div.programChildText {
   height: 32rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 24rem;
   border-radius: 2rem;
   position: relative;
-  box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
-  background: #fff;
-  // margin-bottom: 16rem;
+
+  & > div {
+    width: 100%;
+    height: 32rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 3.7rem rgba(0, 0, 0, 0.12);
+  }
 
   & p {
+    padding: 0 24rem;
     color: rgba(0, 0, 0, 0.5);
     font-family: Inter, sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   & input {
@@ -150,7 +168,6 @@ div.programChildText {
 li.programItem button.addItemParentBtn,
 li.programChildItem button.addItemChildBtn {
   inset: 0;
-  transform: translateY(calc(100% + 16rem));
   width: 100%;
   height: 32rem;
   border-radius: 2.087rem;
@@ -166,18 +183,19 @@ li.programChildItem button.addItemChildBtn {
   transition: all 300ms ease-out;
 }
 
-li.itemActive:hover {
-  gap: 64rem;
+li.itemActive.hoveredParent .programItemTitleWrapper {
+  padding-bottom: 80rem;
 
   & button.addItemParentBtn {
+    z-index: 1;
     transform: translateY(calc(100% + 16rem));
     height: 32rem;
     opacity: 1;
   }
 }
 
-li.itemActive:hover {
-  padding-bottom: 64rem;
+li.itemActive:hover.hoveredChild .programChildText {
+  padding-bottom: 80rem;
 
   & button.addItemChildBtn {
     transform: translateY(calc(100% + 16rem));
@@ -185,4 +203,3 @@ li.itemActive:hover {
     opacity: 1;
   }
 }
-

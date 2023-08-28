@@ -1,0 +1,17 @@
+.datePicker {
+  width: 228rem;
+  height: 32rem;
+}
+
+.ant-picker-footer {
+  display: none;
+}
+
+.datePicker div.ant-picker-input input {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

@@ -6,6 +6,7 @@ import { instance } from "../../../services/instance";
 import {
   getListOfParticipantsThunk,
   getSubjectAboutThunk,
+  getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
 } from "../../../redux/subject/subjectOperations";
 import { useSelector } from "react-redux";
@@ -54,7 +55,8 @@ export default function CourseDetailPage() {
 
       dispatch(getSubjectTapesByIdThunk(id));
       dispatch(getSubjectAboutThunk(id));
-      dispatch(getListOfParticipantsThunk({groupId, subjectId: id}));
+      dispatch(getListOfParticipantsThunk({ groupId, subjectId: id }));
+      dispatch(getSubjectIconsThunk(id));
     }
   }, [id, dispatch, token]);
 

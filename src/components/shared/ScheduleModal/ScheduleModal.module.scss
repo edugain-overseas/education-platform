@@ -1,0 +1,6 @@
+.modalWrapper {
+  & div[aria-hidden="true"] + div {
+    padding: 40rem 24rem;
+  }
+}
+

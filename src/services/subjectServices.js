@@ -18,13 +18,31 @@ export const getSubjectAbout = async (subjectId) => {
 };
 
 export const updateSubjectAbout = async (subjectID, subjectAbout) => {
-  const { data } = await instance.put(`subject-item/update?subject_id=${subjectID}`, subjectAbout);
-  return data
+  const { data } = await instance.put(
+    `subject-item/update?subject_id=${subjectID}`,
+    subjectAbout
+  );
+  return data;
 };
 
 export const getListOfParticipant = async (groupId, subjectId) => {
-  console.log(groupId, subjectId);
-  const {data} = await instance.get(`list-members?group_id=${groupId}&subject_id=${subjectId}`)
-  console.log(data);
-  return data
-}
+  const { data } = await instance.get(
+    `list-members?group_id=${groupId}&subject_id=${subjectId}`
+  );
+  return data;
+};
+
+export const getSubjectIcons = async (subjectId) => {
+  const { data } = await instance.get(
+    `subject-item/icons?subject_id=${subjectId}`
+  );
+  return data;
+};
+
+export const uploadSubjectIcon = async (subjectId, file) => {
+  const { data } = await instance.post(
+    `subject-item/upload-icon?is_default=false&subject_id=${subjectId}`,
+    file
+  );
+  return data;
+};

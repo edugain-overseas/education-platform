@@ -4,16 +4,18 @@ import { ReactComponent as DownloadIcon } from "../../images/icons/download.svg"
 import { ReactComponent as DisplayOffIcon } from "../../images/icons/displayOff.svg";
 import { ReactComponent as TrashIcon } from "../../images/icons/trash.svg";
 import { ReactComponent as AddItemIcon } from "../../images/icons/addItem.svg";
-import unknownPerson from "../../images/icons/unknownPerson.svg";
 import { getIsEdit } from "../../redux/config/configSelectors";
 import { useSelector } from "react-redux";
+import { serverName } from "../../constants/server";
+import IconModal from "../shared/IconModal/IconModal";
+import unknownPerson from "../../images/icons/unknownPerson.svg";
 
-const defaultLearnItem = {
+const defaultLearnItem = () => ({
   id: v4(),
   image_path: unknownPerson,
   title: "Name",
   text: "Item Text",
-};
+});
 
 export default function SectionTeachers({
   styles,
@@ -24,14 +26,16 @@ export default function SectionTeachers({
   const [teachersText, setTeachersText] = useState(data.section_description);
   const [teachersItems, setTeachersItems] = useState(data.section_items);
   const [showTeachers, setShowTeachers] = useState(data.section_display);
+  const [isOpenIconModalId, setIsOpenIconModalId] = useState(null);
   const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
+    const defaultItem = defaultLearnItem();
     if (!teachersItems.length) {
-      setTeachersItems([defaultLearnItem]);
+      setTeachersItems([defaultItem]);
       setTeachersSectionData((prev) => ({
         ...prev,
-        section_items: [defaultLearnItem],
+        section_items: [defaultItem],
       }));
     }
   }, [teachersItems.length, setTeachersSectionData]);
@@ -75,7 +79,7 @@ export default function SectionTeachers({
 
   const handleAddLearnItem = (index) => {
     const updatedItems = [...teachersItems];
-    updatedItems.splice(index + 1, 0, defaultLearnItem);
+    updatedItems.splice(index + 1, 0, defaultLearnItem());
 
     setTeachersItems(updatedItems);
     setTeachersSectionData((prev) => ({
@@ -97,6 +101,21 @@ export default function SectionTeachers({
 
   const handleDisplayClick = () => {
     setShowTeachers((prev) => !prev);
+  };
+
+  const setNewIcon = (id, iconPath) => {
+    const updatedItems = [...teachersItems].map((item) => {
+      if (item.id === id) {
+        return { ...item, image_path: iconPath };
+      }
+      return { ...item };
+    });
+    setTeachersItems(updatedItems);
+    setTeachersSectionData((prev) => ({
+      ...prev,
+      section_items: updatedItems,
+    }));
+    setIsOpenIconModalId(null);
   };
 
   return (
@@ -130,14 +149,36 @@ export default function SectionTeachers({
         <ul className={styles.toLearnCardList}>
           {teachersItems.length &&
             teachersItems.map((item, index) => (
-              <li key={index} className={isEdit ? styles.itemEdit : null}>
+              <li key={index} className={isEdit ? `${styles.itemEdit} ${styles.teacherItem}` : styles.teacherItem}>
                 <div className={styles.cardWrapper}>
                   <div className={styles.toLearnIconWrapper}>
-                    <img src={item.image_path} alt="icon" />
+                    <img
+                      src={
+                        item.image_path === unknownPerson
+                          ? unknownPerson
+                          : `${serverName}${item.image_path}`
+                      }
+                      alt="icon"
+                    />
                     {isEdit && (
-                      <button className={styles.uploadIconBtn}>
-                        <DownloadIcon />
-                      </button>
+                      <>
+                        <button
+                          className={styles.uploadIconBtn}
+                          onClick={() => setIsOpenIconModalId(item.id)}
+                        >
+                          <DownloadIcon />
+                        </button>
+                        {isOpenIconModalId === item.id && (
+                          <IconModal
+                            itemId={item.id}
+                            isOpen={isOpenIconModalId === item.id}
+                            closeModal={() => {
+                              setIsOpenIconModalId(null);
+                            }}
+                            setNewIcon={setNewIcon}
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                   <div className={styles.toLearnCardTitleWrapper}>
