@@ -4,7 +4,7 @@ import styles from "./LessonsList.module.scss";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 import { useLocation } from "react-router-dom";
-import ScheduleModal from "../../shared/ScheduleModal/ScheduleModal";
+import LessonAddModal from "../../shared/LessonAddModal/LessonAddModal";
 
 export function LessonsList({ lessons }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -34,7 +34,7 @@ export function LessonsList({ lessons }) {
           </li>
         )}
       </ul>
-      <ScheduleModal
+      <LessonAddModal
         isOpen={isOpenModal}
         onClose={() => setIsOpenModal(false)}
       />
