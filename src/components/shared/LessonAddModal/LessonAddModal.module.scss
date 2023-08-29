@@ -1,6 +1,86 @@
 .modalWrapper {
+  height: 504rem;
+  width: 1080rem;
+  top: calc(70rem + 504rem / 2);
+  left: calc(182rem + (100% - 1080rem - 182rem) / 2);
+  margin: 0;
+  padding: 0;
+
   & div[aria-hidden="true"] + div {
     padding: 40rem 24rem;
   }
 }
 
+.modalTitle {
+  padding-bottom: 40rem;
+  border-bottom: 1rem solid #cfcfcf;
+  margin-bottom: 32rem;
+  color: rgba($color: #000000, $alpha: 0.7);
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 20rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 6rem;
+  text-transform: uppercase;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 16rem;
+
+  &:last-child {
+    margin-bottom: 40rem;
+  }
+}
+
+.formRow:nth-child(1) {
+  & > div {
+    flex-basis: calc(50% - (16rem * 3 / 4));
+  }
+}
+
+.formRow:nth-child(2),
+.formRow:nth-child(5) {
+  & > div {
+    flex-basis: calc(50% - (16rem * 1 / 2));
+  }
+}
+
+.formRow:nth-child(3),
+.formRow:nth-child(4) {
+  & > div {
+    flex-basis: calc(100% - (16rem * 0 / 1));
+  }
+}
+
+.modalFormSubmitBtn {
+  width: 152rem;
+  height: 40rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4rem;
+  background-color: #4171cd;
+  box-shadow: 0 0 3.7067272663116455rem 0 rgba(0, 0, 0, 0.12);
+  color: #fff;
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  transition: background-color 300ms ease-out ;
+}
+
+.modalFormSubmitBtn:disabled {
+  background-color: #b3b3b3;
+  cursor: not-allowed;
+}

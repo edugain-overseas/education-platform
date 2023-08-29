@@ -4,16 +4,16 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styles from "./ProgramList.module.scss";
 import ParentItem from "./ParentList/ParentItem/ParentItem";
 
-const defaultParentItem = {
+const defaultParentItem = () => ({
   id: v4(),
   text: "Example title",
   items: [{ id: v4(), text: "example text" }],
-};
+});
 
-const defaultChildItem = {
+const defaultChildItem = () => ({
   id: v4(),
   text: "example text",
-};
+});
 
 export default function ProgramList({ listData, setProgramSectionData }) {
   const [data, setData] = useState(listData || []);
@@ -179,9 +179,12 @@ export default function ProgramList({ listData, setProgramSectionData }) {
   const handleAddItem = (parent, index, parentIndex) => {
     let updatedData = [...data];
     if (parent) {
-      updatedData.splice(index + 1, 0, defaultParentItem);
+      updatedData.splice(index + 1, 0, defaultParentItem());
     } else {
-      updatedData[parentIndex].items.splice(index + 1, 0, defaultChildItem);
+      const parentItem = updatedData[parentIndex];
+      const updatedItems = [...parentItem.items];
+      updatedItems.splice(index + 1, 0, defaultChildItem());
+      updatedData[parentIndex] = { ...parentItem, items: updatedItems };
     }
     setData(updatedData);
     setInputValues(updatedData);
