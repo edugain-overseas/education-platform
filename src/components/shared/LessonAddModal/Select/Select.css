@@ -41,12 +41,29 @@
   font-weight: 400;
   line-height: normal;
   transition: color 300ms ease-out;
+
+  display: flex;
+  align-items: center;
 }
 
 :where(.css-dev-only-do-not-override-fpg3f5).ant-checkbox-wrapper:hover {
   color: rgba(0, 0, 0, 1);
 }
 
+:where(
+    .css-dev-only-do-not-override-fpg3f5
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 16rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  display: flex;
+  align-items: center;
+}
 .selectDropdownWrapper {
   width: 100%;
   padding: 16rem;
@@ -73,4 +90,34 @@
 
 .selectDropdownWrapper label:last-child span + span {
   flex: 1;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.editBtn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.submitBtn {
+  position: absolute;
+  top: 50%;
+  right: 20rem;
+  transform: translateY(-50%);
+}
+
+.cancelBtn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.editBtn svg,
+.editBtn path {
+  fill: rgba(0, 0, 0, 0.5);
 }

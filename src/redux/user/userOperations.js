@@ -39,7 +39,9 @@ export const getUserInfoThunk = createAsyncThunk(
       instance.defaults.headers["Content-Type"] = "application/json";
       instance.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      const response = await getUserInfo();
+      const userType = getState().user.userType;
+
+      const response = await getUserInfo(userType);
       return response;
     } catch (error) {
       return rejectWithValue(error);

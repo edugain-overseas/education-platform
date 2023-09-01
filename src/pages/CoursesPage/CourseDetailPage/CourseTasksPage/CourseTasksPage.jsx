@@ -13,7 +13,6 @@ const CourseTasksPage = () => {
   const modules = useSelector(getSubjectData).find(
     (subject) => `${subject.id}` === id
   )?.subjects_lessons;
-  console.log(modules);
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>

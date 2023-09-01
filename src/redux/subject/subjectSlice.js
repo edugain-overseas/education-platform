@@ -3,9 +3,13 @@ import {
   getAllSubjectsThunk,
   getListOfParticipantsThunk,
   getSubjectAboutThunk,
+  getSubjectByIdThunk,
   getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
   updateSubjectAboutThunk,
+  updateSubjectByIdThunk,
+  updateSubjectImageThunk,
+  updateSubjectLogoThunk,
   uploadSubjectIconThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
@@ -143,6 +147,7 @@ const initialState = {
   isLoading: false,
   subjectsAbout: [{ id: 0, data: subjectAbout }],
   subjectsParticipants: [],
+  subjectsMainInfo: [],
   icons: [],
   error: null,
 };
@@ -165,7 +170,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(getSubjectTapesByIdThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -186,7 +190,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(getSubjectAboutThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -208,7 +211,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(updateSubjectAboutThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -227,7 +229,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(getListOfParticipantsThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -246,7 +247,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(getSubjectIconsThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -259,7 +259,6 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
       .addCase(uploadSubjectIconThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -269,6 +268,57 @@ export const subjectSlice = createSlice({
         state.icons = [...state.icons, payload];
       })
       .addCase(uploadSubjectIconThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(getSubjectByIdThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getSubjectByIdThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.subjectsMainInfo = [
+          ...state.subjectsMainInfo.filter((item) => item.id !== payload.id),
+          payload,
+        ];
+      })
+      .addCase(getSubjectByIdThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(updateSubjectByIdThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateSubjectByIdThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(updateSubjectByIdThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(updateSubjectImageThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateSubjectImageThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(updateSubjectImageThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(updateSubjectLogoThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateSubjectLogoThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(updateSubjectLogoThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

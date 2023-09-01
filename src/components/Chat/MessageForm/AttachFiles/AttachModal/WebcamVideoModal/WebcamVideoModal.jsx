@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useContext, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { Modal, Button } from "antd";
 import ReactPlayer from "react-player";
@@ -6,6 +6,9 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 import { getAttachFileLoading } from "../../../../../../redux/groupChat/groupChatSelectors";
+import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
+import { getSubjectAttachFileLoading } from "../../../../../../redux/subjectChats/subjectChatSelectors";
 
 export default function WebcamVideoModal({ isOpenModal, closeModal }) {
   const webcamRef = useRef(null);
@@ -14,7 +17,11 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
   const [recordedChunks, setRecordedChunks] = useState(null);
   const [videoURL, setVideoURL] = useState("");
 
-  const isLoading = useSelector(getAttachFileLoading);
+  const type = useContext(TypeContext) || "group";
+
+  const isLoading = useSelector(
+    type === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
+  );
 
   const dispatch = useDispatch();
 
@@ -38,13 +45,16 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
     const uniqueId = uuidv4();
     const fileName = `webcam-video_${uniqueId}.webm`;
     formData.append("file", recordedChunks, fileName);
-    dispatch(attachFileToMessageThunk(formData));
+    dispatch(
+      type === "group"
+        ? attachFileToMessageThunk(formData)
+        : attachFileToSubjectMessageThunk(formData)
+    );
   };
 
   const handleDataAvailable = ({ data }) => {
     console.log(data);
     if (data && data.size > 0) {
-      // Save recorded video chunks
       setRecordedChunks(data);
       const videoUrl = URL.createObjectURL(data);
       setVideoURL(videoUrl);
@@ -60,11 +70,12 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
     <div>
       <Modal
         open={isOpenModal}
+        destroyOnClose
         onCancel={() => {
           closeModal();
         }}
         footer={[
-          <React.Fragment key='default'>
+          <React.Fragment key="default">
             {!videoURL ? (
               <Button
                 key="record"
@@ -111,8 +122,6 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
             audio={true}
             muted={true}
             ref={webcamRef}
-            // mirrored={true}
-            // onRecordingComplete={handleDataAvailable}
             style={{ width: "100%", height: "auto", paddingTop: 32 }}
           />
         )}

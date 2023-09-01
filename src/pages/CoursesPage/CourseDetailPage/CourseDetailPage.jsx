@@ -1,17 +1,18 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import { instance } from "../../../services/instance";
 import {
   getListOfParticipantsThunk,
   getSubjectAboutThunk,
+  getSubjectByIdThunk,
   getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
 } from "../../../redux/subject/subjectOperations";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/user/userSelectors";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
+import { connectToSubjectWebSocket } from "../../../services/websocket";
 import styles from "./CourseDetailPage.module.scss";
 
 const renderLinks = [
@@ -43,10 +44,33 @@ const renderLinks = [
 
 const groupId = 3;
 
+export const SubjectWebsocketContext = createContext(null);
+
 export default function CourseDetailPage() {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const dispatch = useDispatch();
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const ws = connectToSubjectWebSocket(id, token);
+
+    ws.onopen = () => {
+      setSocket(ws);
+    };
+
+    ws.onclose = () => {
+      setSocket(null);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [id, token]);
+
+  useEffect(() => {
+    dispatch(getSubjectByIdThunk(id));
+  }, [id]);
 
   useEffect(() => {
     if (token) {
@@ -61,11 +85,13 @@ export default function CourseDetailPage() {
   }, [id, dispatch, token]);
 
   return (
-    <div className={styles.mainWrapper}>
-      <NavLinksPanel renderLinks={renderLinks} />
-      <div className={styles.pageContentWrapper}>
-        <Outlet />
+    <SubjectWebsocketContext.Provider value={socket}>
+      <div className={styles.mainWrapper}>
+        <NavLinksPanel renderLinks={renderLinks} />
+        <div className={styles.pageContentWrapper}>
+          <Outlet />
+        </div>
       </div>
-    </div>
+    </SubjectWebsocketContext.Provider>
   );
 }

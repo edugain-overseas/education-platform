@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
@@ -14,31 +14,54 @@ import {
 import { serverName } from "../../constants/server";
 import { getFeedbackData } from "../../redux/groupChat/groupChatSelectors";
 import { loadMoreMessagesThunk } from "../../redux/groupChat/groupChatOperations";
+import { loadMoreMessagesThunk as loadMoreSubjectMessagesThunk } from "../../redux/subjectChats/subjectChatOperations";
 import styles from "./Chat.module.scss";
+import {
+  getSubjectActiveUsers,
+  getSubjectFeedbackData,
+  getSubjectHistoryEnd,
+  getSubjectIsLoading,
+  getSubjectMessages,
+  getSubjectParticipantsData,
+} from "../../redux/subjectChats/subjectChatSelectors";
+import { TypeContext } from "../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 
-export function Chat() {
+export function Chat({ subjectId = null, subjectData = null }) {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
 
-  const websocket = useRef(null);
+  const type = useContext(TypeContext) || "group";
+
   const avatarsWrapperRef = useRef(null);
   const chatFeedWrapperRef = useRef(null);
 
   const dispatch = useDispatch();
 
   const chatGroup = useSelector(getUserGroup) || "";
-  const participantsData = useSelector(getParticipantsData);
-  const activeUsers = useSelector(getActiveUsers);
-  const replyTo = useSelector(getFeedbackData);
-  const messages = useSelector(getMessages);
+  const participantsData = useSelector(
+    type === "group" ? getParticipantsData : getSubjectParticipantsData
+  );
+  const activeUsers = useSelector(
+    type === "group" ? getActiveUsers : getSubjectActiveUsers
+  );
+  const replyTo = useSelector(
+    type === "group" ? getFeedbackData : getSubjectFeedbackData
+  );
+  const messages = useSelector(
+    type === "group" ? getMessages : getSubjectMessages
+  );
   const targetMessage = messages?.find(
     (messege) => messege.message_id === replyTo
   );
   const receiverUser = participantsData?.find(
     (user) => user.user_id === targetMessage?.sender_id
   );
-  const isLoading = useSelector(getIsLoading);
-  const historyEnd = useSelector(getHistoryEnd);
+  const isLoading = useSelector(
+    type === "group" ? getIsLoading : getSubjectIsLoading
+  );
+  const historyEnd = useSelector(
+    type === "group" ? getHistoryEnd : getSubjectHistoryEnd
+  );
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -55,7 +78,12 @@ export function Chat() {
         if ((scrollTop + clientHeight) / scrollHeight >= 0.85) {
           const lastMessageId = messages[messages.length - 1].message_id;
           dispatch(
-            loadMoreMessagesThunk({ groupName: chatGroup, lastMessageId })
+            type === "group"
+              ? loadMoreMessagesThunk({ groupName: chatGroup, lastMessageId })
+              : loadMoreSubjectMessagesThunk({
+                  subjectId: subjectId,
+                  lastMessageId,
+                })
           );
         }
       }
@@ -78,6 +106,8 @@ export function Chat() {
     chatFeedWrapperRef,
     dispatch,
     chatGroup,
+    subjectId,
+    type,
   ]);
 
   const handleShowMore = () => {
@@ -173,7 +203,11 @@ export function Chat() {
           </div>
           <div className={isShowMore ? "hidden" : styles.headerRight}>
             <GridIcon className={styles.gridIconHeader} />
-            <p className={styles.chatname}>chat {chatGroup}</p>
+            <p className={styles.chatname}>
+              {type === "group"
+                ? `chat ${chatGroup}`
+                : `chat ${subjectData?.title} ${chatGroup}`}
+            </p>
           </div>
         </div>
         <div className={styles.divider}></div>
@@ -184,7 +218,7 @@ export function Chat() {
               {targetMessage.message_datetime.slice(-8, -3)}
             </p>
           )}
-          <MessageForm socket={websocket.current} />
+          <MessageForm type={type} />
         </div>
       </div>
       <div className={styles.chatFeedWrapper} ref={chatFeedWrapperRef}>

@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedback.svg";
 import user1Avatar from "../../../images/logo192.png";
 import { serverName } from "../../../constants/server";
 import { useDispatch, useSelector } from "react-redux";
 import { setFeedback } from "../../../redux/groupChat/groupChatSlice";
+import { setFeedback as setSubjectFeedback } from "../../../redux/subjectChats/subjectChatSlice";
 import { getFeedbackData } from "../../../redux/groupChat/groupChatSelectors";
 import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
-import { readAnswerThunk, readMessageThunk } from "../../../redux/groupChat/groupChatOperations";
+import {
+  readAnswerThunk,
+  readMessageThunk,
+} from "../../../redux/groupChat/groupChatOperations";
+import {
+  readAnswerThunk as readSubjectAnswerThunk,
+  readMessageThunk as readSubjectMessageThunk,
+} from "../../../redux/subjectChats/subjectChatOperations";
 import styles from "./MessageFromChat.module.scss";
+import { getSubjectFeedbackData } from "../../../redux/subjectChats/subjectChatSelectors";
+import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 
-export function MessageFromChat({ message = [], type = 'origin', self = false, lastElement = false, readed = false }) {
+export function MessageFromChat({
+  message = [],
+  type = "origin",
+  self = false,
+  lastElement = false,
+  readed = false,
+}) {
   const dispatch = useDispatch();
+  const chatType = useContext(TypeContext);
 
-  const replyTo = useSelector(getFeedbackData);
+  const replyTo = useSelector(
+    chatType === "group" ? getFeedbackData : getSubjectFeedbackData
+  );
 
   const handleFeedback = () => {
     if (replyTo !== message.message_id) {
-      dispatch(setFeedback(message.message_id));
+      dispatch(
+        chatType === "group"
+          ? setFeedback(message.message_id)
+          : setSubjectFeedback(message.message_id)
+      );
     } else {
-      dispatch(setFeedback(null));
+      dispatch(
+        chatType === "group" ? setFeedback(null) : setSubjectFeedback(null)
+      );
     }
   };
 
@@ -28,9 +53,17 @@ export function MessageFromChat({ message = [], type = 'origin', self = false, l
     }
 
     if (type === "origin") {
-      dispatch(readMessageThunk(message.message_id));
+      dispatch(
+        chatType === "group"
+          ? readMessageThunk(message.message_id)
+          : readSubjectMessageThunk(message.message_id)
+      );
     } else {
-      dispatch(readAnswerThunk(message.answer_id));
+      dispatch(
+        chatType === "group"
+          ? readAnswerThunk(message.answer_id)
+          : readSubjectAnswerThunk(message.answer_id)
+      );
     }
   };
 

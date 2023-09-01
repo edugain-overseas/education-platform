@@ -6,7 +6,11 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
-import { getToken, getUserGroup } from "./redux/user/userSelectors";
+import {
+  getToken,
+  getUserGroup,
+  getUserType,
+} from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
 import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
@@ -20,6 +24,7 @@ import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPag
 import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
 import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
 import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CourseParticipantPage/CourseParticipantPage";
+import TasksPage from "./pages/CoursesPage/TasksPage/TasksPage";
 
 export const WebsocketContext = createContext(null);
 
@@ -28,6 +33,7 @@ function App() {
 
   const groupName = useSelector(getUserGroup);
   const token = useSelector(getToken);
+  const userType = useSelector(getUserType);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,23 +52,23 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (groupName && token) {
+    if (groupName && token && userType === "student") {
       dispatch(getScheduleThunk(groupName));
       dispatch(getAllSubjectsThunk(groupName));
     }
-  }, [dispatch, groupName, token]);
+  }, [dispatch, groupName, token, userType]);
 
   useEffect(() => {
     if (websocket) {
       return;
     }
-    if (token && groupName) {
+    if (token && groupName && userType === "student") {
       setWebsocket(connectToWebSocket(groupName, token));
     }
     return () => {
       websocket?.close();
     };
-  }, [dispatch, token, groupName, websocket]);
+  }, [dispatch, token, groupName, websocket, userType]);
 
   const Router = () => {
     return (
@@ -75,7 +81,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="schedule" element={<SchedulePage />} />
           <Route path="courses" element={<CoursesPage />}>
-            <Route path={`${groupName}`} element={<SubjectsList />} />
+            <Route path={`:${groupName}`} element={<SubjectsList />} />
             <Route path="dopcourses" element={<div>Dop Courses</div>} />
             <Route path="archive" element={<div>Archive</div>} />
             <Route path=":id" element={<CourseDetailPage />}>
@@ -87,7 +93,9 @@ function App() {
               <Route path="instructions" />
             </Route>
           </Route>
-          <Route path="task" element={<div>Task page</div>} />
+          <Route path="tasks" element={<TasksPage />}>
+            <Route path=":lessonId" element={<div>lesson</div>} />
+          </Route>
           <Route path="register" element={<div>Register page</div>} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Route>

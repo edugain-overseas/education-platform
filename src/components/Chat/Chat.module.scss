@@ -16,12 +16,14 @@
   display: flex;
   justify-content: space-between;
   padding: 0 24rem;
+  gap: 32rem;
 }
 
 .headerLeft {
   display: flex;
   gap: 16rem;
   padding: 16rem 0;
+  flex-shrink: 0;
   
   &.more {
     width: 100%;
@@ -120,6 +122,7 @@
   line-height: 17rem;
   text-transform: uppercase;
   color: #718DA7;
+  text-overflow: ellipsis;
 }
 
 .divider {

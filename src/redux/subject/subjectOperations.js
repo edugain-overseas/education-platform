@@ -3,9 +3,13 @@ import {
   getAllSubjectsByGroupName,
   getListOfParticipant,
   getSubjectAbout,
+  getSubjectById,
   getSubjectIcons,
   getSubjectTapesById,
   updateSubjectAbout,
+  updateSubjectById,
+  updateSubjectImage,
+  updateSubjectLogo,
   uploadSubjectIcon,
 } from "../../services/subjectServices";
 import { instance } from "../../services/instance";
@@ -90,6 +94,58 @@ export const uploadSubjectIconThunk = createAsyncThunk(
     try {
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
       const response = await uploadSubjectIcon(subjectId, file);
+      instance.defaults.headers["Content-Type"] = "application/json";
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSubjectByIdThunk = createAsyncThunk(
+  "subject/getById",
+  async (subjectId, { rejectWithValue }) => {
+    try {
+      const response = await getSubjectById(subjectId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSubjectByIdThunk = createAsyncThunk(
+  "subject/updateById",
+  async ({ subjectId, subjectData }, { rejectWithValue }) => {
+    try {
+      const response = await updateSubjectById(subjectId, subjectData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSubjectImageThunk = createAsyncThunk(
+  "subject/updateImage",
+  async ({ subjectId, file }, { rejectWithValue }) => {
+    try {
+      instance.defaults.headers["Content-Type"] = "multipart/form-data";
+      const response = await updateSubjectImage(subjectId, file);
+      instance.defaults.headers["Content-Type"] = "application/json";
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSubjectLogoThunk = createAsyncThunk(
+  "subject/updateLogo",
+  async ({ subjectId, file }, { rejectWithValue }) => {
+    try {
+      instance.defaults.headers["Content-Type"] = "multipart/form-data";
+      const response = await updateSubjectLogo(subjectId, file);
       instance.defaults.headers["Content-Type"] = "application/json";
       return response;
     } catch (error) {

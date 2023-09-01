@@ -46,3 +46,23 @@ export const uploadSubjectIcon = async (subjectId, file) => {
   );
   return data;
 };
+
+export const getSubjectById = async (id) => {
+  const { data } = await instance.get(`subject/${id}`);
+  return data;
+};
+
+export const updateSubjectById = async (id, subjectData) => {
+  const { data } = await instance.put(`subject/${id}/update/info`, subjectData);
+  return data;
+};
+
+export const updateSubjectImage = async (id, file) => {
+  const { data } = await instance.put(`subject/update/${id}/photo`, file);
+  return data;
+};
+
+export const updateSubjectLogo = async (id, file) => {
+  const { data } = await instance.put(`subject/update/${id}/logo`, file);
+  return data;
+};

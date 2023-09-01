@@ -8,7 +8,14 @@ import { AttachFiles } from "./AttachFiles/AttachFiles";
 import { HtmlRegExp } from "../../../constants/regExp";
 import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
 import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
-import { clearAttachedFiles, setFeedback } from "../../../redux/groupChat/groupChatSlice";
+import {
+  clearAttachedFiles,
+  setFeedback,
+} from "../../../redux/groupChat/groupChatSlice";
+import {
+  clearAttachedFiles as clearSubjectAttachedFiles,
+  setFeedback as setSubjectFeedback,
+} from "../../../redux/subjectChats/subjectChatSlice";
 import { getMessageType } from "../../../helpers/getMessageType";
 import {
   getAttachedFiles,
@@ -16,21 +23,38 @@ import {
   getParticipantsData,
 } from "../../../redux/groupChat/groupChatSelectors";
 import { WebsocketContext } from "../../../App";
+import { SubjectWebsocketContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseDetailPage";
+import {
+  getSubjectAttachedFiles,
+  getSubjectFeedbackData,
+  getSubjectParticipantsData,
+} from "../../../redux/subjectChats/subjectChatSelectors";
 import styles from "./MessageForm.module.scss";
+import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 
 export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
   const [sendTo, setSendTo] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
-  const socket = useContext(WebsocketContext)
+  const type = useContext(TypeContext) || "group";
+
+  const socket = useContext(
+    type === "group" ? WebsocketContext : SubjectWebsocketContext
+  );
   const dispatch = useDispatch();
 
   const userId = useSelector(getUserId);
-  const participantsData = useSelector(getParticipantsData);
+  const participantsData = useSelector(
+    type === "group" ? getParticipantsData : getSubjectParticipantsData
+  );
   const userType = useSelector(getUserType);
-  const attachedFiles = useSelector(getAttachedFiles);
-  const replyTo = useSelector(getFeedbackData);
+  const attachedFiles = useSelector(
+    type === "group" ? getAttachedFiles : getSubjectAttachedFiles
+  );
+  const replyTo = useSelector(
+    type === "group" ? getFeedbackData : getSubjectFeedbackData
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,7 +63,6 @@ export function MessageForm() {
       messageHTML.replaceAll(HtmlRegExp, "").trim() === "" &&
       attachedFiles.length === 0
     ) {
-      console.log("Empty message");
       return;
     }
 
@@ -55,23 +78,21 @@ export function MessageForm() {
       sender_type: userType,
       attach_file_path: attachedFiles,
     };
-    console.log(data);
+
     if (replyTo) {
       delete data.message_type;
       delete data.fixed;
       delete data.recipient;
       data.message_id = replyTo;
     }
-    console.log(data);
 
     try {
       socket.send(JSON.stringify(data));
-      console.log("sended");
-    } catch (error) {
-      console.log(error.message);
-    }
-    dispatch(clearAttachedFiles());
-    dispatch(setFeedback(null));
+    } catch (error) {}
+    dispatch(
+      type === "group" ? clearAttachedFiles() : clearSubjectAttachedFiles()
+    );
+    dispatch(type === "group" ? setFeedback(null) : setSubjectFeedback(null));
     setMessageHTML("");
   };
 

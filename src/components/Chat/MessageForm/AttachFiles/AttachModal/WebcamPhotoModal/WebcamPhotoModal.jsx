@@ -1,16 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
 import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
+import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
+import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 
 export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
   const webcamRef = useRef(null);
 
   const [videoConstraints, setVideoConstraints] = useState({});
   const [image, setImage] = useState(null);
+  const type = useContext(TypeContext) || "group";
 
   const dispatch = useDispatch();
 
@@ -45,9 +48,13 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
     const formData = new FormData();
     const uniqueId = uuidv4();
     const fileName = `webcam-image_${uniqueId}.png`;
-    const imageBlob = dataURItoBlob(image)
+    const imageBlob = dataURItoBlob(image);
     formData.append("file", imageBlob, fileName);
-    dispatch(attachFileToMessageThunk(formData))
+    dispatch(
+      type === "group"
+        ? attachFileToMessageThunk(formData)
+        : attachFileToSubjectMessageThunk(formData)
+    );
     setImage(null);
     closeModal();
   };
@@ -56,12 +63,13 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
     <div>
       <Modal
         open={isOpenModal}
+        destroyOnClose
         onCancel={() => {
           closeModal();
         }}
         footer={[
           image ? (
-            <React.Fragment key='isImage'>
+            <React.Fragment key="isImage">
               <Button key="reset" type="default" onClick={resetCapture}>
                 Capture Again
               </Button>

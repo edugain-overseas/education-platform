@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 import "./MicModal.scss";
+import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
 
 export default function MicModal({ isOpenModal, closeModal }) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState({});
   const [audioSrc, setAudioSrc] = useState("");
   const [clear, setClear] = useState(false);
+
+  const type = useContext(TypeContext) || "group";
 
   const dispatch = useDispatch();
 
@@ -62,7 +66,11 @@ export default function MicModal({ isOpenModal, closeModal }) {
     const uniqueId = uuidv4();
     const fileName = `mic-audio_${uniqueId}.webm`;
     formData.append("file", audioBlob, fileName);
-    dispatch(attachFileToMessageThunk(formData));
+    dispatch(
+      type === "group"
+        ? attachFileToMessageThunk(formData)
+        : attachFileToSubjectMessageThunk(formData)
+    );
     setAudioBlob({});
     setAudioSrc("");
     closeModal();
@@ -78,14 +86,22 @@ export default function MicModal({ isOpenModal, closeModal }) {
       }}
       footer={[
         isRecording ? (
-          <Button onClick={handleStopRecording} key='stop'>Stop recording</Button>
+          <Button onClick={handleStopRecording} key="stop">
+            Stop recording
+          </Button>
         ) : audioSrc ? (
           <>
-            <Button onClick={handleClear} key='clear'>Clear</Button>
-            <Button onClick={handleAttach} key='attach'>Attach</Button>
+            <Button onClick={handleClear} key="clear">
+              Clear
+            </Button>
+            <Button onClick={handleAttach} key="attach">
+              Attach
+            </Button>
           </>
         ) : (
-          <Button onClick={handleStartRecording} key='start'>Start recording</Button>
+          <Button onClick={handleStartRecording} key="start">
+            Start recording
+          </Button>
         ),
       ]}
     >

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -10,6 +10,8 @@ import { Chat } from "../../../../components/Chat/Chat";
 import ProgressPanel from "../../../../components/ProgressPanel/ProgressPanel";
 import styles from "./CourseTapesPage.module.scss";
 
+export const TypeContext = createContext(null);
+
 export default function CourseTapesPage() {
   const { id } = useParams();
 
@@ -20,9 +22,12 @@ export default function CourseTapesPage() {
 
   return (
     <div className={styles.pageWrapper}>
-      <SubjectInfoPanel subjectData={subjectData}/>
-      <Chat />
-      <ProgressPanel subjectData={subjectData}/>
+      <SubjectInfoPanel subjectData={subjectData} />
+      <TypeContext.Provider value={"subject"}>
+        <Chat subjectId={id} subjectData={subjectData} />
+      </TypeContext.Provider>
+
+      <ProgressPanel subjectData={subjectData} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MessageFromChat } from "../MessageFromChat/MessageFromChat";
 import styles from "./ChatFeed.module.scss";
 import { useSelector } from "react-redux";
@@ -9,12 +9,24 @@ import {
   getMessages,
   getParticipantsData,
 } from "../../../redux/groupChat/groupChatSelectors";
+import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import {
+  getSubjectActiveUsers,
+  getSubjectMessages,
+  getSubjectParticipantsData,
+} from "../../../redux/subjectChats/subjectChatSelectors";
 
 export function ChatFeed() {
-
-  const messages = useSelector(getMessages);
-  const participantsData = useSelector(getParticipantsData);
-  const activeData = useSelector(getActiveUsers);
+  const type = useContext(TypeContext) || "group";
+  const messages = useSelector(
+    type === "group" ? getMessages : getSubjectMessages
+  );
+  const participantsData = useSelector(
+    type === "group" ? getParticipantsData : getSubjectParticipantsData
+  );
+  const activeData = useSelector(
+    type === "group" ? getActiveUsers : getSubjectActiveUsers
+  );
   const userId = useSelector(getUserId);
 
   return messages ? (

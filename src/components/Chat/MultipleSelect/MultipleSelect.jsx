@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Select, Checkbox } from "antd";
 import styles from "./MultipleSelect.module.scss";
 import { useSelector } from "react-redux";
 import { getParticipantsData } from "../../../redux/groupChat/groupChatSelectors";
 import { getUserId } from "../../../redux/user/userSelectors";
+import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { getSubjectParticipantsData } from "../../../redux/subjectChats/subjectChatSelectors";
 
 export function MultipleSelect({ onChange }) {
+  const type = useContext(TypeContext) || "group";
   const myId = useSelector(getUserId);
   const options =
-    useSelector(getParticipantsData)?.filter(user => user.user_id !== myId).map((user) => ({
-      label: `${user.name} ${user.surname}`,
-      value: user.user_id,
-    })) || [];
+    useSelector(type === 'group' ? getParticipantsData : getSubjectParticipantsData)
+      ?.filter((user) => user.user_id !== myId)
+      .map((user) => ({
+        label: `${user.name} ${user.surname}`,
+        value: user.user_id,
+      })) || [];
   const allOption = { label: "Send All", value: "all" };
   const allOptions = [allOption, ...options];
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -26,7 +31,6 @@ export function MultipleSelect({ onChange }) {
         updatedOptions.splice(index, 1);
       }
     }
-    console.log(updatedOptions);
     setSelectedOptions(updatedOptions);
     onChange(updatedOptions);
   };

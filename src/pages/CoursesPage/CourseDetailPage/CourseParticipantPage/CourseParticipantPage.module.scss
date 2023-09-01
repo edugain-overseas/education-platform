@@ -99,7 +99,7 @@
 .avatarWrapper {
   width: 38rem;
   height: 38rem;
-  border: 1px solid #4171cd;
+  border: 1rem solid #4171cd;
   border-radius: 50%;
   margin-right: 16rem;
   position: relative;
@@ -115,7 +115,7 @@
 
   & img {
     border-radius: 50%;
-    object-fit: contain;
+    object-fit: cover;
   }
 
   & span {
