@@ -94,11 +94,11 @@ export default function CourseDetailPage() {
     return () => {
       ws.close();
     };
-  }, [id, token]);
-
+  }, [id, token, dispatch]);
+  
   useEffect(() => {
     dispatch(getSubjectByIdThunk(id));
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (token) {

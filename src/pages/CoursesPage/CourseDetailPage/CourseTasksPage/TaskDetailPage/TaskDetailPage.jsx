@@ -36,7 +36,7 @@ export default function TaskDetailPage() {
         ?.module_lessons.find((lesson) => `${lesson.lesson_id}` === lessonId)
         ?.lesson_type
     );
-  }, [subjectData]);
+  }, [subjectData, id, lessonId]);
 
   console.log(type, lessonId);
 
@@ -50,7 +50,7 @@ export default function TaskDetailPage() {
           break;
       }
     }
-  }, [lessonId, type]);
+  }, [lessonId, type, dispatch]);
 
   const getComponentByType = () => {
     switch (type) {

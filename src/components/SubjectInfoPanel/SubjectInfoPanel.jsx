@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./SubjectInfoPanel.module.scss";
 import defaultImage from "../../images/noImage.jpeg";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import axios from "axios";
 export default function SubjectInfoPanel({ subjectData }) {
   const groupName = useSelector(getUserGroup);
   const [room, setRoom] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLinkClick = () => {
     const getRoom = async () => {
@@ -29,7 +29,7 @@ export default function SubjectInfoPanel({ subjectData }) {
       );
       setRoom(data.room);
       console.log(data.room);
-      navigate(`/${data.room}`)
+      navigate(`/${data.room}`);
     };
     getRoom();
   };

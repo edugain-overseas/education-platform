@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+// import { useSelector } from "react-redux";
 import SimplePeer from "simple-peer";
-import { getUserId, getUserType } from "../../redux/user/userSelectors";
-import { useParams } from "react-router-dom";
+// import { getUserId, getUserType } from "../../redux/user/userSelectors";
+// import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
 
 const userId = v4();
@@ -104,6 +104,7 @@ export default function VideoChatRoomPage() {
     //   myPeer.destroy();
     // }
   };
+  console.log(myPeer);
 
   // useEffect(() => {
   //   const getLocalStream = async () => {

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Lecture.module.scss";
 
 export default function Lecture({ lessonData }) {
-  const metaDataToRender = lessonData.data[0];
+  // const metaDataToRender = lessonData.data[0];
   console.log(lessonData);
   return (
     <div className={styles.lectureContainer}>
