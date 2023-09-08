@@ -8,11 +8,10 @@ import { Link} from "react-router-dom";
 
 export default function LessonCardItem({ lesson }) {
   const day = moment(lesson.lesson_date, dateFormatString);
-  // const { id } = useParams();
 
   return (
     <li className={styles.lessonCard}>
-      <Link to={`/tasks/${lesson.lesson_id}`}>
+      <Link to={`${lesson.lesson_id}`}>
         <div className={styles.cardHeader}>
           <div className={styles.lessonTypeWrapper}>
             {getIconByLessonType(lesson.lesson_type)}

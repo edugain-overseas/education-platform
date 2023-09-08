@@ -17,7 +17,7 @@ export const readMessage = async (messageId) => {
 
 export const readSubjectMessage = async (messageId) => {
   const { data } = await instance.post(
-    `/subject_chat/read-message/${messageId}`
+    `/subject_chat/read_message/${messageId}`
   );
   return data;
 };
@@ -28,7 +28,7 @@ export const readAnswer = async (answerId) => {
 };
 
 export const readSubjectAnswer = async (answerId) => {
-  const { data } = await instance.post(`/subject_chat/read-answer/${answerId}`);
+  const { data } = await instance.post(`/subject_chat/read_answer/${answerId}`);
   return data;
 };
 

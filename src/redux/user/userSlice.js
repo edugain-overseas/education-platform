@@ -44,7 +44,7 @@ export const userSlice = createSlice({
       .addCase(getUserInfoThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.info = payload.info;
+        state.info = payload;
       })
       .addCase(getUserInfoThunk.rejected, (state, { payload }) => {
         state.isLoading = false;

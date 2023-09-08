@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SubjectInfoPanel.module.scss";
 import defaultImage from "../../images/noImage.jpeg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as CheckedIcon } from "../../images/icons/checked.svg";
 import { useSelector } from "react-redux";
 
 import { getUserGroup } from "../../redux/user/userSelectors";
 import { serverName } from "../../constants/server";
+import axios from "axios";
 
-export default function SubjectInfoPanel({subjectData}) {
-  
+export default function SubjectInfoPanel({ subjectData }) {
   const groupName = useSelector(getUserGroup);
+  const [room, setRoom] = useState(null);
+  const navigate = useNavigate()
+
+  const handleLinkClick = () => {
+    const getRoom = async () => {
+      if (room) {
+        return;
+      }
+      const { data } = await axios.get(
+        "https://a4f1-194-44-219-51.ngrok-free.app/generate_uuid",
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "1",
+          },
+        }
+      );
+      setRoom(data.room);
+      console.log(data.room);
+      navigate(`/${data.room}`)
+    };
+    getRoom();
+  };
 
   return (
     <div className={styles.mainWrapper}>
@@ -39,7 +61,11 @@ export default function SubjectInfoPanel({subjectData}) {
               ))}
             </ul>
           )}
-          <Link to="/" className={styles.meetingLink}>
+          <Link
+            // to={`/:${room}`}
+            className={styles.meetingLink}
+            onClick={handleLinkClick}
+          >
             Video meeting
             <CheckedIcon />
           </Link>

@@ -7,10 +7,16 @@
 }
 
 .datePicker div.ant-picker-input input {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.88);
   font-family: Inter, sans-serif;
   font-size: 14rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+:where(.css-dev-only-do-not-override-fpg3f5).ant-picker
+  .ant-picker-input
+  > input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
 }

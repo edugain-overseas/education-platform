@@ -24,7 +24,8 @@ import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPag
 import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
 import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
 import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CourseParticipantPage/CourseParticipantPage";
-import TasksPage from "./pages/CoursesPage/TasksPage/TasksPage";
+import TaskDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/TaskDetailPage/TaskDetailPage";
+import VideoChatRoomPage from "./pages/VIdeoChatRoomPage/VideoChatRoomPage";
 
 export const WebsocketContext = createContext(null);
 
@@ -86,17 +87,20 @@ function App() {
             <Route path="archive" element={<div>Archive</div>} />
             <Route path=":id" element={<CourseDetailPage />}>
               <Route path="tapes" element={<CourseTapesPage />} />
-              <Route path="tasks" element={<CourseTasksPage />} />
+              <Route path="tasks" element={<CourseTasksPage />}>
+                <Route path=":lessonId" element={<TaskDetailPage />} />
+              </Route>
               <Route path="participants" element={<CourseParticipantPage />} />
               <Route path="journal" />
               <Route path="about" element={<CourseItemPage />} />
               <Route path="instructions" />
             </Route>
           </Route>
-          <Route path="tasks" element={<TasksPage />}>
+          {/* <Route path="tasks" element={<TasksPage />}>
             <Route path=":lessonId" element={<div>lesson</div>} />
-          </Route>
+          </Route> */}
           <Route path="register" element={<div>Register page</div>} />
+          <Route path="/:videoChatRoomId" element={<VideoChatRoomPage />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Route>
       </Routes>
@@ -109,6 +113,7 @@ function App() {
         <Router />
       </div>
     </WebsocketContext.Provider>
+    // <VideoChatRoomPage/>
   );
 }
 

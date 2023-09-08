@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { rootReducer } from "./rootReducer";
 import { userSlice } from "./user/userSlice";
 import { groupChatSlice } from "./groupChat/groupChatSlice";
 
@@ -18,6 +17,7 @@ import { scheduleSlice } from "./schedule/scheduleSlice";
 import { subjectSlice } from "./subject/subjectSlice";
 import { configSlice } from "./config/configSlice";
 import { subjectChatSlice } from "./subjectChats/subjectChatSlice";
+import { taskSlice } from "./task/taskSlice";
 
 const persistConfig = {
   key: "persisted-user",
@@ -35,6 +35,7 @@ export const store = configureStore({
     subject: subjectSlice.reducer,
     config: configSlice.reducer,
     subjectChat: subjectChatSlice.reducer,
+    task: taskSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

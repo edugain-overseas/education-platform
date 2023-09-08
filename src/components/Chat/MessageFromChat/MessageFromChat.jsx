@@ -27,7 +27,8 @@ export function MessageFromChat({
   readed = false,
 }) {
   const dispatch = useDispatch();
-  const chatType = useContext(TypeContext);
+  
+  const chatType = useContext(TypeContext) || 'group';
 
   const replyTo = useSelector(
     chatType === "group" ? getFeedbackData : getSubjectFeedbackData

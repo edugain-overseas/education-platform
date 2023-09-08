@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import { instance } from "../../../services/instance";
 import {
@@ -9,7 +10,13 @@ import {
   getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
 } from "../../../redux/subject/subjectOperations";
-import { useSelector } from "react-redux";
+import {
+  addFeedback as addSubjectFeedback,
+  addMessage as addSubjectMessage,
+  setActiveData as setSubjectActiveData,
+  setMessages as setSubjectMessages,
+  setUsers as setSubjectUsers,
+} from "../../../redux/subjectChats/subjectChatSlice";
 import { getToken } from "../../../redux/user/userSelectors";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
 import { connectToSubjectWebSocket } from "../../../services/websocket";
@@ -57,10 +64,31 @@ export default function CourseDetailPage() {
 
     ws.onopen = () => {
       setSocket(ws);
+      console.log("Connected sub");
     };
 
-    ws.onclose = () => {
+    ws.onclose = function (event) {
       setSocket(null);
+      console.log("Connection sub Closed");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const participantsData = data.user_info;
+      const messagesData = data.messages;
+
+      if (messagesData) {
+        if (participantsData) {
+          dispatch(setSubjectUsers(participantsData));
+        }
+        dispatch(setSubjectMessages(messagesData));
+      } else if (data.id_active_users) {
+        dispatch(setSubjectActiveData(data));
+      } else if (data.answer_id) {
+        dispatch(addSubjectFeedback(data));
+      } else {
+        dispatch(addSubjectMessage(data));
+      }
     };
 
     return () => {
