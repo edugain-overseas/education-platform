@@ -25,7 +25,8 @@ import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/
 import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
 import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CourseParticipantPage/CourseParticipantPage";
 import TaskDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/TaskDetailPage/TaskDetailPage";
-import VideoChatRoomPage from "./pages/VIdeoChatRoomPage/VideoChatRoomPage";
+// import VideoChatRoomPage from "./pages/VIdeoChatRoomPage/VideoChatRoomPage";
+import VideoChatRoom from "./pages/VIdeoChatRoomPage/VideoChatRoom";
 
 export const WebsocketContext = createContext(null);
 
@@ -100,7 +101,7 @@ function App() {
             <Route path=":lessonId" element={<div>lesson</div>} />
           </Route> */}
           <Route path="register" element={<div>Register page</div>} />
-          <Route path="/:videoChatRoomId" element={<VideoChatRoomPage />} />
+          <Route path="/:videoChatRoomId" element={<VideoChatRoom />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Route>
       </Routes>

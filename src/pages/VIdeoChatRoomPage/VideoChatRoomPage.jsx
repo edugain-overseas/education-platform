@@ -61,7 +61,7 @@ export default function VideoChatRoomPage() {
           userVideo.autoplay = true;
           userVideo.srcObject = stream;
           userVideo.playsInline = true;
-          myVideo.style.width = "600rem";
+          userVideo.style.width = "600rem";
           document.getElementById("streams").appendChild(userVideo);
         });
 
