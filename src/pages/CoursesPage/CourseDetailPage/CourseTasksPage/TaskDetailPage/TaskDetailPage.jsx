@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getSubjectData } from "../../../../../redux/subject/subjectSelectors";
 import Lecture from "../../../../../components/TasksToDisplay/Lecture/Lecture";
@@ -12,6 +12,7 @@ import styles from "./TaskDetailPage.module.scss";
 import { useDispatch } from "react-redux";
 import { getLectureByTaskIdThunk } from "../../../../../redux/task/taskOperation";
 import { getTasks } from "../../../../../redux/task/taskSelectors";
+import { Empty } from "antd";
 
 export default function TaskDetailPage() {
   const [type, setType] = useState(null);
@@ -21,8 +22,7 @@ export default function TaskDetailPage() {
   const lessonData = useSelector(getTasks).find(
     (lesson) => lesson.id === lessonId
   );
-
-  //   const lessonType = console.log(lessonType);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setType(
@@ -37,8 +37,6 @@ export default function TaskDetailPage() {
         ?.lesson_type
     );
   }, [subjectData, id, lessonId]);
-
-  console.log(type, lessonId);
 
   useEffect(() => {
     if (type && lessonId) {
@@ -63,19 +61,34 @@ export default function TaskDetailPage() {
     }
   };
 
+  const hanleNextLessonClick = () => {
+    navigate(`/courses/${id}/tasks/${+lessonId + 1}`);
+  };
+
+  const handleBackToSelection = () => {
+    navigate(`/courses/${id}/tasks`);
+  };
+
+  const hanlePrevLessonClick = () => {
+    if (+lessonId === 1) {
+      return;
+    }
+    navigate(`/courses/${id}/tasks/${+lessonId - 1}`);
+  };
+
   return (
     <div className={styles.taskDetailWrapper}>
       <div className={styles.controlPanel}>
         <div className={styles.navWrapper}>
-          <button className={styles.prevBtn}>
+          <button className={styles.prevBtn} onClick={hanlePrevLessonClick}>
             <PrevIcon />
           </button>
-          <button className={styles.nextBtn}>
+          <button className={styles.nextBtn} onClick={hanleNextLessonClick}>
             <NextIcon />
           </button>
         </div>
         <div className={styles.additionNavWrapper}>
-          <button className={styles.backBtn}>
+          <button className={styles.backBtn} onClick={handleBackToSelection}>
             <span>Back to task selection</span>
             <ArrowLeftIcon />
           </button>
@@ -85,7 +98,7 @@ export default function TaskDetailPage() {
           </button>
         </div>
       </div>
-      {lessonData && getComponentByType()}
+      {lessonData ? getComponentByType() : <Empty />}
     </div>
   );
 }

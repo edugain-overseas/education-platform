@@ -1,0 +1,127 @@
+.documentContainer {
+  width: 1080rem;
+  margin: 0 auto;
+
+  border-radius: 2rem 2rem 0 0;
+  box-shadow: 0 0 16rem 0 rgba(0, 0, 0, 0.12);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.controlPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 40rem;
+  padding: 0 24rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5rem);
+  opacity: 0;
+  transition: opacity 300ms ease-out 3s;
+
+  &:hover {
+    opacity: 1;
+    transition: opacity 300ms ease-out 0s;
+  }
+
+  & button {
+    height: 20rem;
+    width: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & button:hover svg path {
+    fill: #4171cd;
+  }
+
+  & .controlsLeft,
+  & .controlsRight {
+    display: flex;
+    align-items: center;
+
+    & svg {
+      width: auto;
+      height: 16rem;
+
+      & path {
+        fill: #fff;
+      }
+    }
+  }
+
+  & .controlPlayBtn {
+    margin-right: 24rem;
+  }
+
+  & .controlPrevBtn {
+    margin-right: 16rem;
+  }
+
+  & .pagesInfo {
+    margin-right: 16rem;
+    color: #fff;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  & .controlNextBtn {
+    & svg {
+      transform: rotateY(180deg);
+    }
+  }
+}
+
+.prevBtnLarge,
+.nextBtnLarge {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80rem;
+  height: 80rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  & svg {
+    height: 16rem;
+
+    & path {
+      fill: #fff;
+    }
+  }
+}
+
+.prevBtnLarge {
+  left: -40rem;
+  padding-left: 40rem;
+}
+
+.nextBtnLarge {
+  right: -40rem;
+  padding-right: 40rem;
+}
+
+.document {
+  width: 100%;
+}
+
+.page {
+}

@@ -1,0 +1,62 @@
+.lectureContainer {
+  height: 100%;
+  overflow-y: auto;
+
+  & h2,
+  & h3,
+  & h4 {
+    color: #000;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+
+    & span {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+.lectureContent {
+  padding: 24rem 0 40rem;
+}
+
+.titleWrapper {
+  margin-bottom: 40rem;
+
+  & h2:first-child {
+    margin-bottom: 10rem;
+  }
+}
+
+.section {
+  margin-bottom: 60rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionPDF {
+  & h3 {
+    margin-bottom: 24rem;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 16rem;
+  font-size: 16rem;
+}
+
+.sectionContentWrapper {
+  color: #000;
+  text-align: justify;
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22rem;
+}

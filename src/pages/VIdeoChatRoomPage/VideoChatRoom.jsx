@@ -13,8 +13,8 @@ const Video = ({ peer }) => {
     peer.on("stream", (stream) => {
       videoRef.current.srcObject = stream;
     });
-    // eslint-disable-next-line
-  }, []);
+  }, [peer]);
+
   return (
     <video
       ref={videoRef}
@@ -151,8 +151,7 @@ const VideoChatRoom = () => {
     return () => {
       socketRef.current.close();
     };
-    // eslint-disable-next-line
-  }, []);
+  }, [myId]);
 
   return (
     <div

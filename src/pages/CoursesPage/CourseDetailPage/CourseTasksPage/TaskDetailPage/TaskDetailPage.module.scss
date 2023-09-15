@@ -1,16 +1,23 @@
 .taskDetailWrapper {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60rem);
   background: #fff;
   border-radius: 2rem;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
-  padding: 0 24rem;
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    padding-left: 24rem;
+    padding-right: 24rem;
+  }
 }
 
 .controlPanel {
+  padding-top: 16rem;
+  padding-bottom: 16rem;
   display: flex;
   justify-content: space-between;
-  padding: 16rem 0;
   align-items: center;
   border-bottom: 1rem solid #cfcfcf;
 }
