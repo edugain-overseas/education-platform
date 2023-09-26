@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/education-platform/static/css/main.c256f790.css",
-    "main.js": "/education-platform/static/js/main.0d23e33c.js",
+    "main.css": "/education-platform/static/css/main.71f14892.css",
+    "main.js": "/education-platform/static/js/main.922f5ac5.js",
     "static/js/850.9c78ccfc.chunk.js": "/education-platform/static/js/850.9c78ccfc.chunk.js",
     "static/js/353.d80e8819.chunk.js": "/education-platform/static/js/353.d80e8819.chunk.js",
     "static/media/login-bg.png": "/education-platform/static/media/login-bg.4363596cec990c8af020.png",
@@ -24,6 +24,7 @@
     "static/media/photo.svg": "/education-platform/static/media/photo.12d0bfaa00a023601b96f4020a8e796b.svg",
     "static/media/grid.svg": "/education-platform/static/media/grid.cb165eb850b911966f9b5c4b603467d4.svg",
     "static/media/bellWithBadge.svg": "/education-platform/static/media/bellWithBadge.46b0422745ce7c4d402b06272a95d5b5.svg",
+    "static/media/archive.svg": "/education-platform/static/media/archive.2bdc086d35fe839e078f5ce17719591e.svg",
     "static/media/voice.svg": "/education-platform/static/media/voice.9f21338bbd3574f5041c95dae2263d0a.svg",
     "static/media/file.svg": "/education-platform/static/media/file.45cfd740cca90a618bc419a343745dff.svg",
     "static/media/home.svg": "/education-platform/static/media/home.5596acbdd4ded35a4925ab83528fab34.svg",
@@ -50,16 +51,17 @@
     "static/media/fullscreen.svg": "/education-platform/static/media/fullscreen.e607c6e9ec9451910fab0912ebc03b3b.svg",
     "static/media/play.svg": "/education-platform/static/media/play.cc341fb36cce9f06a8cc4b605e995ef2.svg",
     "static/media/stepArrow.svg": "/education-platform/static/media/stepArrow.daca1521d7a7886f67d0.svg",
+    "static/media/plus.svg": "/education-platform/static/media/plus.bac7ca3fd00c967f77b9bf9dc377004e.svg",
     "static/media/minus.svg": "/education-platform/static/media/minus.6829807e839d65449d2502544aafce3e.svg",
     "static/media/pause.svg": "/education-platform/static/media/pause.9a6ded2dd70f0d03cac8f26aa28df0e5.svg",
     "static/media/feedback.svg": "/education-platform/static/media/feedback.04619657e92de14b870f1572f8bb1e16.svg",
-    "main.c256f790.css.map": "/education-platform/static/css/main.c256f790.css.map",
-    "main.0d23e33c.js.map": "/education-platform/static/js/main.0d23e33c.js.map",
+    "main.71f14892.css.map": "/education-platform/static/css/main.71f14892.css.map",
+    "main.922f5ac5.js.map": "/education-platform/static/js/main.922f5ac5.js.map",
     "850.9c78ccfc.chunk.js.map": "/education-platform/static/js/850.9c78ccfc.chunk.js.map",
     "353.d80e8819.chunk.js.map": "/education-platform/static/js/353.d80e8819.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c256f790.css",
-    "static/js/main.0d23e33c.js"
+    "static/css/main.71f14892.css",
+    "static/js/main.922f5ac5.js"
   ]
 }
