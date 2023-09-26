@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import SimplePeer from "simple-peer";
 import { getUserId } from "../../redux/user/userSelectors";
-import styles from "./VideoChatRoom.module.scss";
+// import styles from "./VideoChatRoom.module.scss";
 
 const videoChatRoomId = 123;
 
@@ -17,14 +17,15 @@ const Video = ({ peer }) => {
   }, [peer]);
 
   return (
-    <div className={styles.videoWrapper}>
+    // <div className={styles.videoWrapper}>
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        className={styles.userVideo}
+        // className={styles.userVideo}
+        style={{width: '600rem', height: '400rem'}}
       />
-    </div>
+    // </div>
   );
 };
 
@@ -152,22 +153,25 @@ const VideoChatRoom = () => {
   }, [myId]);
 
   return (
-    <div className={styles.mainWrapper}>
-      <div className={styles.videoLayout}>
-        <div className={styles.videoWrapper}>
+    <div style={{display: 'flex', gap: '10rem', flexWrap: 'wrap'}}>
+    {/* // <div className={styles.mainWrapper}> */}
+      {/* // <div className={styles.videoLayout}> */}
+        {/* // <div className={styles.videoWrapper}> */}
           <video
             ref={myVideo}
             muted
             autoPlay
             playsInline
-            className={styles.myVideo}
+            style={{width: '600rem', height: '400rem'}}
+            // className={styles.myVideo}
           />
-        </div>
+        {/* // </div> */}
 
         {peers.map((peer, index) => (
           <Video key={index} peer={peer} />
         ))}
-      </div>
+      {/* // </div> */}
+    {/* // </div> */}
     </div>
   );
 };
