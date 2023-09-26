@@ -1,0 +1,16 @@
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: 0;
+  padding: 8rem;
+}
+
+.swiper-pagination-bullet {
+  width: 24rem;
+  height: 4rem;
+  border-radius: 5rem;
+  background: rgba(228, 247, 255, 0.6);
+}
+
+.swiper-pagination-bullet-active {
+  background: linear-gradient(156deg, #b8eaff 8.25%, #6fd4ff 100.26%);
+}

@@ -11,6 +11,7 @@ export const attachFileToMessageThunk = createAsyncThunk(
   "subjectChat/attachFile",
   async (file, { rejectWithValue }) => {
     try {
+      console.log(file);
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
       const response = await attachFileToSubjectMessage(file);
       instance.defaults.headers["Content-Type"] = "application/json";

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { getSubjectsParticipants } from "../../../../redux/subject/subjectSelectors";
 import styles from "./CourseParticipantPage.module.scss";
 import { useParams } from "react-router-dom";
-import { serverName } from "../../../../constants/server";
+import UserAvatar from "../../../../components/shared/UserAvatar/UserAvatar";
 
 export default function CourseParticipantPage() {
   const { id } = useParams();
@@ -39,33 +39,29 @@ export default function CourseParticipantPage() {
                 <li key={teacher.id} className={styles.teacherItemBody}>
                   <div className={styles.teacherName}>
                     <div className={styles.avatarWrapper}>
-                      {teacher.image_path ? (
-                        <img
-                          src={`${serverName}${teacher.image_path}`}
-                          alt="teacher avatar"
-                        />
-                      ) : (
-                        <span>{teacher.name[0]}</span>
-                      )}
+                      <UserAvatar
+                        imageSrc={teacher.image_path}
+                        userName={teacher.name}
+                      />
                     </div>
                     {`${teacher.name} ${teacher.surname}`}
                   </div>
                   <div className={styles.teacherEmail}>{teacher.email}</div>
-                  <div>20.08.2023</div>
+                  <div>
+                    {teacher.last_active
+                      ? teacher.last_active.replaceAll("-", ".")
+                      : "-"}
+                  </div>
                 </li>
               ))}
             {participantsData?.curator && (
               <li className={styles.teacherItemBody}>
                 <div className={styles.teacherName}>
                   <div className={styles.avatarWrapper}>
-                    {participantsData.curator?.image_path ? (
-                      <img
-                        src={`${serverName}${participantsData.curator.image_path}`}
-                        alt="curator avatar"
-                      />
-                    ) : (
-                      <span>{participantsData?.curator.name[0]}</span>
-                    )}
+                    <UserAvatar
+                      imageSrc={participantsData?.curator.image_path}
+                      userName={participantsData?.curator.name}
+                    />
                   </div>
                   {`${participantsData?.curator.name} ${participantsData?.curator.surname}`}
                 </div>
@@ -101,19 +97,16 @@ export default function CourseParticipantPage() {
                   <li key={student.id} className={styles.studentItemBody}>
                     <div className={styles.studentName}>
                       <div className={styles.avatarWrapper}>
-                        {student.image_path ? (
-                          <img
-                            src={`${serverName}${student.image_path}`}
-                            alt="student avatar"
-                          />
-                        ) : (
-                          <span>{student.name[0]}</span>
-                        )}
+                        <UserAvatar imageSrc={student.image_path} userName={student.name}/>
                       </div>
                       {`${student.name} ${student.surname}`}
                     </div>
                     <div className={styles.studentEmail}>{student.email}</div>
-                    <div>20.08.2023</div>
+                    <div>
+                      {student.last_active
+                        ? student.last_active.replaceAll("-", ".")
+                        : "-"}
+                    </div>{" "}
                     <div>67%</div>
                     <div>172 (B)</div>
                     <div>Non comment</div>

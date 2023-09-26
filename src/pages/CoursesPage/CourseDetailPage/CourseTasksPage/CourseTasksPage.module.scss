@@ -3,7 +3,8 @@
   height: 100%;
 }
 .titlesWrapper {
-  height: 60rem;
+  position: relative;
+  z-index: 2;
 }
 
 .primaryTitleWrapper {

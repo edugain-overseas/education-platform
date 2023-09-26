@@ -1,0 +1,51 @@
+.pageWrapper {
+  padding: 0 16rem;
+  height: 100%;
+}
+
+.controlPanel {
+  padding: 16rem 0;
+  display: flex;
+  gap: 16rem;
+}
+
+.courseBtn {
+  flex: 0 0 calc(25% - 16rem * 3 / 4);
+  height: 60rem;
+  border-radius: 2.087rem;
+  background: #fff;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+  opacity: 0.5;
+  transition: opacity 300ms ease-out;
+
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 18rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  &.activeBtn {
+    opacity: 1;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  height: calc(100% - 92rem);
+}
+
+.instructionListWrapper {
+  flex: 0 0 calc(50% + 8rem);
+  padding-bottom: 16rem;
+  overflow-y: auto;
+}
+
+.instructionContetntWrapper {
+  flex: 0 0 calc(50% - 8rem);
+  border-radius: 2rem;
+  background: #fff;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+  padding: 0 28rem;
+}

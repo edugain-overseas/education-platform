@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import SimplePeer from "simple-peer";
 import { getUserId } from "../../redux/user/userSelectors";
+import styles from "./VideoChatRoom.module.scss";
 
 const videoChatRoomId = 123;
 
@@ -16,18 +17,14 @@ const Video = ({ peer }) => {
   }, [peer]);
 
   return (
-    <video
-      ref={videoRef}
-      autoPlay
-      playsInline
-      muted
-      style={{
-        display: "block",
-        width: "400rem",
-        height: "25%",
-        objectFit: "cover",
-      }}
-    />
+    <div className={styles.videoWrapper}>
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        className={styles.userVideo}
+      />
+    </div>
   );
 };
 
@@ -37,6 +34,7 @@ const VideoChatRoom = () => {
   const myVideo = useRef();
   const peersRef = useRef([]);
   const myId = useSelector(getUserId);
+  console.log(peers.length);
 
   useEffect(() => {
     const createPeer = (userId, stream) => {
@@ -88,7 +86,7 @@ const VideoChatRoom = () => {
     };
 
     socketRef.current = new WebSocket(
-      `wss://ea1f-91-123-151-70.ngrok-free.app/room/${videoChatRoomId}`
+      `wss://9bf0-194-44-219-51.ngrok-free.app/room/${videoChatRoomId}`
     );
 
     socketRef.current.onopen = () => {
@@ -154,30 +152,22 @@ const VideoChatRoom = () => {
   }, [myId]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "20px",
-      }}
-    >
-      <video
-        ref={myVideo}
-        muted
-        autoPlay
-        playsInline
-        style={{
-          display: "block",
-          width: "400rem",
-          height: "25%",
-          objectFit: "cover",
-        }}
-      />
-      {peers.map((peer, index) => (
-        <Video key={index} peer={peer} />
-      ))}
+    <div className={styles.mainWrapper}>
+      <div className={styles.videoLayout}>
+        <div className={styles.videoWrapper}>
+          <video
+            ref={myVideo}
+            muted
+            autoPlay
+            playsInline
+            className={styles.myVideo}
+          />
+        </div>
+
+        {peers.map((peer, index) => (
+          <Video key={index} peer={peer} />
+        ))}
+      </div>
     </div>
   );
 };

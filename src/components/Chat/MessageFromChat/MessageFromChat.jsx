@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedback.svg";
-import user1Avatar from "../../../images/logo192.png";
-import { serverName } from "../../../constants/server";
 import { useDispatch, useSelector } from "react-redux";
 import { setFeedback } from "../../../redux/groupChat/groupChatSlice";
 import { setFeedback as setSubjectFeedback } from "../../../redux/subjectChats/subjectChatSlice";
@@ -15,9 +13,10 @@ import {
   readAnswerThunk as readSubjectAnswerThunk,
   readMessageThunk as readSubjectMessageThunk,
 } from "../../../redux/subjectChats/subjectChatOperations";
-import styles from "./MessageFromChat.module.scss";
 import { getSubjectFeedbackData } from "../../../redux/subjectChats/subjectChatSelectors";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import UserAvatar from "../../shared/UserAvatar/UserAvatar";
+import styles from "./MessageFromChat.module.scss";
 
 export function MessageFromChat({
   message = [],
@@ -27,8 +26,8 @@ export function MessageFromChat({
   readed = false,
 }) {
   const dispatch = useDispatch();
-  
-  const chatType = useContext(TypeContext) || 'group';
+
+  const chatType = useContext(TypeContext) || "group";
 
   const replyTo = useSelector(
     chatType === "group" ? getFeedbackData : getSubjectFeedbackData
@@ -90,22 +89,17 @@ export function MessageFromChat({
       onMouseEnter={handleMouseEnter}
     >
       <div className={styles.avatarWrapper}>
-        <img
-          src={
-            message.userData.image_path
-              ? `${serverName}${message.userData.image_path}`
-              : user1Avatar
-          }
-          alt="avatar"
-          className={styles.avatar}
+        <UserAvatar
+          imageSrc={message.userData.image_path}
+          userName={message.userData.name}
         />
-        <span
+        <div
           className={
             message.online
               ? `${styles.status} ${styles.online}`
               : `${styles.status} ${styles.offline}`
           }
-        ></span>
+        ></div>
       </div>
       <div className={styles.contentSubWrapper}>
         <p

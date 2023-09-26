@@ -1,7 +1,7 @@
 .modalWrapper {
   height: 504rem;
   width: 1080rem;
-  top: calc(70rem + 504rem / 2);
+  top: calc(70rem + (100% - 504rem - 70rem) / 2);
   left: calc(182rem + (100% - 1080rem - 182rem) / 2);
   margin: 0;
   padding: 0;

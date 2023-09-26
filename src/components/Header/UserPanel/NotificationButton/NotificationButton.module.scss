@@ -30,6 +30,10 @@
   text-overflow: ellipsis;
 }
 
+.card {
+  background: rgba($color: #4171cd, $alpha: 0.15);
+}
+
 .card:not(:last-child) {
   margin-bottom: 10rem;
 }
@@ -41,11 +45,36 @@
   padding: 4rem 0;
 }
 
-.cardAvatar {
+.avatarWrapper {
   width: 30rem;
   height: 30rem;
+  padding: 2rem;
+  border: 1rem solid #4171cd;
   border-radius: 50%;
-  object-fit: contain;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  & span {
+    width: 100%;
+    height: 100%;
+    background: #4171cd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+    font-family: Inter, sans-serif;
+    font-size: 18rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 }
 
 .cardHeadInfoWrapper {
@@ -57,7 +86,7 @@
 
 .cardHeadName {
   font-family: Inter, sans-serif;
-  font-size: 16rem;
+  font-size: 14rem;
   font-weight: 400;
   line-height: normal;
   color: #000;
@@ -89,4 +118,18 @@
   white-space: nowrap;
   overflow: hidden;
   color: #3965ba;
+}
+
+.readBtn {
+  border: 1px solid #4171cd;
+  background-color: rgba($color: #4171cd, $alpha: 0.15);
+  padding: 4rem 8rem;
+  border-radius: 10rem;
+  margin-top: 8rem;
+  transition: background-color, color 300ms ease-out;
+
+  &:hover {
+    background-color: rgba($color: #4171cd, $alpha: 1);
+    color: #fff;
+  }
 }

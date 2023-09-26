@@ -31,10 +31,12 @@ import {
 } from "../../../redux/subjectChats/subjectChatSelectors";
 import styles from "./MessageForm.module.scss";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import BooleanCheckbox from "../../shared/BooleanCheckbox/BooleanCheckbox";
 
 export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
   const [sendTo, setSendTo] = useState([]);
+  const [fixed, setFixed] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   const type = useContext(TypeContext) || "group";
@@ -73,7 +75,7 @@ export function MessageForm() {
       message: messageHTML,
       message_type: getMessageTypeByRecepient(chatUsers, sendTo),
       recipient: getMessageRecepients(chatUsers, sendTo),
-      fixed: false,
+      fixed: fixed,
       sender_id: userId,
       sender_type: userType,
       attach_file_path: attachedFiles,
@@ -131,9 +133,16 @@ export function MessageForm() {
         value={messageHTML}
         focused={isFocused}
       />
-      <AttachFiles show={isFocused} />
+      {!fixed && <AttachFiles show={isFocused} />}
+      <BooleanCheckbox
+        setValue={setFixed}
+        label="to fix"
+        disabled={false}
+        styles={styles}
+        show={isFocused}
+      />
       <div className={styles.toolbarRight}>
-        {!replyTo && (
+        {!replyTo && !fixed && (
           <MultipleSelect
             onChange={(values) => {
               setSendTo(values);

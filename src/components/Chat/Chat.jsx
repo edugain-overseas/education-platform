@@ -25,6 +25,7 @@ import {
   getSubjectParticipantsData,
 } from "../../redux/subjectChats/subjectChatSelectors";
 import { TypeContext } from "../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import FixedMessages from "./FixedMessages/FixedMessages";
 
 export function Chat({ subjectId = null, subjectData = null }) {
   const [isShowMore, setIsShowMore] = useState(false);
@@ -62,6 +63,8 @@ export function Chat({ subjectId = null, subjectData = null }) {
   const historyEnd = useSelector(
     type === "group" ? getHistoryEnd : getSubjectHistoryEnd
   );
+  const fixedMessages =
+    messages?.filter(({ message_fixed }) => message_fixed) || [];
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -170,7 +173,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
                           : {}
                       }
                     >
-                      {participant.username.slice(0, 1).toUpperCase()}
+                      {participant.username[0].toUpperCase()}
                     </span>
                   );
                 })}
@@ -221,7 +224,15 @@ export function Chat({ subjectId = null, subjectData = null }) {
           <MessageForm type={type} />
         </div>
       </div>
-      <div className={styles.chatFeedWrapper} ref={chatFeedWrapperRef}>
+      {fixedMessages.length !== 0 && <FixedMessages messages={fixedMessages} />}
+      <div
+        className={
+          fixedMessages.length !== 0
+            ? styles.chatFeedWrapperFixed
+            : styles.chatFeedWrapper
+        }
+        ref={chatFeedWrapperRef}
+      >
         <ChatFeed />
       </div>
     </div>

@@ -1,0 +1,66 @@
+.emptyWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.instructionHeader {
+  height: 60rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rem solid #cfcfcf;
+
+  & svg {
+    width: 16rem;
+    height: 16rem;
+  }
+}
+
+.navBtnsWrapper {
+  display: flex;
+  gap: 10rem;
+
+  & button:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.instructionBody {
+  height: calc(100% - 60rem);
+  padding: 24px 0;
+  overflow-y: auto;
+}
+
+.instructionTitle {
+  margin-bottom: 10rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 16rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.instructionSubTitle {
+  margin-bottom: 10rem;
+  color: #b3b3b3;
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.instructionText {
+  margin-bottom: 10rem;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: justify;
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

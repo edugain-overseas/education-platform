@@ -1,0 +1,108 @@
+.categoriesList {
+  padding-right: 16rem;
+
+  & li:not(:last-child) {
+    margin-bottom: 16rem;
+  }
+
+  & > li {
+    padding: 0 20rem 0 70rem;
+    border-radius: 2rem;
+    background: #fff;
+    box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+    position: relative;
+
+    & > h3 {
+      padding: 20rem 0;
+      color: rgba(0, 0, 0, 0.5);
+      font-family: Inter, sans-serif;
+      font-size: 16rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-transform: capitalize;
+      border-bottom: 1rem solid #b3b3b3;
+    }
+
+    &::before {
+      content: "";
+      width: 26rem;
+      height: 48rem;
+      background: #4171cd;
+      position: absolute;
+      top: 0;
+      left: 22rem;
+      z-index: 2;
+    }
+
+    &::after {
+      content: "";
+      width: calc(26rem / 1.4142);
+      height: calc(26rem / 1.4142);
+      background: #fff;
+      position: absolute;
+      top: calc(48rem);
+      left: calc(22rem + (26rem - 26rem / 1.4142) / 2);
+      transform: translateY(-50%) rotateZ(45deg);
+      z-index: 3;
+    }
+  }
+}
+
+.editPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rem;
+  position: absolute;
+  top: 60rem;
+  left: 28rem;
+
+  & button:first-child svg {
+    width: 16px;
+    & path {
+      fill: #000;
+      fill-opacity: 0.5;
+    }
+  } 
+}
+
+.detailPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rem;
+  position: absolute;
+  top: 22rem;
+  right: 20rem;
+}
+
+li.addItem {
+  padding: 0;
+  border-radius: 2rem;
+  background: #d3d4d5;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+
+  &:before {
+    background: #f0f0f0;
+  }
+
+  &::after {
+    background: #d3d4d5;
+  }
+}
+
+.addCategoryBtn {
+  width: 100%;
+  height: 60rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & svg {
+    width: 18rem;
+    height: 18rem;
+  }
+}

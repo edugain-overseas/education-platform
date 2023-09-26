@@ -30,4 +30,8 @@
   & path {
     fill: #b3b3b3;
   }
+
+  & input[type="file"] {
+    display: none;
+  }
 }

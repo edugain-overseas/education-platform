@@ -8,16 +8,19 @@ import {
 import { getUserGroup, getUserId } from "../../../../redux/user/userSelectors";
 import { Button, Card, Modal } from "antd";
 import { useNavigate } from "react-router";
-import { serverName } from "../../../../constants/server";
+import { useDispatch } from "react-redux";
+import { readMessageThunk } from "../../../../redux/groupChat/groupChatOperations";
+import UserAvatar from "../../../shared/UserAvatar/UserAvatar";
 import styles from "./NotificationButton.module.scss";
 
 export default function NotificationButton() {
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
   const userId = useSelector(getUserId);
   const messages = useSelector(getMessages);
   const groupName = useSelector(getUserGroup);
   const participantsData = useSelector(getParticipantsData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const messagesToNotify =
     (messages &&
@@ -48,17 +51,19 @@ export default function NotificationButton() {
     setShowModal(false);
   };
 
+  const handleRead = (messageId) => {
+    dispatch(readMessageThunk(messageId));
+  };
+
   const renderCardTitle = (message) => {
     const userData = participantsData.find(
       (user) => user.user_id === message.sender_id
     );
     return (
       <div className={styles.cardHead}>
-        <img
-          src={`${serverName}${userData.image_path}`}
-          alt={userData.name}
-          className={styles.cardAvatar}
-        />
+        <div className={styles.avatarWrapper}>
+          <UserAvatar imageSrc={userData.image_path} userName={userData.name} />
+        </div>
         <div className={styles.cardHeadInfoWrapper}>
           <span className={styles.cardHeadName}>
             {userData.name} {userData.surname}
@@ -81,8 +86,13 @@ export default function NotificationButton() {
           }}
         />
         {message.attach_files.length !== 0 && (
-          <p className={styles.mediaInfo}>+ {message.attach_files.length} media</p>
+          <p className={styles.mediaInfo}>
+            + {message.attach_files.length} media
+          </p>
         )}
+        <button onClick={() => handleRead(message.message_id)} className={styles.readBtn}>
+          Mask as read
+        </button>
       </div>
     );
   };
@@ -115,6 +125,7 @@ export default function NotificationButton() {
             title={renderCardTitle(message)}
             size="small"
             className={styles.card}
+            // onMouseEnter={() => handleMouseEnter(message.message_id)}
           >
             {renderCardBody(message)}
           </Card>

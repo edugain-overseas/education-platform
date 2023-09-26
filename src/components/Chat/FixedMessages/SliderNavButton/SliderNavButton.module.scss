@@ -1,0 +1,31 @@
+.btn {
+  display: block;
+  height: 50%;
+  width: 32rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #4171cd;
+
+  &:first-child {
+    border-left: 1rem solid #002f88;
+    border-bottom: 1rem solid #002f88;
+  }
+
+  &:not(:first-child) {
+    border-left: 1rem solid #002f88;
+  }
+
+  & svg {
+    cursor: pointer;
+  }
+
+  & svg path {
+    fill: #B8EAFF;
+    transition: fill 300ms ease-out;
+  }
+
+  &:hover svg path {
+    fill: #6FD4FF;
+  }
+}

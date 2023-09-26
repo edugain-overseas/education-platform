@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./UserInfoPanel.module.scss";
-import avatar from "../../images/login-bg.png";
 import { useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/user/userSelectors";
 import { AvatarUpload } from "./UploadAvatar/UploadAvatar";
-import { serverName } from "../../constants/server";
-
+import UserAvatar from "../shared/UserAvatar/UserAvatar";
 
 export function UserInfoPanel() {
-  const [avatarSrc, setAvatarSrc] = useState("");
   const userInfo = useSelector(getUserInfo);
-
-  useEffect(() => {
-    if (userInfo?.image_path) {
-      setAvatarSrc(`${serverName}${userInfo.image_path}`);
-    }
-  }, [userInfo]);
 
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.userInfoWrapper}>
         <div className={styles.imageWrapper}>
-          <img
-            src={avatarSrc !== "" ? avatarSrc : avatar}
-            // src={avatar}
-            alt="user avatar"
-            className={styles.avatar}
+          <UserAvatar
+            imageSrc={userInfo?.image_path}
+            userName={userInfo?.student_name}
           />
           <AvatarUpload />
         </div>

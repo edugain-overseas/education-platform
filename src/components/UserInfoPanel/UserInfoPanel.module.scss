@@ -30,6 +30,31 @@
   border: 1.2rem solid #001c54;
   border-radius: 50%;
   margin-bottom: 16rem;
+
+  & > img {
+    display: block;
+    width: 96rem;
+    height: 96rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  & > span {
+    width: 96rem;
+    height: 96rem;
+    background: #4171cd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: Inter, sans-serif;
+    font-size: 32rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+  }
 }
 
 .avatar {
@@ -77,9 +102,9 @@
 }
 
 .eduInfoProperty {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .eduInfoValue {
-    font-weight: 600;
+  font-weight: 600;
 }

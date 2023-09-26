@@ -1,0 +1,78 @@
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 10rem;
+  padding: 16rem 56rem 20rem 24rem;
+}
+
+.avatarWrapper {
+  position: relative;
+  height: fit-content;
+  z-index: 2;
+
+  & > img {
+    display: block;
+    width: 40rem;
+    height: 40rem;
+    border-radius: 50%;
+    background-color: #0c2e4c;
+    object-fit: cover;
+  }
+
+  & > span {
+    width: 40rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #c2c2c2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18rem;
+  }
+}
+
+.status {
+  position: absolute;
+  bottom: -3rem;
+  right: 1rem;
+  box-sizing: content-box;
+  width: 10rem;
+  height: 10rem;
+  border: 3rem solid #fff;
+  border-radius: 50%;
+}
+
+.online {
+  background-color: #00c808;
+}
+
+.offline {
+  background-color: #f00;
+}
+
+.messageWrapper {
+    flex: 1;
+}
+
+.senderName {
+  color: rgba(228, 247, 255, 0.6);
+  font-family: Inter, sans-serif;
+  font-size: 12rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 8rem;
+}
+
+.messageText {
+  color: #fff;
+  font-family: Inter, sans-serif;
+  font-size: 13rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20rem;
+  max-height: 40rem;
+  overflow-y: auto;
+}
+

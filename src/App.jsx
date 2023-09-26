@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
 import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
-import { adjustFontSize } from "./helpers/adjustFornSize";
+import { adjustFontSize } from "./helpers/adjustFontSize";
 import { connectToWebSocket } from "./services/websocket";
 import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import SubjectsList from "./components/SubjectsList/SubjectsList";
@@ -27,6 +27,8 @@ import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CoursePa
 import TaskDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/TaskDetailPage/TaskDetailPage";
 // import VideoChatRoomPage from "./pages/VIdeoChatRoomPage/VideoChatRoomPage";
 import VideoChatRoom from "./pages/VIdeoChatRoomPage/VideoChatRoom";
+import CourseInstructionPage from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/CourseInstructionPage";
+import IntructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/IntructionContent/IntructionContent";
 
 export const WebsocketContext = createContext(null);
 
@@ -94,7 +96,9 @@ function App() {
               <Route path="participants" element={<CourseParticipantPage />} />
               <Route path="journal" />
               <Route path="about" element={<CourseItemPage />} />
-              <Route path="instructions" />
+              <Route path="instructions" element={<CourseInstructionPage />}>
+                <Route path=":instructionId" element={<IntructionContent />} />
+              </Route>
             </Route>
           </Route>
           {/* <Route path="tasks" element={<TasksPage />}>

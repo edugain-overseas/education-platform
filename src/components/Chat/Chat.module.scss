@@ -24,7 +24,7 @@
   gap: 16rem;
   padding: 16rem 0;
   flex-shrink: 0;
-  
+
   &.more {
     width: 100%;
   }
@@ -43,8 +43,8 @@
     position: relative;
   }
 
-  &.more{
-    width: 100%; 
+  &.more {
+    width: 100%;
   }
 }
 
@@ -114,21 +114,21 @@
 .gridIconHeader {
   width: 14rem;
   height: 14rem;
-  fill: #718DA7;
+  fill: #718da7;
 }
 
 .chatname {
   font-size: 14rem;
   line-height: 17rem;
   text-transform: uppercase;
-  color: #718DA7;
+  color: #718da7;
   text-overflow: ellipsis;
 }
 
 .divider {
   margin: 0 24rem;
   height: 1rem;
-  background-color: #CFCFCF;
+  background-color: #cfcfcf;
 }
 
 .formWrapper {
@@ -141,7 +141,7 @@
   top: 0;
   font-size: 14rem;
   line-height: 22rem;
-  color: #4171CD;
+  color: #4171cd;
 }
 
 .chatFeedWrapper {
@@ -149,5 +149,13 @@
   flex-grow: 1;
   max-height: calc(100% - 155rem);
   min-height: calc(100% - 275rem);
+  overflow-y: auto;
+}
+
+.chatFeedWrapperFixed {
+  padding: 24rem;
+  flex-grow: 1;
+  max-height: calc(100% - 255rem);
+  min-height: calc(100% - 375rem);
   overflow-y: auto;
 }

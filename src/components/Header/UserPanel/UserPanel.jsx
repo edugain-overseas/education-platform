@@ -6,10 +6,9 @@ import {
   getUserType,
 } from "../../../redux/user/userSelectors";
 import { ReactComponent as SettingsIcon } from "../../../images/icons/settings.svg";
-import { serverName } from "../../../constants/server";
+// import { serverName } from "../../../constants/server";
 import NotificationButton from "./NotificationButton/NotificationButton";
-import image from "../../../images/logo192.png";
-import styles from "./UserPanel.module.scss";
+// import image from "../../../images/logo192.png";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 import {
   setDefault,
@@ -19,6 +18,8 @@ import {
 import { useDispatch } from "react-redux";
 import { getIsLoading } from "../../../redux/subject/subjectSelectors";
 import { useLocation } from "react-router-dom";
+import UserAvatar from "../../shared/UserAvatar/UserAvatar";
+import styles from "./UserPanel.module.scss";
 
 export const UserPanel = () => {
   const dispatch = useDispatch();
@@ -46,13 +47,9 @@ export const UserPanel = () => {
     <div className={styles.wrapper}>
       <NotificationButton />
       <div className={styles.userWrapper}>
-        <img
-          src={
-            userInfo?.image_path ? `${serverName}${userInfo.image_path}` : image
-          }
-          alt="user avatar"
-          className={styles.userAvatar}
-        />
+        <div className={styles.userAvatarWrapper}>
+          <UserAvatar imageSrc={userInfo?.image_path} userName={username} />
+        </div>
         <span className={styles.userName}>{username}</span>
       </div>
       {userType !== "qweqwe" &&

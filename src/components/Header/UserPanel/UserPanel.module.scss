@@ -20,6 +20,36 @@
   margin-right: 26rem;
 }
 
+.userAvatarWrapper {
+  width: 36rem;
+  height: 36rem;
+  border-radius: 50%;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  & span {
+    width: 100%;
+    height: 100%;
+    background: #4171cd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: Inter, sans-serif;
+    font-size: 18rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+}
+
 .userAvatar {
   width: 36rem;
   height: 36rem;
