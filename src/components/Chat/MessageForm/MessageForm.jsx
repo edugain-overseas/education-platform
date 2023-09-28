@@ -32,6 +32,7 @@ import {
 import styles from "./MessageForm.module.scss";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import BooleanCheckbox from "../../shared/BooleanCheckbox/BooleanCheckbox";
+import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
 
 export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
@@ -96,6 +97,7 @@ export function MessageForm() {
     );
     dispatch(type === "group" ? setFeedback(null) : setSubjectFeedback(null));
     setMessageHTML("");
+    setFixed(false);
   };
 
   const handleFocusForm = (e) => {
@@ -134,8 +136,14 @@ export function MessageForm() {
         focused={isFocused}
       />
       {!fixed && <AttachFiles show={isFocused} />}
+      {attachedFiles.length !== 0 && (
+        <div className={styles.attachBtnWrapper}>
+          <AttachedFilesPopover files={attachedFiles} />
+        </div>
+      )}
       <BooleanCheckbox
         setValue={setFixed}
+        value={fixed}
         label="to fix"
         disabled={false}
         styles={styles}

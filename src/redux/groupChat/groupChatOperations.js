@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../services/instance";
 import {
   attachFileToMessage,
+  deleteFile,
   loadMoreMessages,
   readAnswer,
   readMessage,
@@ -56,6 +57,19 @@ export const loadMoreMessagesThunk = createAsyncThunk(
       console.log(groupName, lastMessageId);
       const response = await loadMoreMessages(groupName, lastMessageId);
       return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteFileThunk = createAsyncThunk(
+  "groupChat/deleteFile",
+  async (filePath, { rejectWithValue }) => {
+    try {
+      const response = await deleteFile(filePath);
+      console.log({response, filePath});
+      return {response, filePath};
     } catch (error) {
       return rejectWithValue(error);
     }

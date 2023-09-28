@@ -13,10 +13,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const options = {
   cMapUrl: "/cmaps/",
   standardFontDataUrl: "/standard_fonts/",
-  withCredentials: true,
+  // withCredentials: true,
 };
 
-function PDFReader({ pdf }) {
+function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageLoadedSucces, setPageLoadedSucces] = useState(false);
@@ -27,34 +27,65 @@ function PDFReader({ pdf }) {
   const canvasRef = useRef(null);
   const interval = useRef(null);
 
+  console.log(canvasRef.current?.clientWidth);
+
   const onLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
   const handlePageLoadSucces = () => {
-    if (!pageLoadedSucces || pageHeight !== canvasRef.current.clientHeight) {
+    if (!pageLoadedSucces || pageHeight < canvasRef.current.clientHeight) {
       setPageHeight(canvasRef.current.clientHeight);
       setPageLoadedSucces(true);
     }
   };
 
   const handlePrev = () => {
-    setPageNumber((prev) => prev - 1);
+    if (pageNumber === 1) {
+      return;
+    }
+    setPageNumber((prev) => prev - 2);
   };
 
   const handleNext = () => {
-    setPageNumber((prev) => prev + 1);
+    if (pageNumber === numPages) {
+      setPageNumber(1);
+      return;
+    }
+    setPageNumber((prev) => prev + 2);
   };
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      if (pageHeight !== canvasRef.current?.clientHeight) {
+        setPageHeight(canvasRef.current.clientHeight);
+        setPageLoadedSucces(true);
+      }
+
+      // if (
+      //   canvasRef.current?.clientWidth !==
+      //   containerRef.current?.clientWidth * 2
+      // ) {
+      //   console.log(canvasRef.current?.clientWidth);
+      // }
+    }
+  }, [fullscreen, containerRef.current?.clientWidth, pageHeight]);
 
   useEffect(() => {
     if (play) {
       interval.current = setInterval(() => {
-        setPageNumber((prev) => prev + 1);
+        setPageNumber((prev) => prev + 2);
       }, 5000);
     } else {
       clearInterval(interval.current);
     }
   }, [play]);
+
+  useEffect(() => {
+    if (pageNumber >= numPages) {
+      setPageNumber(1);
+    }
+  }, [pageNumber, numPages]);
 
   return (
     <div
@@ -83,7 +114,10 @@ function PDFReader({ pdf }) {
               </button>
             </div>
             <div className={styles.controlsRight}>
-              <button className={styles.controllsFullscreenOn}>
+              <button
+                className={styles.controllsFullscreenOn}
+                onClick={() => setFullscreen((prev) => !prev)}
+              >
                 <FullscreenIcon />
               </button>
             </div>
@@ -103,6 +137,7 @@ function PDFReader({ pdf }) {
         onLoadSuccess={onLoadSuccess}
         onLoadError={console.error}
         className={styles.document}
+        loading={null}
       >
         <Page
           pageNumber={pageNumber}
@@ -110,11 +145,30 @@ function PDFReader({ pdf }) {
           renderTextLayer={false}
           className={styles.page}
           width={
-            containerRef?.current ? containerRef.current.clientWidth : undefined
+            containerRef?.current
+              ? containerRef.current.clientWidth / 2
+              : undefined
           }
           canvasRef={canvasRef}
           onLoadSuccess={handlePageLoadSucces}
+          loading={null}
         />
+        {pageNumber !== numPages && (
+          <Page
+            pageNumber={pageNumber + 1}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+            className={styles.page}
+            width={
+              containerRef?.current
+                ? containerRef.current.clientWidth / 2
+                : undefined
+            }
+            canvasRef={canvasRef}
+            loading={null}
+            // onLoadSuccess={handlePageLoadSucces}
+          />
+        )}
       </Document>
     </div>
   );

@@ -121,7 +121,14 @@
 
 .document {
   width: 100%;
+  display: flex;
+
 }
 
-.page {
+.page:first-child {
+  border-right: 1rem solid rgba(0, 0, 0, 0.5)
+}
+
+.page:last-child {
+  border-left: 1rem solid rgba(0, 0, 0, 0.5)
 }

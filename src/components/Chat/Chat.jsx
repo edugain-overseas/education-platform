@@ -32,6 +32,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
 
   const type = useContext(TypeContext) || "group";
+  console.log(type);
 
   const avatarsWrapperRef = useRef(null);
   const chatFeedWrapperRef = useRef(null);

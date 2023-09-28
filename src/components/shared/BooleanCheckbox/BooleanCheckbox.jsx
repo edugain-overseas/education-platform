@@ -1,7 +1,7 @@
 import { Checkbox } from "antd";
 import React from "react";
 
-const BooleanCheckbox = ({ setValue, label, disabled, styles, show }) => {
+const BooleanCheckbox = ({ setValue, value, label, disabled, styles, show }) => {
   return (
     <div
       className={styles.checkboxWrapper}
@@ -11,6 +11,7 @@ const BooleanCheckbox = ({ setValue, label, disabled, styles, show }) => {
         onChange={() => setValue((prev) => !prev)}
         className={styles.checkbox}
         disabled={disabled}
+        checked={value}
       >
         {label}
       </Checkbox>

@@ -7,6 +7,7 @@ export const getAllSubjectsByGroupName = async (groupName) => {
 
 export const getSubjectTapesById = async (subjectId) => {
   const { data } = await instance.get(`/subject-tapes/${subjectId}`);
+  console.log(data);
   return data;
 };
 

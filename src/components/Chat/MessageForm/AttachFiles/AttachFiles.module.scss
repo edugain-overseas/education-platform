@@ -15,3 +15,9 @@
     }
 }
 
+.btnWrapper {
+  & input[type="file"] {
+    display: none;
+  }
+}
+

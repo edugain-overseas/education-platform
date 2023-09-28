@@ -19,5 +19,13 @@
   position: absolute;
   bottom: 18rem;
   left: 420rem;
-  z-index: 999999;
+  // z-index: 999999;
+}
+
+.attachBtnWrapper {
+  width: 16rem;
+  height: 16rem;
+  position: absolute;
+  top: 16rem;
+  right: 16rem;
 }

@@ -10,6 +10,20 @@ export const attachFileToSubjectMessage = async (file) => {
   return data;
 };
 
+export const deleteFile = async (filePath) => {
+  const { data } = await instance.delete("/group-chat/delete-file", {
+    params: { file_path: filePath },
+  });
+  return data;
+};
+
+export const deleteSubjectFile = async (filePath) => {
+  const { data } = await instance.delete("/subject_chat/delete-file", {
+    params: { file_path: filePath },
+  });
+  return data;
+};
+
 export const readMessage = async (messageId) => {
   const { data } = await instance.post(`/read-message/${messageId}`);
   return data;

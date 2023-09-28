@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PDFReader from "../../shared/PDFReader/PDFReader";
 import { serverName } from "../../../constants/server";
+import { Empty, Modal } from "antd";
+import "./ant.css";
 import styles from "./Lecture.module.scss";
-import { Empty } from "antd";
 
 export default function Lecture({ lessonData }) {
+  const [fullscreen, setFullscreen] = useState(false);
   const { id: lectureId } = lessonData;
   const lectureContent = lessonData?.data?.lectureInfo || null;
 
@@ -26,6 +28,7 @@ export default function Lecture({ lessonData }) {
           );
         case "pdf":
           const encodedFilePath = content.replace(/ /g, "%20");
+          console.log(`${serverName}${encodedFilePath}`);
           return (
             <section
               key={id}
@@ -33,7 +36,37 @@ export default function Lecture({ lessonData }) {
               className={`${styles.section} ${styles.sectionPDF}`}
             >
               <h3 className={styles.sectionTitle}>{title}</h3>
-              <PDFReader pdf={`${serverName}${encodedFilePath}`} />
+              <PDFReader
+                pdf={`${serverName}${encodedFilePath}`}
+                setFullscreen={setFullscreen}
+                fullscreen={fullscreen}
+              />
+              <Modal
+                open={fullscreen}
+                footer={null}
+                closeIcon={null}
+                mask={false}
+                width="100vw"
+                style={{
+                  inset: 0,
+                  height: "100vh",
+                  padding: 0,
+                  maxWidth: "initial",
+                }}
+                bodyStyle={{
+                  padding: "10rem 0",
+                  width: "100vw",
+                  height: "100vh",
+                  background: "rgba(0,0,0, 0.5)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <PDFReader
+                  pdf={`${serverName}${encodedFilePath}`}
+                  setFullscreen={setFullscreen}
+                />
+              </Modal>
             </section>
           );
 

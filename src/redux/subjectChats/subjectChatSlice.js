@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   attachFileToMessageThunk,
+  deleteSubjectFileThunk,
   loadMoreMessagesThunk,
   readAnswerThunk,
   readMessageThunk,
@@ -140,6 +141,24 @@ export const subjectChatSlice = createSlice({
       .addCase(loadMoreMessagesThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+      })
+
+      .addCase(deleteSubjectFileThunk.pending, (state, _) => {
+        state.attachedFilesToMessage.isLoading = true;
+        state.attachedFilesToMessage.error = null;
+      })
+      .addCase(deleteSubjectFileThunk.fulfilled, (state, { payload }) => {
+        const { filePath } = payload;
+        state.attachedFilesToMessage.filesData = [
+          ...state.attachedFilesToMessage.filesData.filter(
+            (fileData) => fileData.path !== filePath
+          ),
+        ];
+        state.attachedFilesToMessage.isLoading = false;
+      })
+      .addCase(deleteSubjectFileThunk.rejected, (state, { payload }) => {
+        state.attachedFilesToMessage.isLoading = false;
+        state.attachedFilesToMessage.error = payload;
       });
   },
 });
