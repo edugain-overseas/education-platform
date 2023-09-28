@@ -18,6 +18,7 @@ import {
 } from "../../../redux/subjectChats/subjectChatSlice";
 import { getMessageType } from "../../../helpers/getMessageType";
 import {
+  getAttachFileLoading,
   getAttachedFiles,
   getFeedbackData,
   getParticipantsData,
@@ -33,6 +34,8 @@ import styles from "./MessageForm.module.scss";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import BooleanCheckbox from "../../shared/BooleanCheckbox/BooleanCheckbox";
 import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
+import { getSubjectAttachFileLoading } from "../../../redux/subjectChats/subjectChatSelectors";
+import { TailSpin } from "react-loader-spinner";
 
 export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
@@ -57,6 +60,10 @@ export function MessageForm() {
   );
   const replyTo = useSelector(
     type === "group" ? getFeedbackData : getSubjectFeedbackData
+  );
+
+  const isLoadingFiles = useSelector(
+    type === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
   );
 
   const handleSubmit = (event) => {
@@ -136,10 +143,24 @@ export function MessageForm() {
         focused={isFocused}
       />
       {!fixed && <AttachFiles show={isFocused} />}
-      {attachedFiles.length !== 0 && (
+
+      {isLoadingFiles && attachedFiles.length === 0 ? (
         <div className={styles.attachBtnWrapper}>
-          <AttachedFilesPopover files={attachedFiles} />
+          <TailSpin
+            height="100%"
+            width="100%"
+            color="#4171cd"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            visible={true}
+          />
         </div>
+      ) : (
+        attachedFiles.length !== 0 && (
+          <div className={styles.attachBtnWrapper}>
+            <AttachedFilesPopover files={attachedFiles} />
+          </div>
+        )
       )}
       <BooleanCheckbox
         setValue={setFixed}

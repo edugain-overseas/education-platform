@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "./UserInfoPanel.module.scss";
 import { useSelector } from "react-redux";
-import { getUserInfo } from "../../redux/user/userSelectors";
+import { getIsLoading, getUserInfo } from "../../redux/user/userSelectors";
 import { AvatarUpload } from "./UploadAvatar/UploadAvatar";
 import UserAvatar from "../shared/UserAvatar/UserAvatar";
+import { TailSpin } from "react-loader-spinner";
 
 export function UserInfoPanel() {
   const userInfo = useSelector(getUserInfo);
+  const isUserLoading = useSelector(getIsLoading);
+  // const isUserLoading = true
 
   return (
     <div className={styles.mainWrapper}>
@@ -16,7 +19,20 @@ export function UserInfoPanel() {
             imageSrc={userInfo?.image_path}
             userName={userInfo?.student_name}
           />
-          <AvatarUpload />
+          {isUserLoading ? (
+            <TailSpin
+              height="100%"
+              width="100%"
+              color="#4171cd"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+              visible={true}
+              
+              wrapperClass={styles.loader}
+            />
+          ) : (
+            <AvatarUpload />
+          )}
         </div>
         <p
           className={styles.userName}

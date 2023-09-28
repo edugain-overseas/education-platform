@@ -10,18 +10,25 @@ import { useDispatch } from "react-redux";
 import { deleteFileThunk } from "../../../../redux/groupChat/groupChatOperations";
 import { deleteSubjectFileThunk } from "../../../../redux/subjectChats/subjectChatOperations";
 import { TypeContext } from "../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { getAttachFileLoading } from "../../../../redux/groupChat/groupChatSelectors";
+import { getSubjectAttachFileLoading } from "../../../../redux/subjectChats/subjectChatSelectors";
+import { useSelector } from "react-redux";
+import { TailSpin } from "react-loader-spinner";
 import styles from "./AttachedFilesPopover.module.scss";
 
 const Title = () => <h4 className={styles.popoverTitle}>Attached files</h4>;
 
 const Content = ({ files }) => {
-  const chatType = useContext(TypeContext) || 'group';
+  const chatType = useContext(TypeContext) || "group";
   const dispatch = useDispatch();
+  const isLoadingFiles = useSelector(
+    chatType === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
+  );
 
   const handleDelete = (filePath) => {
     console.log(chatType);
     if (chatType === "group") {
-      console.log('dispatching action');
+      console.log("dispatching action");
       dispatch(deleteFileThunk(filePath));
       return;
     }
@@ -62,13 +69,24 @@ const Content = ({ files }) => {
                 .{fileNameEnd}
               </p>
             </div>
-            <button
-              type="button"
-              className={styles.deleteBtn}
-              onClick={() => handleDelete(file.path)}
-            >
-              <DeleteIcon />
-            </button>
+            {isLoadingFiles ? (
+              <TailSpin
+                height="100%"
+                width="100%"
+                color="#4171cd"
+                ariaLabel="tail-spin-loading"
+                radius="1"
+                visible={true}
+              />
+            ) : (
+              <button
+                type="button"
+                className={styles.deleteBtn}
+                onClick={() => handleDelete(file.path)}
+              >
+                <DeleteIcon />
+              </button>
+            )}
           </li>
         );
       })}

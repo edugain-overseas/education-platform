@@ -22,6 +22,7 @@
 }
 
 .imageWrapper {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,4 +108,13 @@
 
 .eduInfoValue {
   font-weight: 600;
+}
+
+.loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
 }

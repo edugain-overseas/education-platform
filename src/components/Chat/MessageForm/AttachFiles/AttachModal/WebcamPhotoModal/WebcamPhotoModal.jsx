@@ -63,6 +63,7 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
     <div>
       <Modal
         open={isOpenModal}
+        bodyStyle={{padding: '20rem', borderRadius: '10rem'}}
         destroyOnClose
         onCancel={() => {
           closeModal();

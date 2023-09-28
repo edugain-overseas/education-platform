@@ -54,7 +54,7 @@ export default function Lecture({ lessonData }) {
                   maxWidth: "initial",
                 }}
                 bodyStyle={{
-                  padding: "10rem 0",
+                  padding: "20rem 0",
                   width: "100vw",
                   height: "100vh",
                   background: "rgba(0,0,0, 0.5)",
