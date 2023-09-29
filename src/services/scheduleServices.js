@@ -6,5 +6,6 @@ export const getSchedule = async (groupName) => {
             group_name: groupName
         }
     });
+    console.log(data);
     return data
 }

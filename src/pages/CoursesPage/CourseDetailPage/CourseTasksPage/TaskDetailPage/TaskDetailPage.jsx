@@ -86,6 +86,7 @@ export default function TaskDetailPage() {
           <button className={styles.nextBtn} onClick={hanleNextLessonClick}>
             <NextIcon />
           </button>
+          <h1>Tasks</h1>
         </div>
         <div className={styles.additionNavWrapper}>
           <button className={styles.backBtn} onClick={handleBackToSelection}>

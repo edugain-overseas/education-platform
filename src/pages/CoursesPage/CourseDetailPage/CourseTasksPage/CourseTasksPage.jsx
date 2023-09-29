@@ -16,17 +16,17 @@ const CourseTasksPage = () => {
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>
-        <div className={styles.primaryTitleWrapper}>
-          <h1>tasks</h1>
-          {!lessonId && (
+        {!lessonId && (
+          <div className={styles.primaryTitleWrapper}>
+            <h1>tasks</h1>
             <select name="" id="" defaultValue="All tasks">
               <optgroup>
                 <option value="All tasks">All tasks</option>
                 <option value="test">Test</option>
               </optgroup>
             </select>
-          )}
-        </div>
+          </div>
+        )}
         {!lessonId && (
           <div className={styles.secondaryTitleWrapper}>
             <h2>

@@ -1,6 +1,7 @@
 .taskDetailWrapper {
   width: 100%;
-  height: calc(100% - 60rem);
+  // height: calc(100% - 60rem);
+  height: 100%;
   background: #fff;
   border-radius: 2rem;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
@@ -62,4 +63,15 @@
       fill: rgba(0, 0, 0, 0.5);
     }
   }
+}
+
+h1 {
+  color: rgba(0, 0, 0, 0.7);
+  font-family: Inter, sans-serif;
+  font-size: 20rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 6rem;
+  text-transform: uppercase;
 }

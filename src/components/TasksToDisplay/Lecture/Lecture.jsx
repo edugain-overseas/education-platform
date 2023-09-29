@@ -47,6 +47,7 @@ export default function Lecture({ lessonData }) {
                 closeIcon={null}
                 mask={false}
                 width="100vw"
+                wrapClassName="pdfReader"
                 style={{
                   inset: 0,
                   height: "100vh",
@@ -65,6 +66,7 @@ export default function Lecture({ lessonData }) {
                 <PDFReader
                   pdf={`${serverName}${encodedFilePath}`}
                   setFullscreen={setFullscreen}
+                  fullscreen={fullscreen}
                 />
               </Modal>
             </section>

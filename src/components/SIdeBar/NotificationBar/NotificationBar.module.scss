@@ -5,7 +5,7 @@
   padding: 0 39rem 0 35rem;
 }
 
-.notificationWrapper {
+.navLink {
   display: flex;
   flex-direction: column;
   gap: 10rem;
@@ -13,9 +13,14 @@
   align-items: center;
   padding: 20rem 0;
   height: 104rem;
-  background: #4171cd;
+  background-color: #4171cd;
   border-radius: 7rem;
   cursor: pointer;
+  transition: background-color 300ms ease-out;
+
+  &.navLink--active {
+    background-color: #81acff;
+  }
 
   & svg {
     display: block;
@@ -25,6 +30,7 @@
   }
 
   & p {
+    color: #fff;
     padding: 0 2rem;
     font-weight: 500;
     font-size: 14rem;

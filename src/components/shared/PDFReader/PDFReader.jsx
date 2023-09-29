@@ -26,8 +26,12 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const interval = useRef(null);
+  const controlPanelRef = useRef(null);
+  const PrevBtnRef = useRef(null);
+  const NextBtnRef = useRef(null);
 
   console.log(canvasRef.current?.clientWidth);
+  console.log(fullscreen);
 
   const onLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -55,19 +59,25 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     setPageNumber((prev) => prev + 2);
   };
 
+  const handleContainerMouseEnter = () => {
+    console.dir(controlPanelRef.current);
+    if (controlPanelRef.current) {
+      controlPanelRef.current.classList.add(styles.active);
+    }
+    if (PrevBtnRef.current) {
+      PrevBtnRef.current.classList.add(styles.active);
+    }
+    if (NextBtnRef.current) {
+      NextBtnRef.current.classList.add(styles.active);
+    }
+  };
+
   useEffect(() => {
     if (canvasRef.current) {
       if (pageHeight !== canvasRef.current?.clientHeight) {
         setPageHeight(canvasRef.current.clientHeight);
         setPageLoadedSucces(true);
       }
-
-      // if (
-      //   canvasRef.current?.clientWidth !==
-      //   containerRef.current?.clientWidth * 2
-      // ) {
-      //   console.log(canvasRef.current?.clientWidth);
-      // }
     }
   }, [fullscreen, containerRef.current?.clientWidth, pageHeight]);
 
@@ -91,11 +101,12 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     <div
       ref={containerRef}
       className={styles.documentContainer}
-      style={{ height: pageHeight }}
+      style={{ height: fullscreen ? "100%" : pageHeight }}
+      onMouseEnter={handleContainerMouseEnter}
     >
       {pageLoadedSucces && (
         <>
-          <div className={styles.controlPanel}>
+          <div className={styles.controlPanel} ref={controlPanelRef}>
             <div className={styles.controlsLeft}>
               <button
                 className={styles.controlPlayBtn}
@@ -122,10 +133,18 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
               </button>
             </div>
           </div>
-          <button className={styles.prevBtnLarge} onClick={handlePrev}>
+          <button
+            className={styles.prevBtnLarge}
+            onClick={handlePrev}
+            ref={PrevBtnRef}
+          >
             <PrevIcon />
           </button>
-          <button className={styles.nextBtnLarge} onClick={handleNext}>
+          <button
+            className={styles.nextBtnLarge}
+            onClick={handleNext}
+            ref={NextBtnRef}
+          >
             <NextIcon />
           </button>
         </>
@@ -144,10 +163,15 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
           renderAnnotationLayer={false}
           renderTextLayer={false}
           className={styles.page}
-          width={
-            containerRef?.current
-              ? containerRef.current.clientWidth / 2
-              : undefined
+          // width={
+          //   containerRef?.current
+          //     ? containerRef.current.clientWidth / 2
+          //     : undefined
+          // }
+          height={
+            fullscreen && containerRef.current && canvasRef.current
+              ? containerRef?.current?.clientHeight
+              : canvasRef?.current?.clientHeight
           }
           canvasRef={canvasRef}
           onLoadSuccess={handlePageLoadSucces}
@@ -159,10 +183,16 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
             renderAnnotationLayer={false}
             renderTextLayer={false}
             className={styles.page}
-            width={
-              containerRef?.current
-                ? containerRef.current.clientWidth / 2
-                : undefined
+            // width={
+            //   containerRef?.current
+            //     ? containerRef.current.clientWidth / 2 -
+            //       containerRef.current.clientWidth * 0.05
+            //     : undefined
+            // }
+            height={
+              fullscreen && containerRef.current && canvasRef.current
+                ? containerRef.current?.clientHeight
+                : canvasRef.current?.clientHeight
             }
             canvasRef={canvasRef}
             loading={null}

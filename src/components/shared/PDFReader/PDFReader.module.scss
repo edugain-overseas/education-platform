@@ -1,5 +1,6 @@
 .documentContainer {
-  width: 1080rem;
+  // width: 1080rem;
+  width: fit-content;
   margin: 0 auto;
 
   border-radius: 2rem 2rem 0 0;
@@ -22,10 +23,14 @@
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5rem);
-  opacity: 0;
-  transition: opacity 300ms ease-out 3s;
+  opacity: 1;
 
-  &:hover {
+  &.active {
+    opacity: 0;
+    transition: opacity 300ms ease-out 3s;
+  }
+
+  &.active:hover {
     opacity: 1;
     transition: opacity 300ms ease-out 0s;
   }
@@ -93,11 +98,17 @@
   height: 80rem;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 300ms ease-out;
 
-  &:hover {
+  &.active {
+    opacity: 0;
+    transition: opacity 300ms ease-out 1s;
+  }
+
+  &.active:hover {
     opacity: 1;
+    transition: opacity 300ms ease-out 0s;
   }
 
   & svg {
@@ -122,13 +133,13 @@
 .document {
   width: 100%;
   display: flex;
-
+  justify-content: center;
 }
 
 .page:first-child {
-  border-right: 1rem solid rgba(0, 0, 0, 0.5)
+  border-right: 1rem solid rgba(0, 0, 0, 0.5);
 }
 
 .page:last-child {
-  border-left: 1rem solid rgba(0, 0, 0, 0.5)
+  border-left: 1rem solid rgba(0, 0, 0, 0.5);
 }
