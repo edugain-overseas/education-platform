@@ -23,6 +23,7 @@
 }
 
 .headerWrapper {
+  height: 22rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,7 +38,8 @@
   line-height: normal;
 }
 
-.teacherList, .studentsList {
+.teacherList,
+.studentsList {
   margin-bottom: 40rem;
   display: flex;
   flex-direction: column;
@@ -81,6 +83,14 @@
   }
 }
 
+.itemEdit div:nth-last-child(2)::after {
+  content: none;
+}
+
+.studentItemBody {
+  position: relative;
+}
+
 .teacherItemBody,
 .studentItemBody {
   & > div:first-child {
@@ -89,7 +99,8 @@
   }
 }
 
-.teacherItemBody, .studentItemBody {
+.teacherItemBody,
+.studentItemBody {
   & div {
     background: transparent;
     font-weight: 400;
@@ -135,42 +146,190 @@
 }
 
 .studentsWrapper {
-    max-height: 100%;
-    overflow-y: hidden;
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .studentListWrapper {
-    max-height: 100%;
-    overflow-y: auto;
-    position: relative;
-    padding-bottom: 18rem;
+  max-height: calc(100% - 38rem);
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 18rem;
 }
 
 .studentsItemHeader {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+}
+
+.editPanelWrapper {
+  margin-bottom: 16rem;
+  display: flex;
+  align-items: center;
+  gap: 32rem;
+  height: 32rem;
+
+  & > * {
+    height: 100%;
+  }
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12rem;
+  }
+
+  & .filterBtn {
+    width: 124rem;
+    border-radius: 4rem;
+    border: 1rem solid rgba(0, 0, 0, 0.5);
+
+    & span {
+      color: rgba(0, 0, 0, 0.5);
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+
+  & .searchWrapper {
+    flex-grow: 1;
+  }
+
+  & .downloadBtn {
+    width: 124rem;
+    border-radius: 4rem;
+    border: 1rem solid rgba(0, 0, 0, 0.5);
+
+    & span {
+      color: rgba(0, 0, 0, 0.5);
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    & path {
+      fill: #000;
+      fill-opacity: 0.5;
+    }
+  }
+
+  & .searchWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16rem;
+
+    border-radius: 4rem;
+    border: 1rem solid #fdfdfd;
+    background: #eaedf4;
+    position: relative;
+
+    & input {
+      padding: 0 48rem 0 16rem;
+      box-shadow: 0 0 3rem 0 rgba(0, 0, 0, 0.25) inset;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      flex-grow: 1;
+
+      color: rgba(0, 0, 0, 0.7);
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+
+      &:hover,
+      &:focus {
+        box-shadow: 0 0 3rem 0 #4171cd inset;
+      }
+
+      &:hover + svg path,
+      &:focus + svg path {
+        fill: #4171cd;
+        fill-opacity: 0.7;
+      }
+
+      &::placeholder {
+        color: #b3b3b3;
+        font-family: Inter, sans-serif;
+        font-size: 14rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+
+    & svg {
+      position: absolute;
+      top: 50%;
+      right: 16rem;
+      transform: translateY(-50%);
+    }
+  }
+
+  & .addStudentBtn {
+    width: 176rem;
+
+    border-radius: 4rem;
+    background: #39ba6d;
+
+    & span {
+      color: #fff;
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    & path {
+      fill: #fff;
+      fill-opacity: 1;
+    }
+  }
+
+  & svg {
+    width: 16rem;
+    height: 16rem;
+  }
+}
+
+.checkbox {
+  width: 16rem;
+  position: absolute;
+  left: 16rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .studentsItemHeader,
 .studentItemBody {
-    & > div:nth-child(1) {
-        flex-basis: 408rem;
-    }
-    & > div:nth-child(2) {
-        flex-basis: 204rem;
-    }
-    & > div:nth-child(3) {
-        flex-basis: 124rem;
-    }
-    & > div:nth-child(4) {
-        flex-basis: 124rem;
-    }
-    & > div:nth-child(5) {
-        flex-basis: 124rem;
-    }
-    & > div:nth-child(6) {
-        flex-basis: 212rem;
-    }
+  & > div:nth-child(1) {
+    flex-basis: 408rem;
+  }
+  & > div:nth-child(2) {
+    flex-basis: 204rem;
+  }
+  & > div:nth-child(3) {
+    flex-basis: 124rem;
+  }
+  & > div:nth-child(4) {
+    flex-basis: 124rem;
+  }
+  & > div:nth-child(5) {
+    flex-basis: 124rem;
+  }
+  & > div:nth-child(6) {
+    flex-basis: 212rem;
+    flex-grow: 1;
+  }
 }

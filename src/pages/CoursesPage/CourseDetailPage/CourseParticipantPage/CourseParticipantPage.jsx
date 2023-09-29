@@ -1,16 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getSubjectsParticipants } from "../../../../redux/subject/subjectSelectors";
-import styles from "./CourseParticipantPage.module.scss";
 import { useParams } from "react-router-dom";
+import { Checkbox } from "antd";
+import * as XLSX from "xlsx";
 import UserAvatar from "../../../../components/shared/UserAvatar/UserAvatar";
+import { getIsEdit } from "../../../../redux/config/configSelectors";
+import { ReactComponent as FilterIcon } from "../../../../images/icons/filter.svg";
+import { ReactComponent as DownloadIcon } from "../../../../images/icons/download.svg";
+import { ReactComponent as PlusIcon } from "../../../../images/icons/plus.svg";
+import { ReactComponent as SearchIcon } from "../../../../images/icons/search.svg";
+import styles from "./CourseParticipantPage.module.scss";
 
 export default function CourseParticipantPage() {
   const { id } = useParams();
+
+  const isEdit = useSelector(getIsEdit);
   const participantsData = useSelector(getSubjectsParticipants).find(
     (item) => item.id === id
   )?.data;
-  console.log(participantsData);
+
+  const [query, setQuery] = useState("");
+  const [students, setStudents] = useState(participantsData?.students);
+  const [checked, setChecked] = useState([]);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    setStudents(
+      participantsData?.students?.filter(({ name, surname }) => {
+        const fullName = name + surname;
+        return fullName
+          .trim()
+          .toLowerCase()
+          .includes(value.trim().toLowerCase());
+      })
+    );
+  };
+
+  const handleCheckboxCheck = (id) => {
+    if (checked.includes(id)) {
+      const newData = checked.filter((studentId) => studentId !== id);
+      setChecked(newData);
+      return;
+    }
+    setChecked((prev) => [...prev, id]);
+  };
+
+  const generateExcel = (data) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const dataUrl = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = URL.createObjectURL(dataUrl);
+
+    const link = document.createElement("a");
+    link.href = url;
+    const date = new Date().toLocaleDateString('en-GB')
+    link.download = `students${date}.xlsx`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownload = () => {
+    const { students } = participantsData;
+    const chosenStudents = students.filter((student) =>
+      checked.includes(student.id)
+    );
+    console.log(chosenStudents);
+    const arrayForXLSX = chosenStudents.map(
+      ({ name, surname, email, last_active, participant_comment }) => ({
+        Name: `${name} ${surname}`,
+        Email: email,
+        Activity: last_active,
+        Progress: "67%",
+        "Avarage rating": "172(B)",
+        Comment: Array.isArray(participant_comment)
+          ? "Non Comment"
+          : participant_comment,
+      })
+    );
+
+    console.log(arrayForXLSX);
+    generateExcel(arrayForXLSX);
+  };
 
   return (
     <div className={styles.pageWrapper}>
@@ -82,6 +158,31 @@ export default function CourseParticipantPage() {
               Students
             </span>
           </div>
+          {isEdit && (
+            <div className={styles.editPanelWrapper}>
+              <button className={styles.filterBtn}>
+                <span>Add filter</span>
+                <FilterIcon />
+              </button>
+              <div className={styles.searchWrapper}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={query}
+                  onChange={handleSearchChange}
+                />
+                <SearchIcon />
+              </div>
+              <button className={styles.downloadBtn} onClick={handleDownload}>
+                <span>Download</span>
+                <DownloadIcon />
+              </button>
+              <button className={styles.addStudentBtn}>
+                <span>Add student</span>
+                <PlusIcon />
+              </button>
+            </div>
+          )}
           <div className={styles.studentListWrapper}>
             <ul className={styles.studentsList}>
               <li className={styles.studentsItemHeader}>
@@ -92,12 +193,22 @@ export default function CourseParticipantPage() {
                 <div>Average rating</div>
                 <div>A comment</div>
               </li>
-              {participantsData?.students &&
-                participantsData?.students.map((student) => (
-                  <li key={student.id} className={styles.studentItemBody}>
+              {students &&
+                students.map((student) => (
+                  <li
+                    key={student.id}
+                    className={
+                      isEdit
+                        ? `${styles.studentItemBody} ${styles.itemEdit}`
+                        : styles.studentItemBody
+                    }
+                  >
                     <div className={styles.studentName}>
                       <div className={styles.avatarWrapper}>
-                        <UserAvatar imageSrc={student.image_path} userName={student.name}/>
+                        <UserAvatar
+                          imageSrc={student.image_path}
+                          userName={student.name}
+                        />
                       </div>
                       {`${student.name} ${student.surname}`}
                     </div>
@@ -109,7 +220,18 @@ export default function CourseParticipantPage() {
                     </div>{" "}
                     <div>67%</div>
                     <div>172 (B)</div>
-                    <div>Non comment</div>
+                    <div>
+                      {!Array.isArray(student.participant_comment)
+                        ? student.participant_comment
+                        : "Non comment"}
+                    </div>
+                    {isEdit && (
+                      <Checkbox
+                        onChange={() => handleCheckboxCheck(student.id)}
+                        checked={checked.includes(student.id)}
+                        className={styles.checkbox}
+                      />
+                    )}
                   </li>
                 ))}
             </ul>

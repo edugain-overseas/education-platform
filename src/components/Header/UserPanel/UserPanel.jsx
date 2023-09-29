@@ -17,7 +17,7 @@ import {
 } from "../../../redux/config/configSlice";
 import { useDispatch } from "react-redux";
 import { getIsLoading } from "../../../redux/subject/subjectSelectors";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import UserAvatar from "../../shared/UserAvatar/UserAvatar";
 import styles from "./UserPanel.module.scss";
 
@@ -28,19 +28,17 @@ export const UserPanel = () => {
   const userType = useSelector(getUserType);
   const isEdit = useSelector(getIsEdit);
   const isLoading = useSelector(getIsLoading);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
   const handleSubmit = () => {
-    if (pathname === "/") {
-      dispatch(setDefault());
-      return;
-    }
-
     if (isLoading) {
       return;
     }
-
     dispatch(setSumbit());
+    // if (pathname === "/" ) {
+    dispatch(setDefault());
+    // return;
+    // }
   };
 
   return (
