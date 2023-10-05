@@ -1,10 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  createSubjectAbout,
   getAllSubjectsByGroupName,
   getListOfParticipant,
   getSubjectAbout,
   getSubjectById,
   getSubjectIcons,
+  getSubjectInstructions,
   getSubjectTapesById,
   updateSubjectAbout,
   updateSubjectById,
@@ -50,6 +52,19 @@ export const getSubjectAboutThunk = createAsyncThunk(
   }
 );
 
+export const createSubjectAboutThunk = createAsyncThunk(
+  "subject/createAbout",
+  async ({ id, updatedSubjectAbout }, { rejectWithValue }) => {
+    try {
+      const response = await createSubjectAbout(id, updatedSubjectAbout);
+      console.log(response);
+      return { response, id };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateSubjectAboutThunk = createAsyncThunk(
   "subject/updateAbout",
   async ({ id, updatedSubjectAbout }, { rejectWithValue }) => {
@@ -68,6 +83,18 @@ export const getListOfParticipantsThunk = createAsyncThunk(
   async ({ groupId, subjectId }, { rejectWithValue }) => {
     try {
       const response = await getListOfParticipant(groupId, subjectId);
+      return { response, subjectId };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSubjectInstructionsThunk = createAsyncThunk(
+  "subject/getInstructions",
+  async (subjectId, { rejectWithValue }) => {
+    try {
+      const response = await getSubjectInstructions(subjectId);
       return { response, subjectId };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -135,6 +162,7 @@ export const updateSubjectImageThunk = createAsyncThunk(
       instance.defaults.headers["Content-Type"] = "application/json";
       return response;
     } catch (error) {
+      instance.defaults.headers["Content-Type"] = "application/json";
       return rejectWithValue(error.message);
     }
   }

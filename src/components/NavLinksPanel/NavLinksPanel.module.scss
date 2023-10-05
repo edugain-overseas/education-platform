@@ -29,3 +29,9 @@
   background-color: #4171cd;
   color: #fff;
 }
+
+.teacherNavBarWrapper {
+  & .navLink {
+    flex-basis: 50%;
+  }
+}

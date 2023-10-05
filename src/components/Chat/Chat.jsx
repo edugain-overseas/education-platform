@@ -53,10 +53,10 @@ export function Chat({ subjectId = null, subjectData = null }) {
     type === "group" ? getMessages : getSubjectMessages
   );
   const targetMessage = messages?.find(
-    (messege) => messege.message_id === replyTo
+    (messege) => messege.messageId === replyTo
   );
   const receiverUser = participantsData?.find(
-    (user) => user.user_id === targetMessage?.sender_id
+    (user) => user.userId === targetMessage?.senderId
   );
   const isLoading = useSelector(
     type === "group" ? getIsLoading : getSubjectIsLoading
@@ -65,7 +65,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
     type === "group" ? getHistoryEnd : getSubjectHistoryEnd
   );
   const fixedMessages =
-    messages?.filter(({ message_fixed }) => message_fixed) || [];
+    messages?.filter(({ messageFixed }) => messageFixed) || [];
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -80,7 +80,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
       if (wrapper) {
         const { scrollTop, scrollHeight, clientHeight } = wrapper;
         if ((scrollTop + clientHeight) / scrollHeight >= 0.85) {
-          const lastMessageId = messages[messages.length - 1].message_id;
+          const lastMessageId = messages[messages.length - 1].messageId;
           dispatch(
             type === "group"
               ? loadMoreMessagesThunk({ groupName: chatGroup, lastMessageId })
@@ -135,12 +135,12 @@ export function Chat({ subjectId = null, subjectData = null }) {
             >
               {participantsData &&
                 participantsData.map((participant, index) => {
-                  if (participant.image_path) {
+                  if (participant.imagePath) {
                     return (
                       <img
-                        key={participant.user_id}
-                        src={`${serverName}${participant.image_path}`}
-                        alt={`${participant.Name} ${participant.Surname} avatar`}
+                        key={participant.userId}
+                        src={`${serverName}${participant.imagePath}`}
+                        alt={`${participant.name} ${participant.surname} avatar`}
                         className={styles.avatarImage}
                         style={
                           isShowMore
@@ -159,7 +159,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
                   }
                   return (
                     <span
-                      key={participant.user_id}
+                      key={participant.userId}
                       className={`${styles.avatarImage} ${styles.noImageAvatar}`}
                       style={
                         isShowMore
@@ -219,7 +219,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
           {replyTo && (
             <p className={styles.replyTo}>
               Reply to {receiverUser.name} {receiverUser.surname}'s message at{" "}
-              {targetMessage.message_datetime.slice(-8, -3)}
+              {targetMessage.messageDatetime.slice(-8, -3)}
             </p>
           )}
           <MessageForm type={type} />

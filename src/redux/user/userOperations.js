@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   changeAvatar,
+  changeTeacherAvatar,
   getUserInfo,
   login,
   logout,
@@ -51,10 +52,14 @@ export const getUserInfoThunk = createAsyncThunk(
 
 export const changeUserAvatarThunk = createAsyncThunk(
   "user/changeAvatar",
-  async (file, { rejectWithValue }) => {
+  async (file, { rejectWithValue, getState }) => {
     try {
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
-      const response = await changeAvatar(file);
+      const userType = getState().user.userType;
+      const response =
+        userType === "student"
+          ? await changeAvatar(file)
+          : await changeTeacherAvatar(file);
       instance.defaults.headers["Content-Type"] = "application/json";
       return response.photo_path;
     } catch (error) {

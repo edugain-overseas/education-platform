@@ -26,8 +26,7 @@ export default function NotificationButton() {
     (messages &&
       messages.filter(
         (message) =>
-          message.sender_id !== userId &&
-          !message.read_by?.includes(`${userId}`)
+          message.senderId !== userId && !message.readBy?.includes(`${userId}`)
       )) ||
     [];
 
@@ -52,6 +51,7 @@ export default function NotificationButton() {
   };
 
   const handleRead = (messageId) => {
+    console.log(messageId);
     dispatch(readMessageThunk(messageId));
   };
 
@@ -69,7 +69,7 @@ export default function NotificationButton() {
             {userData.name} {userData.surname}
           </span>
           <span className={styles.cardHeadTime}>
-            {message.message_datetime.slice(-8, -3)}
+            {message.messageDatetime.slice(-8, -3)}
           </span>
         </div>
       </div>
@@ -82,15 +82,18 @@ export default function NotificationButton() {
         <div
           className={styles.content}
           dangerouslySetInnerHTML={{
-            __html: message.message_text,
+            __html: message.messageText,
           }}
         />
-        {message.attach_files.length !== 0 && (
+        {message.attachFiles.length !== 0 && (
           <p className={styles.mediaInfo}>
-            + {message.attach_files.length} media
+            + {message.attachFiles.length} media
           </p>
         )}
-        <button onClick={() => handleRead(message.message_id)} className={styles.readBtn}>
+        <button
+          onClick={() => handleRead(message.messageId)}
+          className={styles.readBtn}
+        >
           Mask as read
         </button>
       </div>
@@ -121,11 +124,10 @@ export default function NotificationButton() {
       >
         {messagesToNotify.map((message) => (
           <Card
-            key={message.message_id}
+            key={message.messageId}
             title={renderCardTitle(message)}
             size="small"
             className={styles.card}
-            // onMouseEnter={() => handleMouseEnter(message.message_id)}
           >
             {renderCardBody(message)}
           </Card>

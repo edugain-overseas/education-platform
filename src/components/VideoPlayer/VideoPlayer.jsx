@@ -15,7 +15,7 @@ export default function VideoPlayer({ file }) {
           },
         };
         const response = await axios.get(
-          `${serverName}${file.file_path}`,
+          `${serverName}${file.filePath}`,
           options
         );
         const blob = new Blob([response.data], { type: "video/webm" });
@@ -27,7 +27,7 @@ export default function VideoPlayer({ file }) {
     };
 
     fetchFile();
-  }, [file.file_path]);
+  }, [file.filePath]);
 
   return url ? (
       <video

@@ -38,6 +38,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(getUserInfoThunk.pending, (state, _) => {
         state.isLoading = true;
       })
@@ -51,6 +52,7 @@ export const userSlice = createSlice({
         state.error = payload.message;
         state.token = null;
       })
+
       .addCase(changeUserAvatarThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -63,6 +65,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+      
       .addCase(logoutThunk.pending, (state, _) => {
         state.isLoading = true;
       })

@@ -7,13 +7,14 @@ import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
 import {
+  getTeacherId,
   getToken,
   getUserGroup,
   getUserType,
 } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
-import { getScheduleThunk } from "./redux/schedule/scheduleOperations";
+import { getScheduleThunk, getTeacherScheduleThunk } from "./redux/schedule/scheduleOperations";
 import { adjustFontSize } from "./helpers/adjustFontSize";
 import { connectToWebSocket } from "./services/websocket";
 import CoursesPage from "./pages/CoursesPage/CoursesPage";
@@ -36,6 +37,7 @@ function App() {
   const [websocket, setWebsocket] = useState(null);
 
   const groupName = useSelector(getUserGroup);
+  const teacherId = useSelector(getTeacherId)
   const token = useSelector(getToken);
   const userType = useSelector(getUserType);
   const dispatch = useDispatch();
@@ -60,7 +62,11 @@ function App() {
       dispatch(getScheduleThunk(groupName));
       dispatch(getAllSubjectsThunk(groupName));
     }
-  }, [dispatch, groupName, token, userType]);
+
+    if (teacherId && token && userType === 'teacher') {
+      dispatch(getTeacherScheduleThunk(teacherId))
+    }
+  }, [dispatch, groupName, teacherId, token, userType]);
 
   useEffect(() => {
     if (websocket) {
@@ -86,6 +92,7 @@ function App() {
           <Route path="schedule" element={<SchedulePage />} />
           <Route path="courses" element={<CoursesPage />}>
             <Route path={`:${groupName}`} element={<SubjectsList />} />
+            <Route path={'teacher-active-courses'} element={<SubjectsList />} />
             <Route path="dopcourses" element={<div>Dop Courses</div>} />
             <Route path="archive" element={<div>Archive</div>} />
             <Route path=":id" element={<CourseDetailPage />}>
@@ -102,7 +109,10 @@ function App() {
             </Route>
           </Route>
           <Route path="register" element={<div>Register page</div>} />
-          <Route path="class-rooms-notification" element={<ClassRoomNotification/>}/>
+          <Route
+            path="class-rooms-notification"
+            element={<ClassRoomNotification />}
+          />
           <Route path="/:videoChatRoomId" element={<VideoChatRoom />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Route>
@@ -111,11 +121,13 @@ function App() {
   };
 
   return (
-    <WebsocketContext.Provider value={websocket}>
-      <div className="App">
-        <Router />
-      </div>
-    </WebsocketContext.Provider>
+      <WebsocketContext.Provider value={websocket}>
+        <div className="App">
+          <Router />
+        </div>
+      </WebsocketContext.Provider>
+    // <HomePage/>
+
     // <VideoChatRoomPage/>
   );
 }

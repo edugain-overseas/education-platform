@@ -7,9 +7,13 @@ import { getSubjectAbout } from "../../redux/subject/subjectSelectors";
 import { useParams } from "react-router-dom";
 import { setDefault } from "../../redux/config/configSlice";
 import { useDispatch } from "react-redux";
-import { getIsSubmit } from "../../redux/config/configSelectors";
-import { updateSubjectAboutThunk } from "../../redux/subject/subjectOperations";
+import { getIsEdit, getIsSubmit } from "../../redux/config/configSelectors";
+import {
+  createSubjectAboutThunk,
+  updateSubjectAboutThunk,
+} from "../../redux/subject/subjectOperations";
 import SectionTeachers from "./SectionTeachers";
+import { Empty } from "antd";
 
 export default function CoursePageConstructor({ styles }) {
   const dispatch = useDispatch();
@@ -34,6 +38,9 @@ export default function CoursePageConstructor({ styles }) {
   const teachersData = aboutSubjectData.find(
     (section) => section.section_type === "teachers"
   );
+  const isEdit = useSelector(getIsEdit);
+
+  const isDefault = defaultSubjectData === aboutSubjectData;
 
   const [itemsSectionData, setItemsSectionData] = useState(itemsData);
   const [stepsSectionData, setStepsSectionData] = useState(stepsData);
@@ -54,15 +61,54 @@ export default function CoursePageConstructor({ styles }) {
         programSectionData,
         teachersSectionData,
       ];
-      dispatch(updateSubjectAboutThunk({ id, updatedSubjectAbout })).then(dispatch(setDefault()));
+      dispatch(
+        isDefault
+          ? createSubjectAboutThunk({ id, updatedSubjectAbout })
+          : updateSubjectAboutThunk({ id, updatedSubjectAbout })
+      ).then(dispatch(setDefault()));
     };
     if (isSubmit) {
       handleSumbit();
-
     }
-  }, [isSubmit, itemsSectionData, stepsSectionData, programSectionData, teachersSectionData, id, dispatch]);
-
-  return (
+  }, [
+    isSubmit,
+    isDefault,
+    itemsSectionData,
+    stepsSectionData,
+    programSectionData,
+    teachersSectionData,
+    id,
+    dispatch,
+  ]);
+  console.log(defaultSubjectData, aboutSubjectData);
+  return isDefault ? (
+    isEdit ? (
+      <>
+        <SectionItems
+          styles={styles}
+          data={itemsData}
+          setItemsSectionData={setItemsSectionData}
+        />
+        <SectionSteps
+          styles={styles}
+          data={stepsData}
+          setStepsSectionData={setStepsSectionData}
+        />
+        <SectionProgram
+          styles={styles}
+          data={programData}
+          setProgramSectionData={setProgramSectionData}
+        />
+        <SectionTeachers
+          styles={styles}
+          data={teachersData}
+          setTeachersSectionData={setTeachersSectionData}
+        />
+      </>
+    ) : (
+      <Empty />
+    )
+  ) : (
     <>
       <SectionItems
         styles={styles}

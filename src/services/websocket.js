@@ -28,17 +28,18 @@ export const connectToWebSocket = (chatGroup, token) => {
 
       websocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        const participantsData = data.user_info;
+        const participantsData = data.userInfo;
         const messagesData = data.messages;
+        console.log(data);
 
         if (messagesData) {
           if (participantsData) {
             dispatch(setUsers(participantsData));
           }
           dispatch(setMessages(messagesData));
-        } else if (data.id_active_users) {
+        } else if (data.idsActiveUsers) {
           dispatch(setActiveData(data));
-        } else if (data.answer_id) {
+        } else if (data.answerId) {
           dispatch(addFeedback(data));
         } else {
           dispatch(addMessage(data));

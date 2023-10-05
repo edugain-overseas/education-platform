@@ -27,6 +27,7 @@ export const AvatarUpload = () => {
       <input
         type="file"
         name="avatar"
+        accept="image/*"
         onChange={handleChange}
         ref={inputUpload}
         hidden

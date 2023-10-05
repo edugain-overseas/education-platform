@@ -7,6 +7,15 @@
 
 .selfMessage {
   flex-direction: row-reverse;
+
+  & .contentWrapper {
+    display: flex;
+    flex-direction: column;
+
+    & > *:not(:nth-last-child(2), :nth-last-child(1)) {
+      align-self: flex-end;
+    }
+  }
 }
 
 .messageWithAnswers {
@@ -141,7 +150,6 @@
 }
 
 .contentSubWrapper {
-  // flex-grow: 1;
   padding-bottom: 12rem;
   min-width: 250rem;
   transition: all 250ms ease-out;
@@ -170,6 +178,11 @@
     background: rgba(129, 172, 255, 0.5);
     opacity: 0;
     transition: opacity 250ms ease-out;
+  }
+
+  // & > *:not(:last-child),
+  & > *:not(:nth-last-child(2), :nth-last-child(1)) {
+    margin-bottom: 8rem;
   }
 }
 
@@ -220,3 +233,82 @@
   line-height: 16rem;
   color: #718da7;
 }
+
+// document in chat styles //
+.documentWrapper {
+  display: flex;
+  min-width: 232rem;
+  width: fit-content;
+  padding: 8rem 12rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32rem;
+  border: 1rem dashed rgba(0, 0, 0, 0.5);
+  border-radius: 5rem;
+}
+
+.fileInfoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16rem;
+}
+
+.iconWrapper {
+  width: 18rem;
+  height: 24rem;
+  position: relative;
+  overflow: hidden;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  & .format {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: #fff;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 6rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+.name,
+.size {
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 10rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: lowercase;
+  position: relative;
+}
+
+.name::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  top: 50%;
+  left: calc(100% + 6rem);
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.downloadLink {
+  cursor: pointer;
+  z-index: 2;
+}
+// document in chat styles //

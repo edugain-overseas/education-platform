@@ -6,11 +6,13 @@ import {
   getSubjectByIdThunk,
   getSubjectIconsThunk,
   getSubjectTapesByIdThunk,
+  createSubjectAboutThunk,
   updateSubjectAboutThunk,
   updateSubjectByIdThunk,
   updateSubjectImageThunk,
   updateSubjectLogoThunk,
   uploadSubjectIconThunk,
+  getSubjectInstructionsThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -28,12 +30,6 @@ const subjectAbout = [
         title: "Title1",
         text: "text1",
       },
-      {
-        id: v4(),
-        image_path: "path/to/file",
-        title: "Title2",
-        text: "text2",
-      },
     ],
   },
   {
@@ -48,18 +44,6 @@ const subjectAbout = [
         image_path: "path/to/file",
         title: "Title1",
         text: "text1",
-      },
-      {
-        id: v4(),
-        image_path: "path/to/file",
-        title: "Title2",
-        text: "text2",
-      },
-      {
-        id: v4(),
-        image_path: "path/to/file",
-        title: "Title3",
-        text: "text3",
       },
     ],
   },
@@ -78,37 +62,7 @@ const subjectAbout = [
           {
             id: v4(),
             text: "text1",
-          },
-          {
-            id: v4(),
-            text: "text2",
-          },
-          {
-            id: v4(),
-            text: "text3",
-          },
-          {
-            id: v4(),
-            text: "text4",
-          },
-        ],
-      },
-      {
-        id: v4(),
-        text: "Title2",
-        items: [
-          {
-            id: v4(),
-            text: "text1",
-          },
-          {
-            id: v4(),
-            text: "text2",
-          },
-          {
-            id: v4(),
-            text: "text3",
-          },
+          }
         ],
       },
       {
@@ -130,13 +84,7 @@ const subjectAbout = [
         image_path: "",
         title: "Title1",
         text: "text1",
-      },
-      {
-        id: v4(),
-        image_path: "",
-        title: "Title2",
-        text: "text2",
-      },
+      }
     ],
   },
 ];
@@ -148,6 +96,7 @@ const initialState = {
   subjectsAbout: [{ id: 0, data: subjectAbout }],
   subjectsParticipants: [],
   subjectsMainInfo: [],
+  subjectsInstructions: [],
   icons: [],
   error: null,
 };
@@ -170,6 +119,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(getSubjectTapesByIdThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -190,6 +140,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(getSubjectAboutThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -211,6 +162,26 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
+      .addCase(createSubjectAboutThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createSubjectAboutThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+
+        const { response, id } = action.payload;
+
+        state.subjectsAbout = [
+          ...state.subjectsAbout.filter((item) => item.id !== id),
+          { id, data: response },
+        ];
+      })
+      .addCase(createSubjectAboutThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
       .addCase(updateSubjectAboutThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -229,6 +200,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(getListOfParticipantsThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -247,6 +219,26 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
+      .addCase(getSubjectInstructionsThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getSubjectInstructionsThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+
+        const { response, subjectId } = payload;
+
+        state.subjectsInstructions = [
+          ...state.subjectsParticipants.filter((item) => item.id !== subjectId),
+          { id: subjectId, data: response },
+        ];
+      })
+      .addCase(getSubjectInstructionsThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
       .addCase(getSubjectIconsThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -259,6 +251,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(uploadSubjectIconThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -271,6 +264,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(getSubjectByIdThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -286,6 +280,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(updateSubjectByIdThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -298,6 +293,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(updateSubjectImageThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
@@ -310,6 +306,7 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
       .addCase(updateSubjectLogoThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;

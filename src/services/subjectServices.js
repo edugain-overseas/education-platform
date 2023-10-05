@@ -18,9 +18,17 @@ export const getSubjectAbout = async (subjectId) => {
   return data;
 };
 
-export const updateSubjectAbout = async (subjectID, subjectAbout) => {
+export const createSubjectAbout = async (subjectId, subjectAbout) => {
+  const { data } = await instance.post(
+    `subject-item/create?subject_id=${subjectId}`,
+    subjectAbout
+  );
+  return data;
+};
+
+export const updateSubjectAbout = async (subjectId, subjectAbout) => {
   const { data } = await instance.put(
-    `subject-item/update?subject_id=${subjectID}`,
+    `subject-item/update?subject_id=${subjectId}`,
     subjectAbout
   );
   return data;
@@ -31,6 +39,12 @@ export const getListOfParticipant = async (groupId, subjectId) => {
     `list-members?group_id=${groupId}&subject_id=${subjectId}`
   );
   return data;
+};
+
+export const getSubjectInstructions = async (subjectId) => {
+  const { data } = await instance.get(`subject/${subjectId}/instruction`);
+  data.sort(((itemA, itemB)=>itemA.categoryNumber - itemB.categoryNumber))
+  return data
 };
 
 export const getSubjectIcons = async (subjectId) => {

@@ -1,0 +1,17 @@
+.emojiBtn {
+    width: 16rem;
+    height: 16rem;
+    position: absolute;
+    left: 96rem;
+    bottom: 16rem;
+
+
+    & svg {
+        width: 14rem;
+        height: 14rem;
+    }
+
+    & path {
+        fill: #b3b3b3;
+    }
+}

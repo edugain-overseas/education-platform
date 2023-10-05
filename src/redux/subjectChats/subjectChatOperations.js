@@ -17,8 +17,10 @@ export const attachFileToMessageThunk = createAsyncThunk(
       const response = await attachFileToSubjectMessage(file);
       instance.defaults.headers["Content-Type"] = "application/json";
       const mediaDataObj = {
-        path: response,
-        "mime-type": file.get("file").type,
+        path: response.filePath,
+        type: file.get("file").type,
+        filename: response.fileName,
+        size: response.fileSize,
       };
       return mediaDataObj;
     } catch (error) {
@@ -69,7 +71,7 @@ export const deleteSubjectFileThunk = createAsyncThunk(
   async (filePath, { rejectWithValue }) => {
     try {
       const response = await deleteSubjectFile(filePath);
-      return {response, filePath};
+      return { response, filePath };
     } catch (error) {
       return rejectWithValue(error);
     }

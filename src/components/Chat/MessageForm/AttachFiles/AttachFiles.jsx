@@ -33,7 +33,6 @@ export const AttachFiles = ({ show }) => {
     const fileName = `${file.size}_${file.name}`;
     console.log(file);
     formData.append("file", file, fileName);
-    console.log(formData.get("file"));
     console.log(chatType);
     dispatch(
       chatType === "group"
@@ -117,7 +116,7 @@ export const AttachFiles = ({ show }) => {
         </button>
         <input
           type="file"
-          accept="image/*, video/*, audio/*, application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel, application/json, application/zip, application/x-rar-compressed, text/plain"
+          accept="application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel, application/json, application/zip, application/x-rar-compressed, text/plain"
           ref={fileInputRef}
           onChange={handleInputFileChange}
         />

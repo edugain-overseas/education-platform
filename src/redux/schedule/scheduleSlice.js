@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getScheduleThunk } from "./scheduleOperations";
+import {
+  getScheduleThunk,
+  getTeacherScheduleThunk,
+} from "./scheduleOperations";
 
 const initialState = {
   schedule: null,
@@ -22,6 +25,19 @@ export const scheduleSlice = createSlice({
         state.schedule = payload;
       })
       .addCase(getScheduleThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(getTeacherScheduleThunk.pending, (state, _) => {
+        state.isLoading = true;
+      })
+      .addCase(getTeacherScheduleThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
+        state.schedule = payload;
+      })
+      .addCase(getTeacherScheduleThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

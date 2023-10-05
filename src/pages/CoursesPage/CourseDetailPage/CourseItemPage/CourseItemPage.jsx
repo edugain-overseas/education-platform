@@ -4,10 +4,23 @@ import { ReactComponent as DownloadIcon } from "../../../../images/icons/downloa
 import { ReactComponent as ArrowUpIcon } from "../../../../images/icons/arrowUp.svg";
 import styles from "./CourseItemPage.module.scss";
 import { useSelector } from "react-redux";
-import { getSubjectMainInfo } from "../../../../redux/subject/subjectSelectors";
+import {
+  getSubjectAbout,
+  getSubjectMainInfo,
+} from "../../../../redux/subject/subjectSelectors";
 import { useParams } from "react-router-dom";
 import { serverName } from "../../../../constants/server";
-import { getIsEdit } from "../../../../redux/config/configSelectors";
+import {
+  getIsEdit,
+  getIsSubmit,
+} from "../../../../redux/config/configSelectors";
+import { useDispatch } from "react-redux";
+import { setDefault } from "../../../../redux/config/configSlice";
+import {
+  updateSubjectByIdThunk,
+  updateSubjectImageThunk,
+  updateSubjectLogoThunk,
+} from "../../../../redux/subject/subjectOperations";
 
 export default function CourseItemPage() {
   const [logoFile, setLogoFile] = useState(null);
@@ -19,12 +32,18 @@ export default function CourseItemPage() {
 
   const logoInput = useRef(null);
   const imageInput = useRef(null);
+  const containerRef = useRef(null);
 
   const { id } = useParams();
+
+  const dispatch = useDispatch();
 
   const subjectData = useSelector(getSubjectMainInfo).find(
     (item) => `${item.id}` === id
   );
+
+  const isSubmit = useSelector(getIsSubmit);
+  const isEdit = useSelector(getIsEdit);
 
   useEffect(() => {
     if (subjectData) {
@@ -35,8 +54,40 @@ export default function CourseItemPage() {
     }
   }, [subjectData]);
 
-  const isEdit = useSelector(getIsEdit);
-  console.log(subjectData);
+  useEffect(() => {
+    const handleSumbit = () => {
+      const updatedData = {
+        quantity_lecture: lectures,
+        quantity_seminar: seminars,
+        quantity_test: tests,
+        quantity_module: moduls,
+      };
+      dispatch(
+        updateSubjectByIdThunk({ subjectId: id, subjectData: updatedData })
+      );
+      if (imageFile) {
+        dispatch(updateSubjectImageThunk({ subjectId: id, file: imageFile }));
+      }
+      if (logoFile) {
+        dispatch(updateSubjectLogoThunk({ subjectId: id, file: logoFile }));
+      }
+      dispatch(setDefault());
+    };
+    if (isSubmit) {
+      console.log("SUBMIT");
+      handleSumbit();
+    }
+  }, [
+    isSubmit,
+    id,
+    dispatch,
+    imageFile,
+    lectures,
+    logoFile,
+    moduls,
+    seminars,
+    tests,
+  ]);
 
   const handleLogoChange = (e) => {
     setLogoFile(e.target.files[0]);
@@ -47,20 +98,30 @@ export default function CourseItemPage() {
   };
 
   const onLecturesChange = (e) => {
-    setLectures(e.target.value);
+    setLectures(+e.target.value);
   };
 
   const onTestsChange = (e) => {
-    setTests(e.target.value);
+    setTests(+e.target.value);
   };
 
   const onSeminarsChange = (e) => {
-    setSeminars(e.target.value);
+    setSeminars(+e.target.value);
   };
 
   const onModulsChange = (e) => {
-    setModuls(e.target.value);
+    setModuls(+e.target.value);
   };
+
+  const defaultSubjectData = useSelector(getSubjectAbout).find(
+    (subject) => subject.id === 0
+  ).data;
+
+  const aboutSubjectData =
+    useSelector(getSubjectAbout).find((subject) => subject.id === id)?.data ||
+    defaultSubjectData;
+
+  const isDefault = defaultSubjectData === aboutSubjectData;
 
   const scrollToTop = () => {
     document.getElementById("main").scrollTo({
@@ -70,7 +131,7 @@ export default function CourseItemPage() {
   };
 
   return (
-    <div className={styles.mainWrapper} id="main">
+    <div className={styles.mainWrapper} id="main" ref={containerRef}>
       <section className={styles.hero}>
         {subjectData && (
           <img
@@ -195,9 +256,11 @@ export default function CourseItemPage() {
         </div>
       </section>
       <CoursePageConstructor styles={styles} />
-      <button onClick={scrollToTop} className={styles.arrowUp}>
-        <ArrowUpIcon />
-      </button>
+      {(!isDefault || isEdit) && (
+        <button onClick={scrollToTop} className={styles.arrowUp}>
+          <ArrowUpIcon />
+        </button>
+      )}
     </div>
   );
 }

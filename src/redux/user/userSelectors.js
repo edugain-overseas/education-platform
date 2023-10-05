@@ -5,3 +5,6 @@ export const getUserInfo = (state) => state.user.info;
 export const getUserGroup = (state) => state.user.info?.group_name;
 export const getToken = (state) => state.user.token;
 export const getUserType = (state) => state.user.userType;
+export const getGroupId = state => state.user.info?.group_id
+export const getTeacherId = state => state.user.info?.teacher_id
+export const getTeacherSubjects = state => state.user.info?.subject_info

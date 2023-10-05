@@ -16,8 +16,10 @@ export const attachFileToMessageThunk = createAsyncThunk(
       const response = await attachFileToMessage(file);
       instance.defaults.headers["Content-Type"] = "application/json";
       const mediaDataObj = {
-        path: response,
-        "mime-type": file.get("file").type,
+        path: response.filePath,
+        type: file.get("file").type,
+        filename: response.fileName,
+        size: response.fileSize
       };
       return mediaDataObj;
     } catch (error) {
@@ -30,6 +32,7 @@ export const readMessageThunk = createAsyncThunk(
   "groupChat/readMessage",
   async (messageId, { rejectWithValue }) => {
     try {
+      console.log('thunk');
       const response = await readMessage(messageId);
       return response;
     } catch (error) {

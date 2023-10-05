@@ -54,13 +54,13 @@ export const groupChatSlice = createSlice({
     },
     addFeedback(state, { payload }) {
       const newAnswer = {
-        answer_id: payload.answer_id,
-        answer: payload.answer_text,
-        answer_datetime: payload.answer_datetime,
-        sender_id: payload.sender_id,
-        sender_type: payload.sender_type,
-        read_by: payload.read_by,
-        attach_file: payload.attach_files,
+        answerId: payload.answerId,
+        answer: payload.answerText,
+        answerDatetime: payload.answerDatetime,
+        senderId: payload.senderId,
+        senderType: payload.senderType,
+        readBy: payload.readBy,
+        attachFiles: payload.attachFiles,
       };
 
       state.messages.forEach((message) => {
@@ -95,10 +95,9 @@ export const groupChatSlice = createSlice({
         state.error = null;
       })
       .addCase(readMessageThunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
         const updatedMessages = state.messages.map((message) => {
-          if (message.message_id === payload.id) {
-            return { ...message, read_by: payload.read_by.split(", ") };
+          if (message.messageId === payload.id) {
+            return { ...message, readBy: payload.read_by.split(", ") };
           }
           return message;
         });
@@ -114,8 +113,8 @@ export const groupChatSlice = createSlice({
       .addCase(readAnswerThunk.fulfilled, (state, { payload }) => {
         const updatedMessages = state.messages.map((message) => {
           message.answers = message.answers.map((answer) => {
-            if (answer.answer_id === payload.id) {
-              return { ...answer, read_by: payload.read_by.split(", ") };
+            if (answer.answerId === payload.id) {
+              return { ...answer, readBy: payload.read_by.split(", ") };
             }
             return answer;
           });

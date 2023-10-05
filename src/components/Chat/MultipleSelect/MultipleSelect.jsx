@@ -12,10 +12,10 @@ export function MultipleSelect({ onChange }) {
   const myId = useSelector(getUserId);
   const options =
     useSelector(type === 'group' ? getParticipantsData : getSubjectParticipantsData)
-      ?.filter((user) => user.user_id !== myId)
+      ?.filter((user) => user.userId !== myId)
       .map((user) => ({
         label: `${user.name} ${user.surname}`,
-        value: user.user_id,
+        value: user.userId,
       })) || [];
   const allOption = { label: "Send All", value: "all" };
   const allOptions = [allOption, ...options];

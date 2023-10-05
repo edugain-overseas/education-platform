@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { TailSpin } from "react-loader-spinner";
 import { ReactComponent as SendIcon } from "../../../images/icons/send.svg";
 import { MultipleSelect } from "../MultipleSelect/MultipleSelect";
 import { Quill } from "../Quill/Quill";
@@ -30,12 +31,12 @@ import {
   getSubjectFeedbackData,
   getSubjectParticipantsData,
 } from "../../../redux/subjectChats/subjectChatSelectors";
-import styles from "./MessageForm.module.scss";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
-import BooleanCheckbox from "../../shared/BooleanCheckbox/BooleanCheckbox";
 import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
 import { getSubjectAttachFileLoading } from "../../../redux/subjectChats/subjectChatSelectors";
-import { TailSpin } from "react-loader-spinner";
+import EmojiPanel from "./EmojiPanel/EmojiPanel";
+import { ReactComponent as PinIcon } from "../../../images/icons/pin.svg";
+import styles from "./MessageForm.module.scss";
 
 export function MessageForm() {
   const [messageHTML, setMessageHTML] = useState("");
@@ -76,25 +77,27 @@ export function MessageForm() {
       return;
     }
 
-    const chatUsers = participantsData.map((user) => user.user_id);
+    const chatUsers = participantsData?.map((user) => user.userId) || [];
 
     const data = {
       type: getMessageType(replyTo),
       message: messageHTML,
-      message_type: getMessageTypeByRecepient(chatUsers, sendTo),
+      messageType: getMessageTypeByRecepient(chatUsers, sendTo),
       recipient: getMessageRecepients(chatUsers, sendTo),
       fixed: fixed,
-      sender_id: userId,
-      sender_type: userType,
-      attach_file_path: attachedFiles,
+      senderId: userId,
+      senderType: userType,
+      attachFiles: attachedFiles,
     };
 
     if (replyTo) {
-      delete data.message_type;
+      delete data.messageType;
       delete data.fixed;
       delete data.recipient;
-      data.message_id = replyTo;
+      data.messageId = replyTo;
     }
+
+    console.log(data.message);
 
     try {
       socket.send(JSON.stringify(data));
@@ -115,6 +118,7 @@ export function MessageForm() {
   };
 
   const handleBlurForm = (e) => {
+    console.log(e);
     if (e.target.className.includes("ant")) {
       return;
     }
@@ -124,6 +128,14 @@ export function MessageForm() {
     }
 
     if (e.relatedTarget && e.relatedTarget.className.includes("AttachFiles")) {
+      return;
+    }
+
+    if (e.relatedTarget && e.relatedTarget.className.includes("Emoji")) {
+      return;
+    }
+
+    if (e.relatedTarget && e.relatedTarget.className.includes("pinBtn")) {
       return;
     }
 
@@ -142,6 +154,7 @@ export function MessageForm() {
         value={messageHTML}
         focused={isFocused}
       />
+      {isFocused && <EmojiPanel onChange={setMessageHTML} />}
       {!fixed && <AttachFiles show={isFocused} />}
 
       {isLoadingFiles && attachedFiles.length === 0 ? (
@@ -162,14 +175,17 @@ export function MessageForm() {
           </div>
         )
       )}
-      <BooleanCheckbox
-        setValue={setFixed}
-        value={fixed}
-        label="to fix"
-        disabled={false}
-        styles={styles}
-        show={isFocused}
-      />
+      {isFocused && (
+        <button
+          onClick={() => setFixed(!fixed)}
+          type="button"
+          className={
+            fixed ? `${styles.pinBtn} ${styles.active}` : styles.pinBtn
+          }
+        >
+          <PinIcon />
+        </button>
+      )}
       <div className={styles.toolbarRight}>
         {!replyTo && !fixed && (
           <MultipleSelect

@@ -1,16 +1,17 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { ReactComponent as HomeIcon } from "../../../images/icons/home.svg";
 import { ReactComponent as GridIcon } from "../../../images/icons/grid.svg";
-import styles from './NavBar.module.scss'
-import { useSelector } from 'react-redux';
-import { getUserGroup } from '../../../redux/user/userSelectors';
+import styles from "./NavBar.module.scss";
+import { useSelector } from "react-redux";
+import { getUserGroup, getUserType } from "../../../redux/user/userSelectors";
 
 export const NavBar = () => {
-  const groupName = useSelector(getUserGroup)
+  const groupName = useSelector(getUserGroup);
+  const userType = useSelector(getUserType);
   return (
     <nav className={styles.nav}>
-      <NavLink to='/' className={styles.navLink}>
+      <NavLink to="/" className={styles.navLink}>
         <HomeIcon />
         <span>Home</span>
       </NavLink>
@@ -18,7 +19,14 @@ export const NavBar = () => {
         <GridIcon />
         <span>Schedule</span>
       </NavLink>
-      <NavLink to={`/courses/${groupName}`} className={styles.navLink}>
+      <NavLink
+        to={
+          userType === "student"
+            ? `/courses/${groupName}`
+            : "/courses/teacher-active-courses"
+        }
+        className={styles.navLink}
+      >
         <GridIcon />
         <span>Courses</span>
       </NavLink>
@@ -32,4 +40,4 @@ export const NavBar = () => {
       </NavLink>
     </nav>
   );
-}
+};

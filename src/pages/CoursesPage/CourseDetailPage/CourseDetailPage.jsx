@@ -8,6 +8,7 @@ import {
   getSubjectAboutThunk,
   getSubjectByIdThunk,
   getSubjectIconsThunk,
+  getSubjectInstructionsThunk,
   getSubjectTapesByIdThunk,
 } from "../../../redux/subject/subjectOperations";
 import {
@@ -17,10 +18,15 @@ import {
   setMessages as setSubjectMessages,
   setUsers as setSubjectUsers,
 } from "../../../redux/subjectChats/subjectChatSlice";
-import { getToken } from "../../../redux/user/userSelectors";
+import {
+  getGroupId,
+  getToken,
+  getUserType,
+} from "../../../redux/user/userSelectors";
 import NavLinksPanel from "../../../components/NavLinksPanel/NavLinksPanel";
 import { connectToSubjectWebSocket } from "../../../services/websocket";
 import styles from "./CourseDetailPage.module.scss";
+import { getSubjectMainInfo } from "../../../redux/subject/subjectSelectors";
 
 const renderLinks = [
   {
@@ -49,15 +55,19 @@ const renderLinks = [
   },
 ];
 
-const groupId = 3;
-
 export const SubjectWebsocketContext = createContext(null);
 
 export default function CourseDetailPage() {
   const { id } = useParams();
-  const token = useSelector(getToken);
-  const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
+  const token = useSelector(getToken);
+  const userType = useSelector(getUserType);
+  const groupId = useSelector(getGroupId);
+  const groupIdFromSubjectInfo = useSelector(getSubjectMainInfo)?.find(
+    (subject) => subject.id === +id
+  )?.group_id;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const ws = connectToSubjectWebSocket(id, token);
@@ -74,7 +84,7 @@ export default function CourseDetailPage() {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const participantsData = data.user_info;
+      const participantsData = data.userInfo;
       const messagesData = data.messages;
 
       if (messagesData) {
@@ -82,9 +92,9 @@ export default function CourseDetailPage() {
           dispatch(setSubjectUsers(participantsData));
         }
         dispatch(setSubjectMessages(messagesData));
-      } else if (data.id_active_users) {
+      } else if (data.idsActiveUsers) {
         dispatch(setSubjectActiveData(data));
-      } else if (data.answer_id) {
+      } else if (data.answerId) {
         dispatch(addSubjectFeedback(data));
       } else {
         dispatch(addSubjectMessage(data));
@@ -95,7 +105,7 @@ export default function CourseDetailPage() {
       ws.close();
     };
   }, [id, token, dispatch]);
-  
+
   useEffect(() => {
     dispatch(getSubjectByIdThunk(id));
   }, [id, dispatch]);
@@ -107,10 +117,18 @@ export default function CourseDetailPage() {
 
       dispatch(getSubjectTapesByIdThunk(id));
       dispatch(getSubjectAboutThunk(id));
-      dispatch(getListOfParticipantsThunk({ groupId, subjectId: id }));
       dispatch(getSubjectIconsThunk(id));
+      dispatch(getSubjectInstructionsThunk(id));
+      if (groupId || groupIdFromSubjectInfo) {
+        dispatch(
+          getListOfParticipantsThunk({
+            groupId: userType === "student" ? groupId : groupIdFromSubjectInfo,
+            subjectId: id,
+          })
+        );
+      }
     }
-  }, [id, dispatch, token]);
+  }, [id, groupId, dispatch, token, groupIdFromSubjectInfo, userType]);
 
   return (
     <SubjectWebsocketContext.Provider value={socket}>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { getSubjectsParticipants } from "../../../../redux/subject/subjectSelectors";
 import { useParams } from "react-router-dom";
-import { Checkbox } from "antd";
 import * as XLSX from "xlsx";
+import { Checkbox } from "antd";
 import UserAvatar from "../../../../components/shared/UserAvatar/UserAvatar";
+import { getSubjectsParticipants } from "../../../../redux/subject/subjectSelectors";
 import { getIsEdit } from "../../../../redux/config/configSelectors";
 import { ReactComponent as FilterIcon } from "../../../../images/icons/filter.svg";
 import { ReactComponent as DownloadIcon } from "../../../../images/icons/download.svg";
@@ -58,7 +58,7 @@ export default function CourseParticipantPage() {
 
     const link = document.createElement("a");
     link.href = url;
-    const date = new Date().toLocaleDateString('en-GB')
+    const date = new Date().toLocaleDateString("en-GB");
     link.download = `students${date}.xlsx`;
     link.click();
 
@@ -88,6 +88,74 @@ export default function CourseParticipantPage() {
     generateExcel(arrayForXLSX);
   };
 
+  const renderTeachers = (teachers) =>
+    teachers.map((teacher) => (
+      <li key={teacher.id} className={styles.teacherItemBody}>
+        <div className={styles.teacherName}>
+          <div className={styles.avatarWrapper}>
+            <UserAvatar imageSrc={teacher.image_path} userName={teacher.name} />
+          </div>
+          {`${teacher.name} ${teacher.surname}`}
+        </div>
+        <div className={styles.teacherEmail}>{teacher.email}</div>
+        <div>
+          {teacher.last_active ? teacher.last_active.replaceAll("-", ".") : "-"}
+        </div>
+      </li>
+    ));
+
+  const renderCurator = (curator) => (
+    <li className={styles.teacherItemBody}>
+      <div className={styles.teacherName}>
+        <div className={styles.avatarWrapper}>
+          <UserAvatar imageSrc={curator.image_path} userName={curator.name} />
+        </div>
+        {`${curator.name} ${curator.surname}`}
+      </div>
+      <div className={styles.teacherEmail}>{curator.email}</div>
+      <div>
+        {curator.last_active ? curator.last_active.replaceAll("-", ".") : "-"}
+      </div>
+    </li>
+  );
+
+  const renderStudents = (students) =>
+    students.map((student) => (
+      <li
+        key={student.id}
+        className={
+          isEdit
+            ? `${styles.studentItemBody} ${styles.itemEdit}`
+            : styles.studentItemBody
+        }
+      >
+        <div className={styles.studentName}>
+          <div className={styles.avatarWrapper}>
+            <UserAvatar imageSrc={student.image_path} userName={student.name} />
+          </div>
+          {`${student.name} ${student.surname}`}
+        </div>
+        <div className={styles.studentEmail}>{student.email}</div>
+        <div>
+          {student.last_active ? student.last_active.replaceAll("-", ".") : "-"}
+        </div>{" "}
+        <div>67%</div>
+        <div>172 (B)</div>
+        <div>
+          {!Array.isArray(student.participant_comment)
+            ? student.participant_comment
+            : "Non comment"}
+        </div>
+        {isEdit && (
+          <Checkbox
+            onChange={() => handleCheckboxCheck(student.id)}
+            checked={checked.includes(student.id)}
+            className={styles.checkbox}
+          />
+        )}
+      </li>
+    ));
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
@@ -111,42 +179,9 @@ export default function CourseParticipantPage() {
               <div>Activity</div>
             </li>
             {participantsData?.teachers &&
-              participantsData?.teachers.map((teacher) => (
-                <li key={teacher.id} className={styles.teacherItemBody}>
-                  <div className={styles.teacherName}>
-                    <div className={styles.avatarWrapper}>
-                      <UserAvatar
-                        imageSrc={teacher.image_path}
-                        userName={teacher.name}
-                      />
-                    </div>
-                    {`${teacher.name} ${teacher.surname}`}
-                  </div>
-                  <div className={styles.teacherEmail}>{teacher.email}</div>
-                  <div>
-                    {teacher.last_active
-                      ? teacher.last_active.replaceAll("-", ".")
-                      : "-"}
-                  </div>
-                </li>
-              ))}
-            {participantsData?.curator && (
-              <li className={styles.teacherItemBody}>
-                <div className={styles.teacherName}>
-                  <div className={styles.avatarWrapper}>
-                    <UserAvatar
-                      imageSrc={participantsData?.curator.image_path}
-                      userName={participantsData?.curator.name}
-                    />
-                  </div>
-                  {`${participantsData?.curator.name} ${participantsData?.curator.surname}`}
-                </div>
-                <div className={styles.teacherEmail}>
-                  {participantsData.curator.email}
-                </div>
-                <div>20.08.2023</div>
-              </li>
-            )}
+              renderTeachers(participantsData?.teachers)}
+            {participantsData?.curator &&
+              renderCurator(participantsData?.curator)}
           </ul>
         </div>
         <div className={styles.studentsWrapper}>
@@ -193,47 +228,9 @@ export default function CourseParticipantPage() {
                 <div>Average rating</div>
                 <div>A comment</div>
               </li>
-              {students &&
-                students.map((student) => (
-                  <li
-                    key={student.id}
-                    className={
-                      isEdit
-                        ? `${styles.studentItemBody} ${styles.itemEdit}`
-                        : styles.studentItemBody
-                    }
-                  >
-                    <div className={styles.studentName}>
-                      <div className={styles.avatarWrapper}>
-                        <UserAvatar
-                          imageSrc={student.image_path}
-                          userName={student.name}
-                        />
-                      </div>
-                      {`${student.name} ${student.surname}`}
-                    </div>
-                    <div className={styles.studentEmail}>{student.email}</div>
-                    <div>
-                      {student.last_active
-                        ? student.last_active.replaceAll("-", ".")
-                        : "-"}
-                    </div>{" "}
-                    <div>67%</div>
-                    <div>172 (B)</div>
-                    <div>
-                      {!Array.isArray(student.participant_comment)
-                        ? student.participant_comment
-                        : "Non comment"}
-                    </div>
-                    {isEdit && (
-                      <Checkbox
-                        onChange={() => handleCheckboxCheck(student.id)}
-                        checked={checked.includes(student.id)}
-                        className={styles.checkbox}
-                      />
-                    )}
-                  </li>
-                ))}
+              {students && renderStudents(students)}
+              {students && renderStudents(students)}
+              {students && renderStudents(students)}
             </ul>
           </div>
         </div>

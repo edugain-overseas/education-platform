@@ -18,8 +18,8 @@ const InstructionsCategoriesList = ({ data }) => {
   return (
     <ul className={styles.categoriesList}>
       {data.map((data) => (
-        <li key={data.instructionCategoryId}>
-          <h3>{data.instructionCategory}</h3>
+        <li key={data.categoryId}>
+          <h3>{data.category}</h3>
           <InstructionsList data={data.instructions} />
           {isEdit && (
             <>

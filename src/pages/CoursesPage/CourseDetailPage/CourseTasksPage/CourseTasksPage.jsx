@@ -4,15 +4,21 @@ import { ReactComponent as SortIcon } from "../../../../images/icons/sort.svg";
 import { ReactComponent as SearchIcon } from "../../../../images/icons/search.svg";
 import { useSelector } from "react-redux";
 import { getSubjectData } from "../../../../redux/subject/subjectSelectors";
-import styles from "./CourseTasksPage.module.scss";
 import { Outlet, useParams } from "react-router-dom";
+import styles from "./CourseTasksPage.module.scss";
 
 const CourseTasksPage = () => {
   const { id, lessonId } = useParams();
-
-  const modules = useSelector(getSubjectData).find(
+  const subject = useSelector(getSubjectData).find(
     (subject) => `${subject.id}` === id
-  )?.subjects_lessons;
+  );
+  console.log(subject);
+  let modules = subject?.subjects_lessons
+    ? [...subject?.subjects_lessons].sort(
+        (itemA, itemB) => itemA.module_number - itemB.module_number
+      )
+    : null;
+  console.log(modules);
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>

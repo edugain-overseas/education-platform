@@ -34,6 +34,10 @@
   overflow-y: auto;
 }
 
+.textInfoWrapper {
+  margin-bottom: 32rem;
+}
+
 .instructionTitle {
   margin-bottom: 10rem;
   color: rgba(0, 0, 0, 0.5);
@@ -55,7 +59,6 @@
 }
 
 .instructionText {
-  margin-bottom: 10rem;
   color: rgba(0, 0, 0, 0.5);
   text-align: justify;
   font-family: Inter, sans-serif;
@@ -63,4 +66,79 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+.instructionFiles {
+  & > *:not(:last-child) {
+    margin-bottom: 16rem;
+  }
+}
+
+.attachedLink {
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+
+  & span {
+    color: #4171cd;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 22rem;
+  }
+
+  &:hover span {
+    text-decoration-line: underline;
+  }
+}
+
+.attachedDocumentWrapper {
+  display: flex;
+  gap: 12rem;
+  align-items: center;
+
+  & svg {
+    width: 16rem;
+    height: 16rem;
+  }
+
+  & .documentName {
+    font-family: Inter, sans-serif;
+    font-size: 15rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.3%;
+    letter-spacing: 0.45rem;
+  }
+
+  & .documentSize {
+    color: #bdbdbd;
+    font-family: Inter, sans-serif;
+    font-size: 15rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.3%;
+    letter-spacing: 0.45rem;
+  }
+
+  & .downloadLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & .deleteBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2rem);
+
+    &:hover path {
+      fill: #d60000;
+    }
+  }
 }

@@ -15,6 +15,11 @@ export const changeAvatar = async (file) => {
   return data;
 };
 
+export const changeTeacherAvatar = async (file) => {
+  const { data } = await instance.put("/teacher/update-image", file);
+  return data;
+};
+
 export const logout = async () => {
   const { data } = await instance.get("/logout");
   return data;

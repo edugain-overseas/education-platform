@@ -11,15 +11,60 @@
 .sendButton {
   width: 33rem;
   height: 33rem;
-  background: #3a5cbd;
+  background-color: #3a5cbd;
   border-radius: 4rem;
+  border: 1rem solid transparent;
+  transition: all 300ms ease-out;
+
+  & svg {
+    transition: transform 300ms ease-out;
+
+    & path {
+      transition: fill 300ms ease-out;
+    }
+  }
+
+  &:hover {
+    background-color: transparent;
+    border-color: #3a5cbd;
+
+    & svg {
+      transform: rotate(45deg);
+
+      & path {
+        fill: #3a5cbd;
+      }
+    }
+  }
+
 }
 
-.checkboxWrapper {
+.pinBtn {
   position: absolute;
-  bottom: 18rem;
-  left: 420rem;
-  // z-index: 999999;
+  bottom: 16rem;
+  left: 485rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20rem;
+  height: 20rem;
+  border: 1rem solid transparent;
+  border-radius: 4rem;
+
+  &.active {
+    border-color: #3a5cbd;
+    transform: scale(1.1);
+  }
+
+  & svg {
+    width: 14rem;
+    height: 14rem;
+  }
+
+  &.active path {
+    fill: #3a5cbd;
+    fill-opacity: 1;
+  }
 }
 
 .attachBtnWrapper {

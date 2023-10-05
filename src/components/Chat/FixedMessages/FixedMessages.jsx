@@ -19,7 +19,7 @@ const FixedMessages = ({ messages }) => {
       >
         {messages &&
           messages.map((message) => (
-            <SwiperSlide key={message.message_id}>
+            <SwiperSlide key={message.messageId}>
               <MessageSLide message={message} />
             </SwiperSlide>
           ))}

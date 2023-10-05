@@ -34,11 +34,11 @@ export function MessageFromChat({
   );
 
   const handleFeedback = () => {
-    if (replyTo !== message.message_id) {
+    if (replyTo !== message.messageId) {
       dispatch(
         chatType === "group"
-          ? setFeedback(message.message_id)
-          : setSubjectFeedback(message.message_id)
+          ? setFeedback(message.messageId)
+          : setSubjectFeedback(message.messageId)
       );
     } else {
       dispatch(
@@ -55,14 +55,14 @@ export function MessageFromChat({
     if (type === "origin") {
       dispatch(
         chatType === "group"
-          ? readMessageThunk(message.message_id)
-          : readSubjectMessageThunk(message.message_id)
+          ? readMessageThunk(message.messageId)
+          : readSubjectMessageThunk(message.messageId)
       );
     } else {
       dispatch(
         chatType === "group"
-          ? readAnswerThunk(message.answer_id)
-          : readSubjectAnswerThunk(message.answer_id)
+          ? readAnswerThunk(message.answerId)
+          : readSubjectAnswerThunk(message.answerId)
       );
     }
   };
@@ -90,7 +90,7 @@ export function MessageFromChat({
     >
       <div className={styles.avatarWrapper}>
         <UserAvatar
-          imageSrc={message.userData.image_path}
+          imageSrc={message.userData.imagePath}
           userName={message.userData.name}
         />
         <div
@@ -114,8 +114,8 @@ export function MessageFromChat({
         >
           {message.userData.name}{" "}
           {type === "origin"
-            ? message.message_datetime.slice(-8, -3)
-            : message.answer_datetime.slice(-8, -3)}
+            ? message.messageDatetime.slice(-8, -3)
+            : message.answerDatetime.slice(-8, -3)}
         </p>
         <div
           className={
@@ -124,22 +124,22 @@ export function MessageFromChat({
               : `${styles.contentWrapper} ${styles.contentWrapperUnread}`
           }
           style={
-            replyTo === message.message_id
+            replyTo === message.messageId
               ? { border: "1px solid #4171CD" }
               : { border: "1px solid transparent" }
           }
         >
           {type === "origin"
-            ? message.attach_files.map((file) => {
-                return renderFileFromMessage(file);
+            ? message.attachFiles.map((file) => {
+                return renderFileFromMessage(file, styles);
               })
-            : message.attach_file.map((file) => {
-                return renderFileFromMessage(file);
+            : message.attachFiles.map((file) => {
+                return renderFileFromMessage(file, styles);
               })}
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{
-              __html: type === "origin" ? message.message_text : message.answer,
+              __html: type === "origin" ? message.messageText : message.answer,
             }}
           ></div>
           {type === "origin" && (
@@ -151,7 +151,7 @@ export function MessageFromChat({
               }
               onClick={handleFeedback}
               style={
-                replyTo === message.message_id
+                replyTo === message.messageId
                   ? { border: "1px solid #4171CD" }
                   : {}
               }

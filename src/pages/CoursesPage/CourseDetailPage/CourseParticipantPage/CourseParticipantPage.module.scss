@@ -1,5 +1,6 @@
 .pageWrapper {
   height: 100%;
+  overflow-y: auto;
 }
 
 .container {
@@ -28,7 +29,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16rem;
-  padding-bottom: 9rem;
+  padding-bottom: 8rem;
   border-bottom: 1rem solid #cfcfcf;
   color: rgba(0, 0, 0, 0.6);
   font-family: Inter, sans-serif;
@@ -36,6 +37,15 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+.studentsWrapper .headerWrapper {
+  height: 30rem;
+  position: sticky;
+  background: #F4F6FC;
+  z-index: 2;
+  top: 0;
+  padding-top: 8rem;
 }
 
 .teacherList,
@@ -147,19 +157,16 @@
 
 .studentsWrapper {
   height: 100%;
-  overflow-y: hidden;
 }
 
 .studentListWrapper {
-  max-height: calc(100% - 38rem);
-  overflow-y: auto;
   position: relative;
   padding-bottom: 18rem;
 }
 
 .studentsItemHeader {
   position: sticky;
-  top: 0;
+  top: 28rem;
   z-index: 2;
   background: #fff;
 }

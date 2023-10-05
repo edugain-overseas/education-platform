@@ -6,16 +6,16 @@ import UserAvatar from "../../../shared/UserAvatar/UserAvatar";
 
 const MessageSLide = ({ message }) => {
   const sender = useSelector(getParticipantsData)?.find(
-    ({ user_id }) => user_id === message.sender_id
+    ({ userId }) => userId === message.senderId
   );
 
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.avatarWrapper}>
-        <UserAvatar imageSrc={sender.image_path} userName={sender.username} />
+        <UserAvatar imageSrc={sender.imagePath} userName={sender.username} />
         <div
           className={
-            sender.is_active
+            sender.isActive
               ? `${styles.status} ${styles.online}`
               : `${styles.status} ${styles.offline}`
           }
@@ -24,7 +24,7 @@ const MessageSLide = ({ message }) => {
       <div className={styles.messageWrapper}>
         <p className={styles.senderName}>{sender.name}</p>
         <p
-          dangerouslySetInnerHTML={{ __html: message.message_text }}
+          dangerouslySetInnerHTML={{ __html: message.messageText }}
           className={styles.messageText}
         ></p>
       </div>
