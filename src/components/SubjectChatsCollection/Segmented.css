@@ -1,0 +1,13 @@
+.ant-segmented-group {
+  gap: 8rem;
+}
+
+.ant-segmented .ant-segmented-item-label {
+  padding: 0;
+  border-radius: 5rem;
+  box-shadow: 0 0 3.31881rem 0 rgba(0, 0, 0, 0.12);
+}
+
+.ant-segmented .ant-segmented-item:hover:not(.ant-segmented-item-selected):not(.ant-segmented-item-disabled) {
+    color: #718da7;
+}

@@ -65,16 +65,9 @@ export default function CourseItemPage() {
       dispatch(
         updateSubjectByIdThunk({ subjectId: id, subjectData: updatedData })
       );
-      if (imageFile) {
-        dispatch(updateSubjectImageThunk({ subjectId: id, file: imageFile }));
-      }
-      if (logoFile) {
-        dispatch(updateSubjectLogoThunk({ subjectId: id, file: logoFile }));
-      }
       dispatch(setDefault());
     };
     if (isSubmit) {
-      console.log("SUBMIT");
       handleSumbit();
     }
   }, [
@@ -90,11 +83,19 @@ export default function CourseItemPage() {
   ]);
 
   const handleLogoChange = (e) => {
-    setLogoFile(e.target.files[0]);
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    dispatch(updateSubjectLogoThunk({ subjectId: id, file: formData }));
+    setLogoFile(file);
   };
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    dispatch(updateSubjectImageThunk({ subjectId: id, file: formData }));
+    setImageFile(file);
   };
 
   const onLecturesChange = (e) => {

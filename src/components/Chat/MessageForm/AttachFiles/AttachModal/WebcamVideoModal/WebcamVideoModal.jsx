@@ -5,23 +5,27 @@ import ReactPlayer from "react-player";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
-import { getAttachFileLoading } from "../../../../../../redux/groupChat/groupChatSelectors";
 import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
-import { getSubjectAttachFileLoading } from "../../../../../../redux/subjectChats/subjectChatSelectors";
+import { attachFileToMessageThunk as attachFileToTeacherSubjectMessageThunk } from "../../../../../../redux/chats/chatOperations";
+import { getUserType } from "../../../../../../redux/user/userSelectors";
 
-export default function WebcamVideoModal({ isOpenModal, closeModal }) {
+export default function WebcamVideoModal({
+  isOpenModal,
+  closeModal,
+  chatData,
+}) {
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState(null);
   const [videoURL, setVideoURL] = useState("");
 
-  const type = useContext(TypeContext) || "group";
+  const type = useContext(TypeContext) || "main";
+  const userType = useSelector(getUserType);
 
-  const isLoading = useSelector(
-    type === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
-  );
+  const isLoading = chatData?.attachedFilesToMessage?.isLoading;
+  console.log(isLoading);
 
   const dispatch = useDispatch();
 
@@ -46,14 +50,19 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
     const fileName = `webcam-video_${uniqueId}.webm`;
     formData.append("file", recordedChunks, fileName);
     dispatch(
-      type === "group"
-        ? attachFileToMessageThunk(formData)
+      type === "main"
+        ? userType === "student"
+          ? attachFileToMessageThunk(formData)
+          : attachFileToTeacherSubjectMessageThunk({
+              subjectId: chatData.subjectId,
+              data: formData,
+            })
         : attachFileToSubjectMessageThunk(formData)
     );
+    closeModal();
   };
 
   const handleDataAvailable = ({ data }) => {
-    console.log(data);
     if (data && data.size > 0) {
       setRecordedChunks(data);
       const videoUrl = URL.createObjectURL(data);
@@ -101,7 +110,7 @@ export default function WebcamVideoModal({ isOpenModal, closeModal }) {
                 key="attach"
                 type="primary"
                 onClick={handleAttach}
-                loading={isLoading}
+                loading={chatData.attachedFilesToMessage.isLoading}
               >
                 Attach
               </Button>

@@ -6,3 +6,4 @@ export const getSubjectAttachFileLoading = (state) => state.subjectChat.attached
 export const getSubjectFeedbackData = (state) => state.subjectChat.feedbackTo
 export const getSubjectIsLoading = (state) => state.subjectChat.isLoading
 export const getSubjectHistoryEnd = state => state.subjectChat.historyEnd
+export const getSubjectChatData = state => state.subjectChat

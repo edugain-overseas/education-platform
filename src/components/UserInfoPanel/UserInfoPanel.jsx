@@ -73,9 +73,7 @@ export function UserInfoPanel() {
             <p
               className={styles.userName}
             >{`${userInfo?.teacher_name} ${userInfo?.teacher_surname}`}</p>
-            <p
-              className={styles.eduProgress}
-            >{`Email: ${userInfo?.teacher_email}`}</p>
+            <p className={styles.eduProgress}>{`Doctor, PhD in Medicine`}</p>
           </div>
         );
       default:
@@ -84,37 +82,67 @@ export function UserInfoPanel() {
   };
 
   const renderUserEduInfo = () => {
-    if (userType === "student") {
-      return (
-        <ul className={styles.eduInfoList}>
-          <li className={styles.eduInfoItem}>
-            <p className={styles.eduInfoProperty}>Group:</p>
-            <p className={styles.eduInfoValue}>{userInfo?.group_name}</p>
-          </li>
-          <li className={styles.eduInfoItem}>
-            <p className={styles.eduInfoProperty}>Programme Subject Area:</p>
-            <p className={styles.eduInfoValue}>
-              {userInfo?.student_subject_area}
-            </p>
-          </li>
-          <li className={styles.eduInfoItem}>
-            <p className={styles.eduInfoProperty}>Educational programme:</p>
-            <p className={styles.eduInfoValue}>
-              {userInfo?.student_educational_program}
-            </p>
-          </li>
-          <li className={styles.eduInfoItem}>
-            <p className={styles.eduInfoProperty}>Qualification:</p>
-            <p className={styles.eduInfoValue}>
-              {userInfo?.student_qualification}
-            </p>
-          </li>
-          <li className={styles.eduInfoItem}>
-            <p className={styles.eduInfoProperty}>Field of study:</p>
-            <p className={styles.eduInfoValue}>Health</p>
-          </li>
-        </ul>
-      );
+    switch (userType) {
+      case "student":
+        return (
+          <ul className={styles.eduInfoList}>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Group:</p>
+              <p className={styles.eduInfoValue}>{userInfo?.group_name}</p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Programme Subject Area:</p>
+              <p className={styles.eduInfoValue}>
+                {userInfo?.student_subject_area}
+              </p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Educational programme:</p>
+              <p className={styles.eduInfoValue}>
+                {userInfo?.student_educational_program}
+              </p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Qualification:</p>
+              <p className={styles.eduInfoValue}>
+                {userInfo?.student_qualification}
+              </p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Field of study:</p>
+              <p className={styles.eduInfoValue}>Health</p>
+            </li>
+          </ul>
+        );
+      case "teacher":
+        return (
+          <ul className={styles.eduInfoList}>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Faculty of study:</p>
+              <p className={styles.eduInfoValue}>Public Health</p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Department:</p>
+              <p className={styles.eduInfoValue}>General Medicine</p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>
+                Educational qualification:
+              </p>
+              <p className={styles.eduInfoValue}>Doctor of Medicine</p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Specialization:</p>
+              <p className={styles.eduInfoValue}>General Medicine</p>
+            </li>
+            <li className={styles.eduInfoItem}>
+              <p className={styles.eduInfoProperty}>Educational programme:</p>
+              <p className={styles.eduInfoValue}>Therapist</p>
+            </li>
+          </ul>
+        );
+      default:
+        break;
     }
   };
 

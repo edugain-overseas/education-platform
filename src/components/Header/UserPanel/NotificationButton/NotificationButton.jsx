@@ -5,13 +5,22 @@ import {
   getMessages,
   getParticipantsData,
 } from "../../../../redux/groupChat/groupChatSelectors";
-import { getUserGroup, getUserId } from "../../../../redux/user/userSelectors";
+import {
+  getTeacherSubjects,
+  getUserGroup,
+  getUserId,
+  getUserType,
+} from "../../../../redux/user/userSelectors";
+import { getAllChats } from "../../../../redux/chats/chatsSelectors";
 import { Button, Card, Modal } from "antd";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { readMessageThunk } from "../../../../redux/groupChat/groupChatOperations";
+import { readMessageThunk as readTeacherMessageThunk } from "../../../../redux/chats/chatOperations";
 import UserAvatar from "../../../shared/UserAvatar/UserAvatar";
+import SubjectChatTabs from "./SubjectChatTabs/SubjectChatTabs";
 import styles from "./NotificationButton.module.scss";
+
 
 export default function NotificationButton() {
   const [showModal, setShowModal] = useState(false);
@@ -19,22 +28,36 @@ export default function NotificationButton() {
   const messages = useSelector(getMessages);
   const groupName = useSelector(getUserGroup);
   const participantsData = useSelector(getParticipantsData);
+  const userType = useSelector(getUserType);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const messagesToNotify =
-    (messages &&
-      messages.filter(
-        (message) =>
-          message.senderId !== userId && !message.readBy?.includes(`${userId}`)
-      )) ||
-    [];
+  const chatsData = useSelector(getAllChats);
+  const subjectsData = useSelector(getTeacherSubjects);
 
-  const amoutTodisplay = () => {
-    if (messagesToNotify.length > 99) {
+  const messagesToNotify =
+    userType === "student"
+      ? (messages &&
+          messages.filter(
+            (message) =>
+              message.senderId !== userId &&
+              !message.readBy?.includes(`${userId}`)
+          )) ||
+        []
+      : chatsData?.reduce((allMessages, chat) => {
+          chat.messages.forEach((message) => {
+            if (!message.readBy?.includes(`${userId}`)) {
+              allMessages.push({ subjectId: chat.subjectId, message: message });
+            }
+          });
+          return allMessages;
+        }, []);
+
+  const amoutTodisplay = (messages) => {
+    if (messages?.length > 99) {
       return "99+";
     }
-    return messagesToNotify.length;
+    return messagesToNotify?.length;
   };
 
   const handleOpenModal = () => {
@@ -50,19 +73,22 @@ export default function NotificationButton() {
     setShowModal(false);
   };
 
-  const handleRead = (messageId) => {
-    console.log(messageId);
-    dispatch(readMessageThunk(messageId));
+  const handleRead = (id, messageId) => {
+    dispatch(
+      userType === "student"
+        ? readMessageThunk(messageId)
+        : readTeacherMessageThunk({ subjectId: id, data: messageId })
+    );
   };
 
   const renderCardTitle = (message) => {
-    const userData = participantsData.find(
-      (user) => user.user_id === message.sender_id
+    const userData = participantsData?.find(
+      (user) => user.userId === message.senderId
     );
     return (
       <div className={styles.cardHead}>
         <div className={styles.avatarWrapper}>
-          <UserAvatar imageSrc={userData.image_path} userName={userData.name} />
+          <UserAvatar imageSrc={userData.imagePath} userName={userData.name} />
         </div>
         <div className={styles.cardHeadInfoWrapper}>
           <span className={styles.cardHeadName}>
@@ -76,7 +102,31 @@ export default function NotificationButton() {
     );
   };
 
-  const renderCardBody = (message) => {
+  const renderTeacherCardTitle = (id, message) => {
+    const userData = chatsData
+      .find(({ subjectId }) => subjectId === id)
+      ?.participantsData?.find((user) => user.userId === message.senderId);
+    return (
+      <div className={styles.cardHead}>
+        <div className={styles.avatarWrapper}>
+          <UserAvatar
+            imageSrc={userData?.imagePath}
+            userName={userData?.name}
+          />
+        </div>
+        <div className={styles.cardHeadInfoWrapper}>
+          <span className={styles.cardHeadName}>
+            {userData?.name} {userData?.surname}
+          </span>
+          <span className={styles.cardHeadTime}>
+            {message?.messageDatetime?.slice(-8, -3)}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  const renderCardBody = (id, message) => {
     return (
       <div className={styles.cardBody}>
         <div
@@ -91,7 +141,7 @@ export default function NotificationButton() {
           </p>
         )}
         <button
-          onClick={() => handleRead(message.messageId)}
+          onClick={() => handleRead(id, message.messageId)}
           className={styles.readBtn}
         >
           Mask as read
@@ -100,38 +150,89 @@ export default function NotificationButton() {
     );
   };
 
+  const tabsItems =
+    userType === "teacher"
+      ? subjectsData
+          ?.map((subject) => {
+            if (
+              messagesToNotify.find(
+                ({ subjectId }) => subjectId === subject.subject_id
+              )
+            ) {
+              return {
+                label: (
+                  <div>
+                    <span>{subject.subject_title} </span>
+                    <span>{subject.group_name}</span>
+                  </div>
+                ),
+                key: subject.subject_id,
+                children: messagesToNotify
+                  .filter(({ subjectId }) => subjectId === subject.subject_id)
+                  .map((message) => (
+                    <Card
+                      key={message.messageId}
+                      title={renderTeacherCardTitle(
+                        subject.subject_id,
+                        message.message
+                      )}
+                      size="small"
+                      className={styles.card}
+                    >
+                      {renderCardBody(subject.subject_id, message.message)}
+                    </Card>
+                  )),
+              };
+            }
+            return null;
+          })
+          .filter((item) => item)
+      : [];
+
   return (
     <>
       <button className={styles.wrapperBtn} onClick={handleOpenModal}>
         <BellIcon />
-        <span className={styles.badge}>{amoutTodisplay()}</span>
+        <span className={styles.badge}>{amoutTodisplay(messagesToNotify)}</span>
       </button>
       <Modal
         open={showModal}
-        title={`Chat group ${groupName}`}
+        title={
+          userType === "student" ? `Chat group ${groupName}` : `Subject chats`
+        }
         onCancel={handleCloseModal}
         destroyOnClose={true}
-        footer={[
-          <Button key="openChat" onClick={handleGoToChat}>
-            Go to chat
-          </Button>,
-        ]}
+        footer={
+          userType === "student"
+            ? [
+                <Button key="openChat" onClick={handleGoToChat}>
+                  Go to chat
+                </Button>,
+              ]
+            : null
+        }
         width="60vw"
         bodyStyle={{
           maxHeight: "60vh",
           overflowY: "auto",
         }}
       >
-        {messagesToNotify.map((message) => (
-          <Card
-            key={message.messageId}
-            title={renderCardTitle(message)}
-            size="small"
-            className={styles.card}
-          >
-            {renderCardBody(message)}
-          </Card>
-        ))}
+        {userType === "student" ? (
+          messagesToNotify.map((message) => {
+            return (
+              <Card
+                key={message.messageId}
+                title={renderCardTitle(message)}
+                size="small"
+                className={styles.card}
+              >
+                {renderCardBody(null, message)}
+              </Card>
+            );
+          })
+        ) : (
+          <SubjectChatTabs items={tabsItems} />
+        )}
       </Modal>
     </>
   );

@@ -77,7 +77,7 @@ export default function CourseDetailPage() {
       console.log("Connected sub");
     };
 
-    ws.onclose = function (event) {
+    ws.onclose = function () {
       setSocket(null);
       console.log("Connection sub Closed");
     };
@@ -115,7 +115,7 @@ export default function CourseDetailPage() {
       instance.defaults.headers["Content-Type"] = "application/json";
       instance.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      dispatch(getSubjectTapesByIdThunk(id));
+      dispatch(getSubjectTapesByIdThunk(+id));
       dispatch(getSubjectAboutThunk(id));
       dispatch(getSubjectIconsThunk(id));
       dispatch(getSubjectInstructionsThunk(id));

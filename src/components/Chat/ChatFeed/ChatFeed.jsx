@@ -1,32 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MessageFromChat } from "../MessageFromChat/MessageFromChat";
 import { useSelector } from "react-redux";
 import MutationDots from "../../Loaders/MutationDots/MutationDots";
 import { getUserId } from "../../../redux/user/userSelectors";
-import {
-  getActiveUsers,
-  getMessages,
-  getParticipantsData,
-} from "../../../redux/groupChat/groupChatSelectors";
-import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
-import {
-  getSubjectActiveUsers,
-  getSubjectMessages,
-  getSubjectParticipantsData,
-} from "../../../redux/subjectChats/subjectChatSelectors";
 import styles from "./ChatFeed.module.scss";
 
-export function ChatFeed() {
-  const type = useContext(TypeContext) || "group";
-  const messages = useSelector(
-    type === "group" ? getMessages : getSubjectMessages
-  );
-  const participantsData = useSelector(
-    type === "group" ? getParticipantsData : getSubjectParticipantsData
-  );
-  const activeData = useSelector(
-    type === "group" ? getActiveUsers : getSubjectActiveUsers
-  );
+export function ChatFeed({ chatData = null }) {
+  const messages = chatData?.messages;
+  const participantsData = chatData?.participantsData;
+  const activeData = chatData?.activeData;
   const userId = useSelector(getUserId);
 
   return messages ? (
@@ -41,7 +23,7 @@ export function ChatFeed() {
           online: activeData?.idsActiveUsers?.includes(message.senderId),
         };
         const self = message.senderId === userId;
-        const readed = message.readBy.includes(`${userId}`);
+        const readed = message.readBy?.includes(`${userId}`);
         return (
           <React.Fragment key={index}>
             <MessageFromChat
@@ -50,6 +32,7 @@ export function ChatFeed() {
               type="origin"
               self={self}
               readed={userId === message.senderId ? true : readed}
+              chatData={chatData}
             />
             {message.answers?.length !== 0 &&
               message.answers &&
@@ -71,6 +54,7 @@ export function ChatFeed() {
                     key={`${answer.answerId}a`}
                     lastElement={answersArray.length === index + 1}
                     readed={userId === answer.senderId ? true : readed}
+                    chatData={chatData}
                   />
                 );
               })}

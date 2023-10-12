@@ -17,55 +17,73 @@ import {
   clearAttachedFiles as clearSubjectAttachedFiles,
   setFeedback as setSubjectFeedback,
 } from "../../../redux/subjectChats/subjectChatSlice";
+import {
+  clearAttachedFiles as clearTeacherSubjectAttachedFiles,
+  setFeedback as setTeacherSubjectFeedback,
+} from "../../../redux/chats/chatsSlice";
 import { getMessageType } from "../../../helpers/getMessageType";
-import {
-  getAttachFileLoading,
-  getAttachedFiles,
-  getFeedbackData,
-  getParticipantsData,
-} from "../../../redux/groupChat/groupChatSelectors";
-import { WebsocketContext } from "../../../App";
+import { WebsocketContext, WebsocketsContext } from "../../../App";
 import { SubjectWebsocketContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseDetailPage";
-import {
-  getSubjectAttachedFiles,
-  getSubjectFeedbackData,
-  getSubjectParticipantsData,
-} from "../../../redux/subjectChats/subjectChatSelectors";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
-import { getSubjectAttachFileLoading } from "../../../redux/subjectChats/subjectChatSelectors";
 import EmojiPanel from "./EmojiPanel/EmojiPanel";
 import { ReactComponent as PinIcon } from "../../../images/icons/pin.svg";
 import styles from "./MessageForm.module.scss";
 
-export function MessageForm() {
+export function MessageForm({ chatData = null }) {
   const [messageHTML, setMessageHTML] = useState("");
   const [sendTo, setSendTo] = useState([]);
   const [fixed, setFixed] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const userType = useSelector(getUserType);
 
-  const type = useContext(TypeContext) || "group";
+  const type = useContext(TypeContext) || "main";
 
-  const socket = useContext(
-    type === "group" ? WebsocketContext : SubjectWebsocketContext
+  let socket = useContext(
+    type === "main"
+      ? userType === "teacher"
+        ? WebsocketsContext
+        : WebsocketContext
+      : SubjectWebsocketContext
   );
+  if (type === "main" && userType === "teacher") {
+    socket = socket.find(({ id }) => chatData.subjectId === id)?.websocket;
+  }
   const dispatch = useDispatch();
 
   const userId = useSelector(getUserId);
-  const participantsData = useSelector(
-    type === "group" ? getParticipantsData : getSubjectParticipantsData
-  );
-  const userType = useSelector(getUserType);
-  const attachedFiles = useSelector(
-    type === "group" ? getAttachedFiles : getSubjectAttachedFiles
-  );
-  const replyTo = useSelector(
-    type === "group" ? getFeedbackData : getSubjectFeedbackData
-  );
-
-  const isLoadingFiles = useSelector(
-    type === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
-  );
+  const participantsData = chatData?.participantsData;
+  // const participantsData = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.participantsData
+  //       : getParticipantsData
+  //     : getSubjectParticipantsData
+  // );
+  const attachedFiles = chatData?.attachedFilesToMessage?.filesData;
+  // const attachedFiles = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.attachedFilesToMessage.filesData
+  //       : getAttachedFiles
+  //     : getSubjectAttachedFiles
+  // );
+  const replyTo = chatData?.feedbackTo;
+  // const replyTo = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.feedbackTo
+  //       : getFeedbackData
+  //     : getSubjectFeedbackData
+  // );
+  const isLoadingFiles = chatData?.attachedFilesToMessage.isLoading;
+  // const isLoadingFiles = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.attachedFilesToMessage.isLoading
+  //       : getAttachFileLoading
+  //     : getSubjectAttachFileLoading
+  // );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -96,16 +114,29 @@ export function MessageForm() {
       delete data.recipient;
       data.messageId = replyTo;
     }
-
-    console.log(data.message);
-
+    console.log(data);
     try {
       socket.send(JSON.stringify(data));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     dispatch(
-      type === "group" ? clearAttachedFiles() : clearSubjectAttachedFiles()
+      type === "main"
+        ? userType === "teacher"
+          ? clearTeacherSubjectAttachedFiles({ subjectId: chatData.subjectId })
+          : clearAttachedFiles()
+        : clearSubjectAttachedFiles()
     );
-    dispatch(type === "group" ? setFeedback(null) : setSubjectFeedback(null));
+    dispatch(
+      type === "main"
+        ? userType === "teacher"
+          ? setTeacherSubjectFeedback({
+              subjectId: chatData.subjectId,
+              data: null,
+            })
+          : setFeedback(null)
+        : setSubjectFeedback(null)
+    );
     setMessageHTML("");
     setFixed(false);
   };
@@ -118,7 +149,6 @@ export function MessageForm() {
   };
 
   const handleBlurForm = (e) => {
-    console.log(e);
     if (e.target.className.includes("ant")) {
       return;
     }
@@ -155,7 +185,7 @@ export function MessageForm() {
         focused={isFocused}
       />
       {isFocused && <EmojiPanel onChange={setMessageHTML} />}
-      {!fixed && <AttachFiles show={isFocused} />}
+      {!fixed && <AttachFiles show={isFocused} chatData={chatData} />}
 
       {isLoadingFiles && attachedFiles.length === 0 ? (
         <div className={styles.attachBtnWrapper}>
@@ -169,9 +199,9 @@ export function MessageForm() {
           />
         </div>
       ) : (
-        attachedFiles.length !== 0 && (
+        attachedFiles?.length !== 0 && (
           <div className={styles.attachBtnWrapper}>
-            <AttachedFilesPopover files={attachedFiles} />
+            <AttachedFilesPopover files={attachedFiles} chatData={chatData} />
           </div>
         )
       )}
@@ -192,6 +222,7 @@ export function MessageForm() {
             onChange={(values) => {
               setSendTo(values);
             }}
+            chatData={chatData}
           />
         )}
         <button type="submit" className={styles.sendButton}>

@@ -10,16 +10,21 @@ import MicModal from "./MicModal/MicModal";
 import { useDispatch } from "react-redux";
 import { attachFileToMessageThunk } from "../../../../../redux/groupChat/groupChatOperations";
 import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../redux/subjectChats/subjectChatOperations";
+import { attachFileToMessageThunk as attachFileToTeacherSubjectMessageThunk } from "../../../../../redux/chats/chatOperations";
 import { TypeContext } from "../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { useSelector } from "react-redux";
+import { getUserType } from "../../../../../redux/user/userSelectors";
 import styles from "./AttachModal.module.scss";
 
-export const AttachModal = ({ type }) => {
+export const AttachModal = ({ type, chatData = null }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
   const audioInputRef = useRef(null);
+  const userType = useSelector(getUserType);
+  console.log(chatData);
 
-  const chatType = useContext(TypeContext) || "group";
+  const chatType = useContext(TypeContext) || "main";
 
   const dispatch = useDispatch();
 
@@ -36,13 +41,15 @@ export const AttachModal = ({ type }) => {
     const uniqueId = uuidv4();
     const file = e.target.files[0];
     const fileName = `${uniqueId}_${file.name}`;
-    console.log(file);
     formData.append("file", file, fileName);
-    console.log(formData.get("file"));
-    console.log(chatType);
     dispatch(
-      chatType === "group"
-        ? attachFileToMessageThunk(formData)
+      chatType === "main"
+        ? userType === "teacher"
+          ? attachFileToTeacherSubjectMessageThunk({
+              subjectId: chatData.subjectId,
+              data: formData,
+            })
+          : attachFileToMessageThunk(formData)
         : attachFileToSubjectMessageThunk(formData)
     );
   };
@@ -141,14 +148,17 @@ export const AttachModal = ({ type }) => {
       <WebcamPhotoModal
         isOpenModal={isOpenModal && type === "photo"}
         closeModal={closeModal}
+        chatData={chatData}
       />
       <WebcamVideoModal
         isOpenModal={isOpenModal && type === "video"}
         closeModal={closeModal}
+        chatData={chatData}
       />
       <MicModal
         isOpenModal={isOpenModal && type === "audio"}
         closeModal={closeModal}
+        chatData={chatData}
       />
     </div>
   );

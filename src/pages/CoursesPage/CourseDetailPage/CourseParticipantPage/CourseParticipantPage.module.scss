@@ -5,14 +5,13 @@
 
 .container {
   padding: 0 28rem;
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .pageTitle {
-  padding-top: 18rem;
-  margin-bottom: 16rem;
+  padding: 16rem 0;
+  height: 52rem;
   color: rgba(0, 0, 0, 0.7);
   font-family: Inter, sans-serif;
   font-size: 20rem;
@@ -21,6 +20,11 @@
   line-height: normal;
   letter-spacing: 6rem;
   text-transform: uppercase;
+  background: #f4f6fc;
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .headerWrapper {
@@ -42,9 +46,9 @@
 .studentsWrapper .headerWrapper {
   height: 30rem;
   position: sticky;
-  background: #F4F6FC;
+  background: #f4f6fc;
   z-index: 2;
-  top: 0;
+  top: 52rem;
   padding-top: 8rem;
 }
 
@@ -166,7 +170,7 @@
 
 .studentsItemHeader {
   position: sticky;
-  top: 28rem;
+  top: 80rem;
   z-index: 2;
   background: #fff;
 }
@@ -283,11 +287,10 @@
     }
   }
 
-  & .addStudentBtn {
+  & .addStudentBtn,
+  & .removeStudentBtn {
     width: 176rem;
-
     border-radius: 4rem;
-    background: #39ba6d;
 
     & span {
       color: #fff;
@@ -298,15 +301,24 @@
       line-height: normal;
     }
 
-    & path {
+    & path, & rect {
       fill: #fff;
       fill-opacity: 1;
+      width: 16rem;
     }
   }
 
   & svg {
     width: 16rem;
     height: 16rem;
+  }
+
+  & .addStudentBtn {
+    background: #39ba6d;
+  }
+
+  & .removeStudentBtn {
+    background: #BA3939;
   }
 }
 

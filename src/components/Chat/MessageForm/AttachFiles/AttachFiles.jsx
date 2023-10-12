@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from "react";
-// import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as PhotoIcon } from "../../../../images/icons/photo.svg";
 import { ReactComponent as VideoIcon } from "../../../../images/icons/video.svg";
 import { ReactComponent as AudioIcon } from "../../../../images/icons/voice.svg";
@@ -10,14 +9,18 @@ import "./Popconfirm.css";
 import { useDispatch } from "react-redux";
 import { attachFileToMessageThunk } from "../../../../redux/groupChat/groupChatOperations";
 import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../redux/subjectChats/subjectChatOperations";
+import { attachFileToMessageThunk as attachFileToTeacherSubjectMessageThunk } from "../../../../redux/chats/chatOperations";
 import styles from "./AttachFiles.module.scss";
 import { TypeContext } from "../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { useSelector } from "react-redux";
+import { getUserType } from "../../../../redux/user/userSelectors";
 
-export const AttachFiles = ({ show }) => {
+export const AttachFiles = ({ show, chatData = null }) => {
   const [type, setType] = useState("");
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
-  const chatType = useContext(TypeContext) || "group";
+  const chatType = useContext(TypeContext) || "main";
+  const userType = useSelector(getUserType);
 
   const handleClick = (name) => {
     setType(name);
@@ -26,17 +29,20 @@ export const AttachFiles = ({ show }) => {
 
   const handleInputFileChange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
 
-    // const uniqueId = uuidv4();
     const formData = new FormData();
-    const fileName = `${file.size}_${file.name}`;
+    const fileName = `${file?.size}_${file?.name}` || '';
     console.log(file);
     formData.append("file", file, fileName);
     console.log(chatType);
     dispatch(
-      chatType === "group"
-        ? attachFileToMessageThunk(formData)
+      chatType === "main"
+        ? userType === "teacher"
+          ? attachFileToTeacherSubjectMessageThunk({
+              subjectId: chatData.subjectId,
+              data: formData,
+            })
+          : attachFileToMessageThunk(formData)
         : attachFileToSubjectMessageThunk(formData)
     );
   };
@@ -50,7 +56,7 @@ export const AttachFiles = ({ show }) => {
         <Popconfirm
           placement="bottomLeft"
           title={null}
-          description={<AttachModal type={type} />}
+          description={<AttachModal type={type} chatData={chatData}/>}
           showCancel={false}
           icon={null}
           okButtonProps={{ style: { display: "none" } }}
@@ -70,7 +76,7 @@ export const AttachFiles = ({ show }) => {
         <Popconfirm
           placement="bottomLeft"
           title={null}
-          description={<AttachModal type={type} />}
+          description={<AttachModal type={type} chatData={chatData} />}
           showCancel={false}
           icon={null}
           okButtonProps={{ style: { display: "none" } }}
@@ -90,7 +96,7 @@ export const AttachFiles = ({ show }) => {
         <Popconfirm
           placement="bottomLeft"
           title={null}
-          description={<AttachModal type={type} />}
+          description={<AttachModal type={type} chatData={chatData} />}
           showCancel={false}
           icon={null}
           okButtonProps={{ style: { display: "none" } }}

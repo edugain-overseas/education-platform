@@ -8,14 +8,14 @@ import {
 import SubjectInfoPanel from "../../../../components/SubjectInfoPanel/SubjectInfoPanel";
 import { Chat } from "../../../../components/Chat/Chat";
 import ProgressPanel from "../../../../components/ProgressPanel/ProgressPanel";
-// import { getUserType } from "../../../../redux/user/userSelectors";
+import { getSubjectChatData } from "../../../../redux/subjectChats/subjectChatSelectors";
 import styles from "./CourseTapesPage.module.scss";
 
 export const TypeContext = createContext(null);
 
 export default function CourseTapesPage() {
   const { id } = useParams();
-  // const userType = useSelector(getUserType);
+  const subjectChatData = useSelector(getSubjectChatData);
 
   const subjectData = {
     ...useSelector(getSubjectData)?.find((subject) => `${subject.id}` === id),
@@ -29,7 +29,11 @@ export default function CourseTapesPage() {
     <div className={styles.pageWrapper}>
       <SubjectInfoPanel subjectData={subjectData} />
       <TypeContext.Provider value={"subject"}>
-        <Chat subjectId={id} subjectData={subjectData} />
+        <Chat
+          subjectId={id}
+          subjectData={subjectData}
+          chatData={subjectChatData}
+        />
       </TypeContext.Provider>
 
       <ProgressPanel subjectData={subjectData} />

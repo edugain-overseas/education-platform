@@ -1,0 +1,43 @@
+.lectureConstructorWrapper {
+}
+
+.addSectionPanel {
+  padding-block: 24rem;
+  width: 880rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+
+  border-radius: 4rem;
+  background: #fff;
+  box-shadow: 0 0 16rem 0 rgba(0, 0, 0, 0.12);
+
+  & button {
+    width: 84rem;
+    aspect-ratio: 1;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+
+    &:hover {
+        background-color: rgba(0, 155, 0, 0.2);
+    }
+
+    & span {
+      color: #b3b3b3;
+      text-align: center;
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-transform: capitalize;
+      margin-bottom: 0;
+    }
+  }
+}

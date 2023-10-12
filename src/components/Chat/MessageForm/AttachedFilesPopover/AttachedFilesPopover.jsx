@@ -9,22 +9,22 @@ import { ReactComponent as DeleteIcon } from "../../../../images/icons/trash.svg
 import { useDispatch } from "react-redux";
 import { deleteFileThunk } from "../../../../redux/groupChat/groupChatOperations";
 import { deleteSubjectFileThunk } from "../../../../redux/subjectChats/subjectChatOperations";
+import { deleteSubjectFileThunk as deleteTeacherSubjectFileThunk } from "../../../../redux/chats/chatOperations";
 import { TypeContext } from "../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
-import { getAttachFileLoading } from "../../../../redux/groupChat/groupChatSelectors";
-import { getSubjectAttachFileLoading } from "../../../../redux/subjectChats/subjectChatSelectors";
 import { useSelector } from "react-redux";
 import { TailSpin } from "react-loader-spinner";
 import styles from "./AttachedFilesPopover.module.scss";
+import { getUserType } from "../../../../redux/user/userSelectors";
 
 const Title = () => <h4 className={styles.popoverTitle}>Attached files</h4>;
 
-const Content = ({ files }) => {
+const Content = ({ files, chatData }) => {
+  console.log(chatData);
   const [deleteFilePath, setDeleteFilePath] = useState("");
-  const chatType = useContext(TypeContext) || "group";
+  const chatType = useContext(TypeContext) || "main";
   const dispatch = useDispatch();
-  const isLoadingFiles = useSelector(
-    chatType === "group" ? getAttachFileLoading : getSubjectAttachFileLoading
-  );
+  const isLoadingFiles = chatData.attachedFilesToMessage.isLoading;
+  const userType = useSelector(getUserType);
 
   const handleDeleteClick = (filePath) => {
     setDeleteFilePath(filePath);
@@ -32,17 +32,19 @@ const Content = ({ files }) => {
   };
 
   const handleDelete = (filePath) => {
-    console.log(chatType);
-    if (chatType === "group") {
-      console.log("dispatching action");
-      dispatch(deleteFileThunk(filePath));
-      return;
-    }
-    dispatch(deleteSubjectFileThunk(filePath));
+    dispatch(
+      chatType === "main"
+        ? userType === "teacher"
+          ? deleteTeacherSubjectFileThunk({
+              subjectId: chatData.subjectId,
+              data: filePath,
+            })
+          : deleteFileThunk(filePath)
+        : deleteSubjectFileThunk(filePath)
+    );
   };
 
   const getIconByMimeType = (type) => {
-    console.log(type);
     switch (type.split("/")[0]) {
       case "image":
         return <ImageIcon />;
@@ -101,12 +103,12 @@ const Content = ({ files }) => {
   );
 };
 
-const AttachedFilesPopover = ({ files }) => {
+const AttachedFilesPopover = ({ files, chatData }) => {
   return (
     <Popover
       placement="bottomLeft"
       title={<Title />}
-      content={<Content files={files} />}
+      content={<Content files={files} chatData={chatData}/>}
       arrow={false}
     >
       <button type="button" className={styles.attachBtn}>

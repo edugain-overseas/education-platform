@@ -8,11 +8,14 @@ import { ReactComponent as PrevIcon } from "../../../../../images/icons/prev.svg
 import { ReactComponent as NextIcon } from "../../../../../images/icons/next.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../../../../images/icons/arrow-left.svg";
 import { ReactComponent as QuestionIcon } from "../../../../../images/icons/question.svg";
-import styles from "./TaskDetailPage.module.scss";
 import { useDispatch } from "react-redux";
-import { getLectureByTaskIdThunk } from "../../../../../redux/task/taskOperation";
+import {
+  getLTestByTaskIdThunk,
+  getLectureByTaskIdThunk,
+} from "../../../../../redux/task/taskOperation";
 import { getTasks } from "../../../../../redux/task/taskSelectors";
 import { Empty } from "antd";
+import styles from "./TaskDetailPage.module.scss";
 
 export default function TaskDetailPage() {
   const [type, setType] = useState(null);
@@ -27,22 +30,25 @@ export default function TaskDetailPage() {
   useEffect(() => {
     setType(
       subjectData
-        ?.find((subject) => subject.id === id)
+        ?.find((subject) => subject.id === +id)
         ?.subjects_lessons.find((module) =>
-          module.module_lessons.some(
-            (lesson) => `${lesson.lesson_id}` === lessonId
-          )
+          module.module_lessons.some((lesson) => lesson.lesson_id === +lessonId)
         )
-        ?.module_lessons.find((lesson) => `${lesson.lesson_id}` === lessonId)
+        ?.module_lessons.find((lesson) => lesson.lesson_id === +lessonId)
         ?.lesson_type
     );
   }, [subjectData, id, lessonId]);
 
   useEffect(() => {
+    console.log(type);
+    console.log(type, +lessonId);
     if (type && lessonId) {
       switch (type) {
         case "lecture":
           dispatch(getLectureByTaskIdThunk(lessonId));
+          break;
+        case "test":
+          dispatch(getLTestByTaskIdThunk(lessonId));
           break;
         default:
           break;
@@ -75,7 +81,7 @@ export default function TaskDetailPage() {
     }
     navigate(`/courses/${id}/tasks/${+lessonId - 1}`);
   };
-
+  console.log(lessonData);
   return (
     <div className={styles.taskDetailWrapper}>
       <div className={styles.controlPanel}>

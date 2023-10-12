@@ -3,7 +3,7 @@ import { ReactComponent as SendFeedbackIcon } from "../../../images/icons/feedba
 import { useDispatch, useSelector } from "react-redux";
 import { setFeedback } from "../../../redux/groupChat/groupChatSlice";
 import { setFeedback as setSubjectFeedback } from "../../../redux/subjectChats/subjectChatSlice";
-import { getFeedbackData } from "../../../redux/groupChat/groupChatSelectors";
+import { setFeedback as setTeacherSubjectFeedback } from "../../../redux/chats/chatsSlice";
 import { renderFileFromMessage } from "../../../helpers/renderFileFromMessage";
 import {
   readAnswerThunk,
@@ -13,10 +13,14 @@ import {
   readAnswerThunk as readSubjectAnswerThunk,
   readMessageThunk as readSubjectMessageThunk,
 } from "../../../redux/subjectChats/subjectChatOperations";
-import { getSubjectFeedbackData } from "../../../redux/subjectChats/subjectChatSelectors";
+import {
+  readAnswerThunk as readTeacherSubjectAnswerThunk,
+  readMessageThunk as readTeacherSubjectMessageThunk,
+} from "../../../redux/chats/chatOperations";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import UserAvatar from "../../shared/UserAvatar/UserAvatar";
 import styles from "./MessageFromChat.module.scss";
+import { getUserType } from "../../../redux/user/userSelectors";
 
 export function MessageFromChat({
   message = [],
@@ -24,25 +28,38 @@ export function MessageFromChat({
   self = false,
   lastElement = false,
   readed = false,
+  chatData,
 }) {
   const dispatch = useDispatch();
 
-  const chatType = useContext(TypeContext) || "group";
+  const chatType = useContext(TypeContext) || "main";
 
-  const replyTo = useSelector(
-    chatType === "group" ? getFeedbackData : getSubjectFeedbackData
-  );
+  const replyTo = chatData?.feedbackTo;
+
+  const userType = useSelector(getUserType);
 
   const handleFeedback = () => {
     if (replyTo !== message.messageId) {
       dispatch(
-        chatType === "group"
-          ? setFeedback(message.messageId)
+        chatType === "main"
+          ? userType === "teacher"
+            ? setTeacherSubjectFeedback({
+                subjectId: chatData.subjectId,
+                data: message.messageId,
+              })
+            : setFeedback(message.messageId)
           : setSubjectFeedback(message.messageId)
       );
     } else {
       dispatch(
-        chatType === "group" ? setFeedback(null) : setSubjectFeedback(null)
+        chatType === "main"
+          ? userType === "teacher"
+            ? setTeacherSubjectFeedback({
+                subjectId: chatData.subjectId,
+                data: null,
+              })
+            : setFeedback(null)
+          : setSubjectFeedback(null)
       );
     }
   };
@@ -54,14 +71,25 @@ export function MessageFromChat({
 
     if (type === "origin") {
       dispatch(
-        chatType === "group"
-          ? readMessageThunk(message.messageId)
-          : readSubjectMessageThunk(message.messageId)
+        chatType === "main"
+          ? userType === "teacher"
+            ? readTeacherSubjectMessageThunk({
+                subjectId: chatData.subjectId,
+                data: message.messageId,
+              })
+            : readMessageThunk(message.messageId)
+          : readSubjectMessageThunk(message.messageIdchat)
       );
     } else {
+      console.log(chatData);
       dispatch(
-        chatType === "group"
-          ? readAnswerThunk(message.answerId)
+        chatType === "main"
+          ? userType === "teacher"
+            ? readTeacherSubjectAnswerThunk({
+                subjectId: chatData.subjectId,
+                data: message.answerId,
+              })
+            : readAnswerThunk(message.answerId)
           : readSubjectAnswerThunk(message.answerId)
       );
     }
@@ -90,8 +118,8 @@ export function MessageFromChat({
     >
       <div className={styles.avatarWrapper}>
         <UserAvatar
-          imageSrc={message.userData.imagePath}
-          userName={message.userData.name}
+          imageSrc={message.userData?.imagePath}
+          userName={message.userData?.name}
         />
         <div
           className={
@@ -112,10 +140,10 @@ export function MessageFromChat({
               : {}
           }
         >
-          {message.userData.name}{" "}
+          {message.userData?.name}{" "}
           {type === "origin"
-            ? message.messageDatetime.slice(-8, -3)
-            : message.answerDatetime.slice(-8, -3)}
+            ? message.messageDatetime?.slice(-8, -3)
+            : message.answerDatetime?.slice(-8, -3)}
         </p>
         <div
           className={
@@ -124,22 +152,22 @@ export function MessageFromChat({
               : `${styles.contentWrapper} ${styles.contentWrapperUnread}`
           }
           style={
-            replyTo === message.messageId
+            replyTo && replyTo === message.messageId
               ? { border: "1px solid #4171CD" }
               : { border: "1px solid transparent" }
           }
         >
           {type === "origin"
-            ? message.attachFiles.map((file) => {
+            ? message.attachFiles?.map((file) => {
                 return renderFileFromMessage(file, styles);
               })
-            : message.attachFiles.map((file) => {
+            : message.attachFiles?.map((file) => {
                 return renderFileFromMessage(file, styles);
               })}
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{
-              __html: type === "origin" ? message.messageText : message.answer,
+              __html: type === "origin" ? message?.messageText : message?.answer,
             }}
           ></div>
           {type === "origin" && (
@@ -151,7 +179,7 @@ export function MessageFromChat({
               }
               onClick={handleFeedback}
               style={
-                replyTo === message.messageId
+                replyTo === message?.messageId
                   ? { border: "1px solid #4171CD" }
                   : {}
               }

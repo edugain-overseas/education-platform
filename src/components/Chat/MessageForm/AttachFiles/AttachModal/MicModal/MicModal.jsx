@@ -1,20 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button } from "antd";
-import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
-import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
-import "./MicModal.scss";
+import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import { Modal, Button } from "antd";
+import { useDispatch } from "react-redux";
 import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
+import { attachFileToMessageThunk as attachFileToTeacherSubjectMessageThunk } from "../../../../../../redux/chats/chatOperations";
+import "./MicModal.scss";
+import { useSelector } from "react-redux";
+import { getUserType } from "../../../../../../redux/user/userSelectors";
 
-export default function MicModal({ isOpenModal, closeModal }) {
+export default function MicModal({ isOpenModal, closeModal, chatData }) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState({});
   const [audioSrc, setAudioSrc] = useState("");
   const [clear, setClear] = useState(false);
 
-  const type = useContext(TypeContext) || "group";
+  const type = useContext(TypeContext) || "main";
+  const userType = useSelector(getUserType);
 
   const dispatch = useDispatch();
 
@@ -67,8 +71,13 @@ export default function MicModal({ isOpenModal, closeModal }) {
     const fileName = `mic-audio_${uniqueId}.webm`;
     formData.append("file", audioBlob, fileName);
     dispatch(
-      type === "group"
-        ? attachFileToMessageThunk(formData)
+      type === "main"
+        ? userType === "student"
+          ? attachFileToMessageThunk(formData)
+          : attachFileToTeacherSubjectMessageThunk({
+              subjectId: chatData.subjectId,
+              data: formData,
+            })
         : attachFileToSubjectMessageThunk(formData)
     );
     setAudioBlob({});

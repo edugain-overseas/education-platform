@@ -35,9 +35,14 @@ export const UserPanel = () => {
       return;
     }
     dispatch(setSumbit());
-    if (pathname === "/" || pathname === '/schedule' ) {
-    dispatch(setDefault());
-    return;
+    if (
+      pathname === "/" ||
+      pathname === "/schedule" ||
+      pathname.includes("/participants") ||
+      pathname.includes("/tasks")
+    ) {
+      dispatch(setDefault());
+      return;
     }
   };
 
@@ -50,7 +55,7 @@ export const UserPanel = () => {
         </div>
         <span className={styles.userName}>{username}</span>
       </div>
-      {userType !== "qweqwe" &&
+      {userType !== "student" &&
         (!isEdit ? (
           <button
             className={styles.settingsButton}

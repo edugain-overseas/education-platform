@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLectureByTaskIdThunk } from "./taskOperation";
+import {
+  getLTestByTaskIdThunk,
+  getLectureByTaskIdThunk,
+} from "./taskOperation";
 
 const initialState = {
   isLoading: false,
@@ -25,6 +28,22 @@ export const taskSlice = createSlice({
         ];
       })
       .addCase(getLectureByTaskIdThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(getLTestByTaskIdThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getLTestByTaskIdThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.tasks = [
+          ...state.tasks.filter((task) => task.id !== payload.id),
+          payload,
+        ];
+      })
+      .addCase(getLTestByTaskIdThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

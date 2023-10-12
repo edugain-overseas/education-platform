@@ -4,7 +4,9 @@
 
   & h2,
   & h3,
-  & h4 {
+  & h4,
+  span,
+  .titleInput {
     color: #000;
     text-align: center;
     font-family: Inter, sans-serif;
@@ -13,10 +15,24 @@
     font-weight: 500;
     line-height: normal;
     text-transform: uppercase;
-
-    & span {
-      color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin-bottom: 16rem;
+  }
+  & span {
+    color: rgba(0, 0, 0, 0.5);
+    width: auto;
+  }
+  & .titleInput {
+    border: none;
+    outline: 0;
+    &:hover,
+    &:focus {
+      background: rgba(0, 0, 0, 0.12);
     }
+  }
+  & h2:last-child,
+  & input:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -25,10 +41,32 @@
 }
 
 .titleWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 40rem;
+  padding-block: 20rem;
+  position: relative;
 
-  & h2:first-child {
-    margin-bottom: 10rem;
+  &.titleWrapperBordered {
+    border-radius: 2rem;
+    border: 1rem solid #7e7e7e;
+    box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+  }
+  & button {
+    position: absolute;
+    width: 34rem;
+    height: 26rem;
+    top: 100%;
+    right: 30rem;
+    border-radius: 0 0 2rem 2rem;
+    border: 1rem solid #7e7e7e;
+    background: rgba(244, 244, 244, 0.4);
+
+    & path {
+      fill: #7e7e7e;
+    }
   }
 }
 
@@ -46,9 +84,27 @@
   }
 }
 
+.sectionAudio {
+  & h3 {
+    margin-bottom: 16rem;
+  }
+
+  & audio {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
 .sectionTitle {
   margin-bottom: 16rem;
   font-size: 16rem;
+}
+
+h4.sectionSubTitle {
+  margin-bottom: 8rem;
+  font-size: 16rem;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .sectionContentWrapper {

@@ -6,14 +6,18 @@ import { Modal, Button } from "antd";
 import { dataURItoBlob } from "../../../../../../helpers/dataURItoBlob";
 import { attachFileToMessageThunk } from "../../../../../../redux/groupChat/groupChatOperations";
 import { attachFileToMessageThunk as attachFileToSubjectMessageThunk } from "../../../../../../redux/subjectChats/subjectChatOperations";
+import { attachFileToMessageThunk as attachFileToTeacherSubjectMessageThunk } from "../../../../../../redux/chats/chatOperations";
 import { TypeContext } from "../../../../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
+import { useSelector } from "react-redux";
+import { getUserType } from "../../../../../../redux/user/userSelectors";
 
-export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
+export const WebcamPhotoModal = ({ isOpenModal, closeModal, chatData }) => {
   const webcamRef = useRef(null);
 
   const [videoConstraints, setVideoConstraints] = useState({});
   const [image, setImage] = useState(null);
-  const type = useContext(TypeContext) || "group";
+  const type = useContext(TypeContext) || "main";
+  const userType = useSelector(getUserType);
 
   const dispatch = useDispatch();
 
@@ -51,8 +55,13 @@ export const WebcamPhotoModal = ({ isOpenModal, closeModal }) => {
     const imageBlob = dataURItoBlob(image);
     formData.append("file", imageBlob, fileName);
     dispatch(
-      type === "group"
-        ? attachFileToMessageThunk(formData)
+      type === "main"
+        ? userType === "student"
+          ? attachFileToMessageThunk(formData)
+          : attachFileToTeacherSubjectMessageThunk({
+              subjectId: chatData.subjectId,
+              data: formData,
+            })
         : attachFileToSubjectMessageThunk(formData)
     );
     setImage(null);

@@ -1,4 +1,4 @@
-import { useEffect, createContext, useState } from "react";
+import { useEffect, createContext, useState, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import { PublicRoute } from "./components/PublicRoute/PublicRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
@@ -8,45 +8,67 @@ import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
 import {
   getTeacherId,
+  getTeacherSubjects,
   getToken,
   getUserGroup,
+  getUserInfo,
   getUserType,
 } from "./redux/user/userSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoThunk } from "./redux/user/userOperations";
-import { getScheduleThunk, getTeacherScheduleThunk } from "./redux/schedule/scheduleOperations";
+import {
+  getScheduleThunk,
+  getTeacherScheduleThunk,
+} from "./redux/schedule/scheduleOperations";
 import { adjustFontSize } from "./helpers/adjustFontSize";
-import { connectToWebSocket } from "./services/websocket";
+import {
+  connectToTeacherSubjectWebsocket,
+  connectToWebSocket,
+} from "./services/websocket";
 import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import SubjectsList from "./components/SubjectsList/SubjectsList";
 import CourseDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseDetailPage";
 import CourseTapesPage from "./pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import CourseTasksPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/CourseTasksPage";
 import CourseItemPage from "./pages/CoursesPage/CourseDetailPage/CourseItemPage/CourseItemPage";
-import { getAllSubjectsThunk } from "./redux/subject/subjectOperations";
+import {
+  getAllSubjectsThunk,
+  getDopSubjectsByStudentIdThunk,
+} from "./redux/subject/subjectOperations";
 import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CourseParticipantPage/CourseParticipantPage";
 import TaskDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/TaskDetailPage/TaskDetailPage";
 import VideoChatRoom from "./pages/VIdeoChatRoomPage/VideoChatRoom";
 import CourseInstructionPage from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/CourseInstructionPage";
 import IntructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/IntructionContent/IntructionContent";
 import ClassRoomNotification from "./pages/ClassRoomNotificationPage/ClassRoomNotification";
+import { getSubjectTapesByIdThunk } from "./redux/subject/subjectOperations";
 
 export const WebsocketContext = createContext(null);
+export const WebsocketsContext = createContext(null);
 
 function App() {
   const [websocket, setWebsocket] = useState(null);
-
+  const websockets = useRef([]);
   const groupName = useSelector(getUserGroup);
-  const teacherId = useSelector(getTeacherId)
+  const teacherId = useSelector(getTeacherId);
   const token = useSelector(getToken);
   const userType = useSelector(getUserType);
+  const studentId = useSelector(getUserInfo)?.student_id;
+  const subjects = useSelector(getTeacherSubjects);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token) {
-      dispatch(getUserInfoThunk());
+    if (userType === "teacher" && token && subjects) {
+      subjects.forEach(({ subject_id }) => {
+        if (
+          !websockets.current?.find((websocket) => websocket.id === subject_id)
+        ) {
+          const websocket = connectToTeacherSubjectWebsocket(subject_id, token);
+          websockets.current.push({ id: subject_id, websocket });
+        }
+      });
     }
-  }, [dispatch, token]);
+  }, [token, subjects, userType, dispatch]);
 
   useEffect(() => {
     adjustFontSize();
@@ -58,15 +80,29 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (token) {
+      dispatch(getUserInfoThunk());
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
     if (groupName && token && userType === "student") {
       dispatch(getScheduleThunk(groupName));
       dispatch(getAllSubjectsThunk(groupName));
+      dispatch(getDopSubjectsByStudentIdThunk(studentId));
     }
 
-    if (teacherId && token && userType === 'teacher') {
-      dispatch(getTeacherScheduleThunk(teacherId))
+    if (teacherId && token && userType === "teacher") {
+      dispatch(getTeacherScheduleThunk(teacherId));
     }
-  }, [dispatch, groupName, teacherId, token, userType]);
+
+    if (subjects) {
+      subjects.forEach(({ subject_id }) => {
+        console.log(subject_id, typeof(subject_id));
+        dispatch(getSubjectTapesByIdThunk(+subject_id));
+      });
+    }
+  }, [dispatch, groupName, teacherId, token, userType, studentId, subjects]);
 
   useEffect(() => {
     if (websocket) {
@@ -91,10 +127,26 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="schedule" element={<SchedulePage />} />
           <Route path="courses" element={<CoursesPage />}>
-            <Route path={`:${groupName}`} element={<SubjectsList />} />
-            <Route path={'teacher-active-courses'} element={<SubjectsList />} />
-            <Route path="dopcourses" element={<div>Dop Courses</div>} />
-            <Route path="archive" element={<div>Archive</div>} />
+            <Route
+              path={"teacher-active-courses"}
+              element={<SubjectsList type="main" />}
+            />
+            <Route
+              path={"teacher-archive"}
+              element={<SubjectsList type="teacherArchive" />}
+            />
+            <Route
+              path={`:${groupName}`}
+              element={<SubjectsList type="main" />}
+            />
+            <Route
+              path="dopcourses"
+              element={<SubjectsList type="studentDop" />}
+            />
+            <Route
+              path="archive"
+              element={<SubjectsList type="studentArchive" />}
+            />
             <Route path=":id" element={<CourseDetailPage />}>
               <Route path="tapes" element={<CourseTapesPage />} />
               <Route path="tasks" element={<CourseTasksPage />}>
@@ -121,14 +173,13 @@ function App() {
   };
 
   return (
-      <WebsocketContext.Provider value={websocket}>
+    <WebsocketContext.Provider value={websocket}>
+      <WebsocketsContext.Provider value={websockets.current}>
         <div className="App">
           <Router />
         </div>
-      </WebsocketContext.Provider>
-    // <HomePage/>
-
-    // <VideoChatRoomPage/>
+      </WebsocketsContext.Provider>
+    </WebsocketContext.Provider>
   );
 }
 

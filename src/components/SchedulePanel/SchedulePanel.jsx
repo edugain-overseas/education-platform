@@ -51,8 +51,10 @@ export function SchedulePanel() {
                     : styles.dayScheduleWrapper
                 }
               >
-                <DayDisplay day={day} styles={styles}/>
-                {schedule && <LessonsList lessons={getLessonsForOneDay(day)} />}
+                <DayDisplay day={day} styles={styles} />
+                {schedule && (
+                  <LessonsList lessons={getLessonsForOneDay(day)} day={day} />
+                )}
               </div>
             ))}
           </div>

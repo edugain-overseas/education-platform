@@ -1,7 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userSlice } from "./user/userSlice";
-import { groupChatSlice } from "./groupChat/groupChatSlice";
-
+import storage from "redux-persist/lib/storage";
 import {
   persistReducer,
   persistStore,
@@ -12,12 +10,14 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { userSlice } from "./user/userSlice";
+import { groupChatSlice } from "./groupChat/groupChatSlice";
 import { scheduleSlice } from "./schedule/scheduleSlice";
 import { subjectSlice } from "./subject/subjectSlice";
 import { configSlice } from "./config/configSlice";
 import { subjectChatSlice } from "./subjectChats/subjectChatSlice";
 import { taskSlice } from "./task/taskSlice";
+import { chatsSlice } from "./chats/chatsSlice";
 
 const persistConfig = {
   key: "persisted-user",
@@ -36,6 +36,7 @@ export const store = configureStore({
     config: configSlice.reducer,
     subjectChat: subjectChatSlice.reducer,
     task: taskSlice.reducer,
+    chats: chatsSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

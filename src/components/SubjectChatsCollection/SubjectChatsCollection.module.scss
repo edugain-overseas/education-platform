@@ -1,0 +1,69 @@
+.chatsCollectionWrapper {
+  min-width: 44.58%;
+  flex: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16rem;
+  height: 100%;
+}
+
+.chatsControlPanel {
+  width: 100%;
+  height: 40rem;
+  overflow: visible;
+  padding: 0;
+  background: transparent;
+  margin-bottom: 16rem;
+}
+
+.chatWrapper {
+    height: calc(100% - 56rem);
+    display: flex;
+}
+
+.chatBtnWrapper {
+  width: 80rem;
+  padding: 8rem;
+  height: 40rem;
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+  overflow: hidden;
+//   border-radius: 1.659rem;
+//   box-shadow: 0 0 3.31881rem 0 rgba(0, 0, 0, 0.12);
+
+  &:hover h4 {
+    transition: none;
+  }
+}
+
+.imageWrapper {
+  width: 24rem;
+  height: 24rem;
+  box-sizing: content-box;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.659rem solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.groupName {
+  flex: 1;
+  font-family: Inter, sans-serif;
+  font-size: 7.616rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  white-space: break-spaces;
+}

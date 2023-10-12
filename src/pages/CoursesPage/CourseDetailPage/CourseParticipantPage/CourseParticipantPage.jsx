@@ -10,11 +10,14 @@ import { ReactComponent as FilterIcon } from "../../../../images/icons/filter.sv
 import { ReactComponent as DownloadIcon } from "../../../../images/icons/download.svg";
 import { ReactComponent as PlusIcon } from "../../../../images/icons/plus.svg";
 import { ReactComponent as SearchIcon } from "../../../../images/icons/search.svg";
+import { ReactComponent as RemoveIcon } from "../../../../images/icons/minus.svg";
 import styles from "./CourseParticipantPage.module.scss";
+import { getUserType } from "../../../../redux/user/userSelectors";
 
 export default function CourseParticipantPage() {
   const { id } = useParams();
 
+  const userType = useSelector(getUserType);
   const isEdit = useSelector(getIsEdit);
   const participantsData = useSelector(getSubjectsParticipants).find(
     (item) => item.id === id
@@ -193,7 +196,7 @@ export default function CourseParticipantPage() {
               Students
             </span>
           </div>
-          {isEdit && (
+          {userType !== "student" && (
             <div className={styles.editPanelWrapper}>
               <button className={styles.filterBtn}>
                 <span>Add filter</span>
@@ -212,12 +215,21 @@ export default function CourseParticipantPage() {
                 <span>Download</span>
                 <DownloadIcon />
               </button>
-              <button className={styles.addStudentBtn}>
-                <span>Add student</span>
-                <PlusIcon />
-              </button>
+              {isEdit && (
+                <>
+                  <button className={styles.addStudentBtn}>
+                    <span>Add student</span>
+                    <PlusIcon />
+                  </button>
+                  <button className={styles.removeStudentBtn}>
+                    <span>Delete student</span>
+                    <RemoveIcon />
+                  </button>
+                </>
+              )}
             </div>
           )}
+
           <div className={styles.studentListWrapper}>
             <ul className={styles.studentsList}>
               <li className={styles.studentsItemHeader}>
@@ -228,8 +240,6 @@ export default function CourseParticipantPage() {
                 <div>Average rating</div>
                 <div>A comment</div>
               </li>
-              {students && renderStudents(students)}
-              {students && renderStudents(students)}
               {students && renderStudents(students)}
             </ul>
           </div>

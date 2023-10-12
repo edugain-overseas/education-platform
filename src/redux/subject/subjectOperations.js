@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  addNewLesson,
   createSubjectAbout,
   getAllSubjectsByGroupName,
+  getDopSubjectsByStudentId,
   getListOfParticipant,
   getSubjectAbout,
   getSubjectById,
@@ -21,6 +23,18 @@ export const getAllSubjectsThunk = createAsyncThunk(
   async (groupName, { rejectWithValue }) => {
     try {
       const response = await getAllSubjectsByGroupName(groupName);
+      return response;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const getDopSubjectsByStudentIdThunk = createAsyncThunk(
+  "subject/getDopById",
+  async (studentId, { rejectWithValue }) => {
+    try {
+      const response = await getDopSubjectsByStudentId(studentId);
       return response;
     } catch (error) {
       rejectWithValue(error);
@@ -172,10 +186,24 @@ export const updateSubjectLogoThunk = createAsyncThunk(
   "subject/updateLogo",
   async ({ subjectId, file }, { rejectWithValue }) => {
     try {
+      console.log("adadasd");
       instance.defaults.headers["Content-Type"] = "multipart/form-data";
       const response = await updateSubjectLogo(subjectId, file);
       instance.defaults.headers["Content-Type"] = "application/json";
+      console.log(response);
       return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addNewLessonThunk = createAsyncThunk(
+  "subject/addLesson",
+  async ({ subjectId, data }, { rejectWithValue }) => {
+    try {
+      const response = await addNewLesson(data);
+      return { subjectId, data: response };
     } catch (error) {
       return rejectWithValue(error.message);
     }

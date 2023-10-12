@@ -31,7 +31,7 @@ export default function CoursesPage() {
       content: 'active courses'
     },
     {
-      to: "archive",
+      to: "teacher-archive",
       content: "archive",
     }
   ]

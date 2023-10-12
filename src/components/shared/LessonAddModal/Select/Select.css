@@ -1,5 +1,6 @@
 .select {
   height: 32rem;
+  max-width: 100%;
 }
 
 :where(.css-dev-only-do-not-override-fpg3f5).ant-select-single:not(
@@ -88,12 +89,17 @@
   transition: color 300ms ease-out;
 }
 
+.dropdownInput:focus {
+  border-bottom: 1rem solid rgba(0, 0, 0, 0.5);
+}
+
 .selectDropdownWrapper label:last-child span + span {
   flex: 1;
 }
 
 .inputWrapper {
   position: relative;
+  padding-right: 32rem;
 }
 
 .editBtn {

@@ -13,6 +13,8 @@ import {
   updateSubjectLogoThunk,
   uploadSubjectIconThunk,
   getSubjectInstructionsThunk,
+  getDopSubjectsByStudentIdThunk,
+  addNewLessonThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -62,7 +64,7 @@ const subjectAbout = [
           {
             id: v4(),
             text: "text1",
-          }
+          },
         ],
       },
       {
@@ -84,13 +86,14 @@ const subjectAbout = [
         image_path: "",
         title: "Title1",
         text: "text1",
-      }
+      },
     ],
   },
 ];
 
 const initialState = {
   groupSubjects: [],
+  dopSubjects: [],
   subjectsData: [],
   isLoading: false,
   subjectsAbout: [{ id: 0, data: subjectAbout }],
@@ -119,6 +122,25 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
+      .addCase(getDopSubjectsByStudentIdThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        getDopSubjectsByStudentIdThunk.fulfilled,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.dopSubjects = payload;
+        }
+      )
+      .addCase(
+        getDopSubjectsByStudentIdThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
 
       .addCase(getSubjectTapesByIdThunk.pending, (state, _) => {
         state.isLoading = true;
@@ -285,9 +307,8 @@ export const subjectSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(updateSubjectByIdThunk.fulfilled, (state, { payload }) => {
+      .addCase(updateSubjectByIdThunk.fulfilled, (state, _) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(updateSubjectByIdThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -316,6 +337,64 @@ export const subjectSlice = createSlice({
         console.log(payload);
       })
       .addCase(updateSubjectLogoThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(addNewLessonThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addNewLessonThunk.fulfilled, (state, { payload }) => {
+        // const { subjectId, data } = payload;
+        state.isLoading = false;
+        // console.log(
+        //   state.subjectsData.find(({ id }) => id === subjectId)?.subject_lessons
+        // );
+        // state.subjectsData = [...state.subjectsData].map((subjectData) => {
+        //   if (subjectData.id === subjectId) {
+        //     subjectData.subject_lessons = subjectData.subject_lessons.map(
+        //       (module) => {
+        //         if (module.module_id === data.module_id) {
+        //           module.module_lessons = [
+        //             ...module.module_lessons,
+        //             {
+        //               lesson_id: 100,
+        //               lesson_type: "",
+        //               lesson_number: "",
+        //               lesson_title: "",
+        //               lesson_desc: "",
+        //               lesson_date: "",
+        //               lesson_end: "",
+        //             },
+        //           ];
+        //         }
+        //         return module;
+        //       }
+        //     );
+        //   }
+        //   return subjectData;
+        // });
+        // state.subjectsData = [
+        //   ...state.subjectsData,
+        //   state.subjectsData
+        //     .find(({ id }) => id === subjectId)
+        //     ?.subject_lessons?.find(
+        //       ({ module_id }) => module_id === data.module_id
+        //     )
+        //     ?.module_lessons.push({
+        //       lesson_id: "",
+        //       lesson_type: "",
+        //       lesson_number: "",
+        //       lesson_title: "",
+        //       lesson_desc: "",
+        //       lesson_date: "",
+        //       lesson_end: "",
+        //     }),
+        // ];
+        console.log(payload);
+      })
+      .addCase(addNewLessonThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

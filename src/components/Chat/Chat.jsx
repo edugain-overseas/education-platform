@@ -3,67 +3,90 @@ import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserGroup } from "../../redux/user/userSelectors";
 import {
-  getActiveUsers,
-  getHistoryEnd,
-  getIsLoading,
-  getMessages,
-  getParticipantsData,
-} from "../../redux/groupChat/groupChatSelectors";
+  getTeacherSubjects,
+  getUserGroup,
+  getUserType,
+} from "../../redux/user/userSelectors";
+
 import { serverName } from "../../constants/server";
-import { getFeedbackData } from "../../redux/groupChat/groupChatSelectors";
 import { loadMoreMessagesThunk } from "../../redux/groupChat/groupChatOperations";
 import { loadMoreMessagesThunk as loadMoreSubjectMessagesThunk } from "../../redux/subjectChats/subjectChatOperations";
+import { loadMoreMessagesThunk as loadMoreTeacherSubjectMessagesThunk } from "../../redux/chats/chatOperations";
 import styles from "./Chat.module.scss";
-import {
-  getSubjectActiveUsers,
-  getSubjectFeedbackData,
-  getSubjectHistoryEnd,
-  getSubjectIsLoading,
-  getSubjectMessages,
-  getSubjectParticipantsData,
-} from "../../redux/subjectChats/subjectChatSelectors";
 import { TypeContext } from "../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import FixedMessages from "./FixedMessages/FixedMessages";
 
-export function Chat({ subjectId = null, subjectData = null }) {
+export function Chat({
+  subjectId = null,
+  subjectData = null,
+  chatData = null,
+}) {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
 
-  const type = useContext(TypeContext) || "group";
-  console.log(type);
+  const type = useContext(TypeContext) || "main";
 
   const avatarsWrapperRef = useRef(null);
   const chatFeedWrapperRef = useRef(null);
 
   const dispatch = useDispatch();
 
-  const chatGroup = useSelector(getUserGroup) || "";
-  const participantsData = useSelector(
-    type === "group" ? getParticipantsData : getSubjectParticipantsData
-  );
-  const activeUsers = useSelector(
-    type === "group" ? getActiveUsers : getSubjectActiveUsers
-  );
-  const replyTo = useSelector(
-    type === "group" ? getFeedbackData : getSubjectFeedbackData
-  );
-  const messages = useSelector(
-    type === "group" ? getMessages : getSubjectMessages
-  );
+  const userType = useSelector(getUserType);
+  const userGroup = useSelector(getUserGroup) || "";
+  const chatGroup = useSelector(getTeacherSubjects)?.find(
+    ({ subject_id }) => +subject_id === chatData.subjectId
+  )?.group_name;
+  const chatSubjectTitle = useSelector(getTeacherSubjects)?.find(
+    ({ subject_id }) => +subject_id === chatData.subjectId
+  )?.subject_title;
+
+  // const participantsData = useSelector(
+  //   type === "group" ? getParticipantsData : getSubjectParticipantsData
+  // );
+  const participantsData = chatData?.participantsData;
+  // const activeUsers = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.activeUsers
+  //       : getActiveUsers
+  //     : getSubjectActiveUsers
+  // );
+  const activeUsers = chatData?.activeData;
+  // const replyTo = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.replyTo
+  //       : getFeedbackData
+  //     : getSubjectFeedbackData
+  // );
+  const replyTo = chatData?.feedbackTo;
+  // const messages = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.messages
+  //       : getMessages
+  //     : getSubjectMessages
+  // );
+  const messages = chatData?.messages;
   const targetMessage = messages?.find(
     (messege) => messege.messageId === replyTo
   );
   const receiverUser = participantsData?.find(
     (user) => user.userId === targetMessage?.senderId
   );
-  const isLoading = useSelector(
-    type === "group" ? getIsLoading : getSubjectIsLoading
-  );
-  const historyEnd = useSelector(
-    type === "group" ? getHistoryEnd : getSubjectHistoryEnd
-  );
+  // const isLoading = useSelector(
+  //   type === "group"
+  //     ? chatData
+  //       ? chatData.isLoading
+  //       : getIsLoading
+  //     : getSubjectIsLoading
+  // );
+  const isLoading = chatData?.isLoading;
+  // const historyEnd = useSelector(
+  //   type === "group" ? getHistoryEnd : getSubjectHistoryEnd
+  // );
+  const historyEnd = chatData?.historyEnd;
   const fixedMessages =
     messages?.filter(({ messageFixed }) => messageFixed) || [];
 
@@ -80,10 +103,21 @@ export function Chat({ subjectId = null, subjectData = null }) {
       if (wrapper) {
         const { scrollTop, scrollHeight, clientHeight } = wrapper;
         if ((scrollTop + clientHeight) / scrollHeight >= 0.85) {
-          const lastMessageId = messages[messages.length - 1].messageId;
+          const lastMessageId = messages[messages.length - 1]?.messageId;
           dispatch(
-            type === "group"
-              ? loadMoreMessagesThunk({ groupName: chatGroup, lastMessageId })
+            type === "main"
+              ? userType === "teacher"
+                ? loadMoreTeacherSubjectMessagesThunk({
+                    subjectId: chatData.subjectId,
+                    data: {
+                      subjectId: chatData.subjectId,
+                      lastMessageId,
+                    },
+                  })
+                : loadMoreMessagesThunk({
+                    groupName: userGroup,
+                    lastMessageId,
+                  })
               : loadMoreSubjectMessagesThunk({
                   subjectId: subjectId,
                   lastMessageId,
@@ -104,14 +138,17 @@ export function Chat({ subjectId = null, subjectData = null }) {
       }
     };
   }, [
+    dispatch,
     messages,
     historyEnd,
     isLoading,
     chatFeedWrapperRef,
-    dispatch,
     chatGroup,
     subjectId,
     type,
+    chatData.subjectId,
+    userGroup,
+    userType,
   ]);
 
   const handleShowMore = () => {
@@ -201,16 +238,18 @@ export function Chat({ subjectId = null, subjectData = null }) {
                 {participantsData?.length} participants
               </p>
               <p className={styles.onlineInfo}>
-                {activeUsers?.total_active} Online
+                {activeUsers?.totalActive} Online
               </p>
             </div>
           </div>
           <div className={isShowMore ? "hidden" : styles.headerRight}>
             <GridIcon className={styles.gridIconHeader} />
             <p className={styles.chatname}>
-              {type === "group"
-                ? `chat ${chatGroup}`
-                : `chat ${subjectData?.title} ${chatGroup}`}
+              {type === "main"
+                ? userType === "student"
+                  ? `chat ${userGroup}`
+                  : `chat ${chatSubjectTitle} ${chatGroup}`
+                : `chat ${subjectData?.title} Med-23-1`}
             </p>
           </div>
         </div>
@@ -222,10 +261,12 @@ export function Chat({ subjectId = null, subjectData = null }) {
               {targetMessage.messageDatetime.slice(-8, -3)}
             </p>
           )}
-          <MessageForm type={type} />
+          <MessageForm type={type} chatData={chatData} />
         </div>
       </div>
-      {fixedMessages.length !== 0 && <FixedMessages messages={fixedMessages} />}
+      {fixedMessages.length !== 0 && (
+        <FixedMessages messages={fixedMessages} chatData={chatData} />
+      )}
       <div
         className={
           fixedMessages.length !== 0
@@ -234,7 +275,7 @@ export function Chat({ subjectId = null, subjectData = null }) {
         }
         ref={chatFeedWrapperRef}
       >
-        <ChatFeed />
+        <ChatFeed chatData={chatData} />
       </div>
     </div>
   );

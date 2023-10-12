@@ -80,7 +80,7 @@ export default function CoursePageConstructor({ styles }) {
     id,
     dispatch,
   ]);
-  console.log(defaultSubjectData, aboutSubjectData);
+
   return isDefault ? (
     isEdit ? (
       <>

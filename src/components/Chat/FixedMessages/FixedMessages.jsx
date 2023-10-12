@@ -8,7 +8,7 @@ import MessageSLide from "./MessageSLide/MessageSLide";
 import styles from "./FixedMessages.module.scss";
 import "./swiperStyles.css";
 
-const FixedMessages = ({ messages }) => {
+const FixedMessages = ({ messages, chatData }) => {
   return (
     <div className={styles.sliderWrapper}>
       <Swiper
@@ -20,7 +20,7 @@ const FixedMessages = ({ messages }) => {
         {messages &&
           messages.map((message) => (
             <SwiperSlide key={message.messageId}>
-              <MessageSLide message={message} />
+              <MessageSLide message={message} chatData={chatData} />
             </SwiperSlide>
           ))}
         <div className={styles.navigationWrapper}>

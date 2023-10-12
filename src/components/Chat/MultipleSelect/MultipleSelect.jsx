@@ -1,17 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Select, Checkbox } from "antd";
 import styles from "./MultipleSelect.module.scss";
 import { useSelector } from "react-redux";
-import { getParticipantsData } from "../../../redux/groupChat/groupChatSelectors";
 import { getUserId } from "../../../redux/user/userSelectors";
-import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
-import { getSubjectParticipantsData } from "../../../redux/subjectChats/subjectChatSelectors";
 
-export function MultipleSelect({ onChange }) {
-  const type = useContext(TypeContext) || "group";
+export function MultipleSelect({ onChange, chatData }) {
   const myId = useSelector(getUserId);
   const options =
-    useSelector(type === 'group' ? getParticipantsData : getSubjectParticipantsData)
+    chatData?.participantsData
       ?.filter((user) => user.userId !== myId)
       .map((user) => ({
         label: `${user.name} ${user.surname}`,

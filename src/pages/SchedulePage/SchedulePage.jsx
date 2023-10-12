@@ -1,6 +1,6 @@
 import React from "react";
-import { LessonsList } from "../../components/SchedulePanel/LessonsList/LessonsList";
 import moment from "moment";
+import { LessonsList } from "../../components/SchedulePanel/LessonsList/LessonsList";
 import DayDisplay from "../../components/shared/DayDisplay/DayDisplay";
 import { useSelector } from "react-redux";
 import { getSchedule } from "../../redux/schedule/scheduleSelectors";
@@ -30,7 +30,7 @@ export function SchedulePage() {
         {nextFiveDays.map((day) => (
           <div key={day} className={styles.dayScheduleWrapper}>
             <DayDisplay day={day} styles={styles} />
-            <LessonsList lessons={getLessonsForOneDay(day)} />
+            <LessonsList lessons={getLessonsForOneDay(day)} day={day}/>
           </div>
         ))}
       </div>

@@ -30,9 +30,6 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const PrevBtnRef = useRef(null);
   const NextBtnRef = useRef(null);
 
-  console.log(canvasRef.current?.clientWidth);
-  console.log(fullscreen);
-
   const onLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -60,7 +57,6 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   };
 
   const handleContainerMouseEnter = () => {
-    console.dir(controlPanelRef.current);
     if (controlPanelRef.current) {
       controlPanelRef.current.classList.add(styles.active);
     }

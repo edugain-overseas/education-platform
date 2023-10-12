@@ -6,10 +6,15 @@ import LessonAddModal from "../../shared/LessonAddModal/LessonAddModal";
 import { getUserType } from "../../../redux/user/userSelectors";
 import styles from "./LessonsList.module.scss";
 
-export function LessonsList({ lessons }) {
+export function LessonsList({ lessons, day }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isEdit = useSelector(getIsEdit);
   const userType = useSelector(getUserType);
+  const disabledSlots = lessons.map(
+    ({ lesson_date, lesson_end }) =>
+      `${lesson_date.split("T")[1].slice(0, 5)} - ${lesson_end.slice(0, 5)}`
+  );
+
   return (
     <>
       <ul className={styles.lessonsList}>
@@ -30,7 +35,7 @@ export function LessonsList({ lessons }) {
             </button>
           </li>
         ))}
-        {lessons.length <= 5 && isEdit && (
+        {lessons.length < 5 && isEdit && (
           <li className={styles.lessonsAddItem}>
             <button onClick={() => setIsOpenModal(true)}>+</button>
           </li>
@@ -39,6 +44,8 @@ export function LessonsList({ lessons }) {
       <LessonAddModal
         isOpen={isOpenModal}
         onClose={() => setIsOpenModal(false)}
+        day={day}
+        disabledSlots={disabledSlots}
       />
     </>
   );
