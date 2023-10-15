@@ -1,0 +1,181 @@
+.superInputWrapper {
+ display: flex;
+ flex-direction: column-reverse;
+}
+
+.toolbar {
+  padding: 4rem 8rem;
+  margin: 0;
+  width: fit-content;
+
+  border-radius: 2rem;
+  border: none;
+  background: #fff;
+  box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
+
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.superInputEditor {
+  margin-bottom: 16rem;
+
+  & .public-DraftStyleDefault-block {
+    margin: 0;
+  }
+}
+
+.historyWrapper {
+  padding-right: 8rem;
+  margin: 0;
+  gap: 4rem;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.5rem;
+    height: 100%;
+    border-radius: 10rem;
+    background: #b3b3b3;
+  }
+}
+
+.undo,
+.redo,
+.bold,
+.italic,
+.underline,
+.ul,
+.ol {
+  box-sizing: content-box;
+  width: 16rem;
+  height: 16rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  min-width: initial;
+  border: 0.5rem solid transparent;
+
+  &:hover {
+    box-shadow: none;
+    border: 0.5rem solid #d9d9d9;
+  }
+}
+.rdw-fontsize-wrapper {
+  margin-bottom: 0;
+}
+
+.fontSize {
+  width: 40rem;
+  height: 16rem;
+  min-width: initial;
+  margin: 0;
+
+  border: none;
+
+  & .rdw-dropdown-selectedtext {
+    padding-inline: 8rem;
+  }
+
+  & .rdw-dropdown-selectedtext span {
+    margin-bottom: 0;
+    color: #b3b3b3;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 13rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  & .fontSizeDropDown {
+    color: #b3b3b3;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 13rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  & img {
+    display: none;
+  }
+
+  & .rdw-dropdown-carettoopen,
+  .rdw-dropdown-carettoclose {
+    right: 6rem;
+    width: 8px;
+    height: 4px;
+    border: none;
+    background-image: url("../../../images/icons/editTextIcons/arrowDown.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  & .rdw-dropdown-carettoclose {
+    transform: rotateZ(180deg);
+  }
+}
+
+.inlineWrapper {
+  margin: 0;
+  padding: 0;
+  gap: 4rem;
+}
+
+.listWrapper {
+  margin: 0;
+  gap: 4rem;
+  padding-inline: 4rem;
+}
+
+.textAlign {
+  margin: 0;
+  padding: 0;
+  width: 26rem;
+  height: 18rem;
+  border: none;
+
+  &:hover {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  & img {
+    width: 16rem;
+    height: 16rem;
+  }
+
+  & .rdw-dropdown-carettoopen,
+  & .rdw-dropdown-carettoclose {
+    right: -2rem;
+  }
+
+  & .rdw-dropdown-selectedtext {
+    padding: 0;
+  }
+}
+
+.rdw-dropdown-carettoopen,
+.rdw-dropdown-carettoclose {
+  right: 6rem;
+  width: 8px;
+  height: 4px;
+  border: none;
+  background-image: url("../../../images/icons/editTextIcons/arrowDown.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.rdw-dropdown-carettoclose {
+  transform: rotateZ(180deg);
+}

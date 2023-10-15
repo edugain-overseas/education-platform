@@ -14,7 +14,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
     <div className={styles.addSectionPanel}>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.text])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().text])
         }
       >
         <TextIcon />
@@ -22,7 +22,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.present])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().present])
         }
       >
         <PresentationIcon />
@@ -30,7 +30,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.audio])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().audio])
         }
       >
         <AudioIcon />
@@ -38,7 +38,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.picture])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().picture])
         }
       >
         <PictureIcon />
@@ -46,7 +46,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.video])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().video])
         }
       >
         <VideoIcon />
@@ -54,7 +54,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.file])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().file])
         }
       >
         <FileIcon />
@@ -62,7 +62,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.link])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().link])
         }
       >
         <LinkIcon />
@@ -70,7 +70,7 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate.homework])
+          setLectureParts((prev) => [...prev, lecturePartsTemplate().homework])
         }
       >
         <HomeworkIcon />

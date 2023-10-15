@@ -5,7 +5,6 @@
   & h2,
   & h3,
   & h4,
-  span,
   .titleInput {
     color: #000;
     text-align: center;
@@ -18,10 +17,22 @@
     width: 100%;
     margin-bottom: 16rem;
   }
-  & span {
+
+  & h2 span {
     color: rgba(0, 0, 0, 0.5);
     width: auto;
+    color: #000;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    width: 100%;
+    margin-bottom: 16rem;
   }
+  
   & .titleInput {
     border: none;
     outline: 0;
