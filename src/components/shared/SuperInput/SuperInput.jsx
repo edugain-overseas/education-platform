@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
-import htmlToDraft from "html-to-draftjs";
+import { EditorState, convertToRaw} from "draft-js";
+// import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import undo from "../../../images/icons/editTextIcons/undo.svg";
 import redo from "../../../images/icons/editTextIcons/redo.svg";

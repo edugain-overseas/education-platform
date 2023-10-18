@@ -37,13 +37,14 @@ const LectureConstructor = () => {
             dispatch(addTextPartToLectureThunk( textData));
             break;
           default:
-            break;
+            return null
         }
       });
     };
     if (isSumbit) {
+      handleSumbit()
     }
-  }, [isSumbit]);
+  }, [isSumbit, lectureParts, dispatch]);
 
   return (
     <div className={styles.lectureConstructorWrapper}>
