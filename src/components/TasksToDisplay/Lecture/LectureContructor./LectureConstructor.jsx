@@ -34,15 +34,15 @@ const LectureConstructor = () => {
               attr_number: part.attr_number,
               value: part.value,
             };
-            dispatch(addTextPartToLectureThunk( textData));
-            break;
+            dispatch(addTextPartToLectureThunk(textData));
+            return null;
           default:
-            return null
+            return null;
         }
       });
     };
     if (isSumbit) {
-      handleSumbit()
+      handleSumbit();
     }
   }, [isSumbit, lectureParts, dispatch]);
 
