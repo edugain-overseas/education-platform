@@ -8,15 +8,16 @@
   display: flex;
   flex-direction: column;
 
-  & > div {
-    padding-left: 24rem;
-    padding-right: 24rem;
-  }
+  // & > div {
+  //   padding-left: 24rem;
+  //   padding-right: 24rem;
+  // }
 }
 
 .controlPanel {
-  padding-top: 16rem;
-  padding-bottom: 16rem;
+  // padding-top: 16rem;
+  // padding-bottom: 16rem;
+  padding: 16rem 24rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

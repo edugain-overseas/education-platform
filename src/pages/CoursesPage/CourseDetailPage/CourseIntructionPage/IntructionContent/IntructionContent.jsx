@@ -40,6 +40,7 @@ const IntructionContent = () => {
     navigate(`/courses/${id}/instructions/${+instructionId + 1}`);
   };
   const renderAttachedContent = (contentData) => {
+    console.log(contentData);
     if (contentData.link) {
       return (
         <a
@@ -47,6 +48,7 @@ const IntructionContent = () => {
           rel="noreferrer noopener"
           target="_blank"
           className={styles.attachedLink}
+          key={contentData.number}
         >
           <LinkIcon />
           <span>{contentData.link}</span>

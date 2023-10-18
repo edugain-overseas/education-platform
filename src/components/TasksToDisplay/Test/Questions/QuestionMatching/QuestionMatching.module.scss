@@ -1,0 +1,54 @@
+.matchWrapper {
+}
+
+.oprionsWrapper {
+  padding-block: 16rem;
+  display: flex;
+
+  border-bottom: 1rem solid #cfcfcf;
+
+  & p {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  justify-content: space-between;
+}
+
+.left {
+  padding-right: 24rem;
+  border-right: 1rem solid #cfcfcf;
+}
+
+.right {
+  padding-left: 24rem;
+}
+
+.selectOptionsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 24rem;
+  padding-block: 16rem;
+
+  & ul {
+    display: flex;
+    align-items: center;
+    gap: 24rem;
+    color:  #4171cd;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}

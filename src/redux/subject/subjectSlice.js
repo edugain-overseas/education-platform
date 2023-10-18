@@ -15,6 +15,8 @@ import {
   getSubjectInstructionsThunk,
   getDopSubjectsByStudentIdThunk,
   addNewLessonThunk,
+  createSubjectInstructionCategoryThunk,
+  updateSubjectInstructionCategoryThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -252,7 +254,7 @@ export const subjectSlice = createSlice({
         const { response, subjectId } = payload;
 
         state.subjectsInstructions = [
-          ...state.subjectsParticipants.filter((item) => item.id !== subjectId),
+          ...state.subjectsInstructions.filter((item) => item.id !== subjectId),
           { id: subjectId, data: response },
         ];
       })
@@ -260,6 +262,78 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+
+      .addCase(createSubjectInstructionCategoryThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        createSubjectInstructionCategoryThunk.fulfilled,
+        (state, { payload }) => {
+          state.isLoading = false;
+
+          state.subjectsInstructions = [
+            ...state.subjectsInstructions.map((item) => {
+              if (item.id !== payload.subject_id) {
+                item.data.push({
+                  courseNumber: 1,
+                  category: payload.category_name,
+                  categoryNumber: payload.number,
+                  categoryIsView: payload.is_view,
+                  categoryId: payload.id,
+                  instructions: [],
+                });
+              }
+              return item;
+            }),
+          ];
+        }
+      )
+      .addCase(
+        createSubjectInstructionCategoryThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
+
+      .addCase(updateSubjectInstructionCategoryThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        updateSubjectInstructionCategoryThunk.fulfilled,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.subjectsInstructions = [
+            ...state.subjectsInstructions.map((item) => {
+              if (item.id !== payload.subject_id) {
+                item.data = item.data.map((category) => {
+                  if (category.categoryId === payload.id) {
+                    return {
+                      courseNumber: 1,
+                      category: payload.category_name,
+                      categoryId: payload.id,
+                      categoryNumber: payload.number,
+                      categoryIsView: payload.is_view,
+                      instructions: category.instructions,
+                    };
+                  }
+                  return category;
+                });
+              }
+              return item;
+            }),
+          ];
+        }
+      )
+      .addCase(
+        updateSubjectInstructionCategoryThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
 
       .addCase(getSubjectIconsThunk.pending, (state, _) => {
         state.isLoading = true;
@@ -345,54 +419,8 @@ export const subjectSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(addNewLessonThunk.fulfilled, (state, { payload }) => {
-        // const { subjectId, data } = payload;
+      .addCase(addNewLessonThunk.fulfilled, (state, _) => {
         state.isLoading = false;
-        // console.log(
-        //   state.subjectsData.find(({ id }) => id === subjectId)?.subject_lessons
-        // );
-        // state.subjectsData = [...state.subjectsData].map((subjectData) => {
-        //   if (subjectData.id === subjectId) {
-        //     subjectData.subject_lessons = subjectData.subject_lessons.map(
-        //       (module) => {
-        //         if (module.module_id === data.module_id) {
-        //           module.module_lessons = [
-        //             ...module.module_lessons,
-        //             {
-        //               lesson_id: 100,
-        //               lesson_type: "",
-        //               lesson_number: "",
-        //               lesson_title: "",
-        //               lesson_desc: "",
-        //               lesson_date: "",
-        //               lesson_end: "",
-        //             },
-        //           ];
-        //         }
-        //         return module;
-        //       }
-        //     );
-        //   }
-        //   return subjectData;
-        // });
-        // state.subjectsData = [
-        //   ...state.subjectsData,
-        //   state.subjectsData
-        //     .find(({ id }) => id === subjectId)
-        //     ?.subject_lessons?.find(
-        //       ({ module_id }) => module_id === data.module_id
-        //     )
-        //     ?.module_lessons.push({
-        //       lesson_id: "",
-        //       lesson_type: "",
-        //       lesson_number: "",
-        //       lesson_title: "",
-        //       lesson_desc: "",
-        //       lesson_date: "",
-        //       lesson_end: "",
-        //     }),
-        // ];
-        console.log(payload);
       })
       .addCase(addNewLessonThunk.rejected, (state, { payload }) => {
         state.isLoading = false;

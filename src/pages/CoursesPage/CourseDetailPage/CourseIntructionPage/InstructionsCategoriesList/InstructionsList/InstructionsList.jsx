@@ -1,11 +1,20 @@
 import React from "react";
-import { ReactComponent as ArchiveIcon } from "../../../../../../images/icons/archive.svg";
-import styles from "./InstructionsList.module.scss";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { navLinkActiveHandler } from "../../../../../../helpers/navLinkActiveHandler";
+import { getIsEdit } from "../../../../../../redux/config/configSelectors";
+import { ReactComponent as ArchiveIcon } from "../../../../../../images/icons/archive.svg";
+import { ReactComponent as PlusIcon } from "../../../../../../images/icons/plus.svg";
+import styles from "./InstructionsList.module.scss";
 
 const InstructionsList = ({ data }) => {
   console.log(data);
+  const isEdit = useSelector(getIsEdit);
+
+  const handleAddInstruction = () => {
+
+  }
+
   return (
     <ul className={styles.instructionsList}>
       {[...data]
@@ -23,6 +32,13 @@ const InstructionsList = ({ data }) => {
             </NavLink>
           </li>
         ))}
+      {isEdit && (
+        <li className={styles.addItem}>
+          <button className={styles.addCategoryBtn} onClick={handleAddInstruction}>
+            <PlusIcon />
+          </button>
+        </li>
+      )}
     </ul>
   );
 };

@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import undo from "../../../images/icons/editTextIcons/undo.svg";
 import redo from "../../../images/icons/editTextIcons/redo.svg";
@@ -22,26 +25,26 @@ const toolbar = {
   fontSize: {
     options: [8, 9, 10, 11, 12, 14, 16, 18, 24],
     className: "fontSize",
-    dropdownClassName: 'fontSizeDropDown',
+    dropdownClassName: "fontSizeDropDown",
   },
   inline: {
     options: ["bold", "italic", "underline"],
-    className: 'inlineWrapper',
-    bold: { icon: bold, className:  'bold'},
-    italic: { icon: italic, className: 'italic' },
-    underline: { icon: underline, className: 'underline' },
+    className: "inlineWrapper",
+    bold: { icon: bold, className: "bold" },
+    italic: { icon: italic, className: "italic" },
+    underline: { icon: underline, className: "underline" },
   },
   list: {
-    className: 'listWrapper',
+    className: "listWrapper",
     options: ["unordered", "ordered"],
-    unordered: { icon: ul, className: 'ul' },
-    ordered: { icon: ol, className: 'ol' },
+    unordered: { icon: ul, className: "ul" },
+    ordered: { icon: ol, className: "ol" },
   },
   textAlign: {
     inDropdown: true,
-    className: 'textAlign',
+    className: "textAlign",
     options: ["left", "center", "right", "justify"],
-    left: { icon: alignLeft, className: 'alignLeft' },
+    left: { icon: alignLeft, className: "alignLeft" },
     // center: { icon: center, className: undefined },
     // right: { icon: right, className: undefined },
     // justify: { icon: justify, className: undefined },
@@ -49,14 +52,22 @@ const toolbar = {
 };
 
 const SuperInput = ({ state, setState, placeholder, styles }) => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // const contentBlock = htmlToDraft(state);
+  // const contentState = ContentState.createFromBlockArray(
+  //   contentBlock.contentBlocks);
+  // const editorState = EditorState.createWithContent(contentState);
+
   const onChange = (value) => {
-    setState(value);
-    console.log(value);
+    setEditorState(value);
+    setState(draftToHtml(convertToRaw(value.getCurrentContent())));
+    console.log(draftToHtml(convertToRaw(value.getCurrentContent())));
   };
+
   return (
     <div className={styles.inputWrapper}>
       <Editor
-        editorState={state}
+        editorState={editorState}
         onEditorStateChange={onChange}
         placeholder={placeholder}
         toolbarOnFocus

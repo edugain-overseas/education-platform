@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addNewLesson,
   createSubjectAbout,
+  createSubjectInstructionCategory,
   getAllSubjectsByGroupName,
   getDopSubjectsByStudentId,
   getListOfParticipant,
@@ -13,10 +14,12 @@ import {
   updateSubjectAbout,
   updateSubjectById,
   updateSubjectImage,
+  updateSubjectInstructionCategory,
   updateSubjectLogo,
   uploadSubjectIcon,
 } from "../../services/subjectServices";
 import { instance } from "../../services/instance";
+import { createLecture } from "../../services/taskServices";
 
 export const getAllSubjectsThunk = createAsyncThunk(
   "subject/getAll",
@@ -116,6 +119,33 @@ export const getSubjectInstructionsThunk = createAsyncThunk(
   }
 );
 
+export const createSubjectInstructionCategoryThunk = createAsyncThunk(
+  "subject/createInstructionCategory",
+  async (newCategory, { rejectWithValue }) => {
+    try {
+      const response = await createSubjectInstructionCategory(newCategory);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSubjectInstructionCategoryThunk = createAsyncThunk(
+  "subject/updateInstructionCategory",
+  async ({ categoryId, credentials }, { rejectWithValue }) => {
+    try {
+      const response = await updateSubjectInstructionCategory(
+        categoryId,
+        credentials
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const getSubjectIconsThunk = createAsyncThunk(
   "subject/getIcons",
   async (subjectId, { rejectWithValue }) => {
@@ -203,6 +233,17 @@ export const addNewLessonThunk = createAsyncThunk(
   async ({ subjectId, data }, { rejectWithValue }) => {
     try {
       const response = await addNewLesson(data);
+      const { id: lessonId, lesson_type: lessonType } = response;
+      switch (lessonType) {
+        case "lecture":
+          const lecture = await createLecture(lessonId);
+          response.lectureId = lecture.id;
+          break;
+
+        default:
+          break;
+      }
+      console.log(response);
       return { subjectId, data: response };
     } catch (error) {
       return rejectWithValue(error.message);

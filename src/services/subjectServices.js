@@ -51,6 +51,25 @@ export const getSubjectInstructions = async (subjectId) => {
   return data;
 };
 
+export const createSubjectInstructionCategory = async (newCategoryData) => {
+  const { data } = await instance.post(
+    "subject/instruction/category",
+    newCategoryData
+  );
+  return data;
+};
+
+export const updateSubjectInstructionCategory = async (
+  categoryId,
+  credentials
+) => {
+  const { data } = await instance.put(
+    `subject/instruction/category?instruction_category_id=${categoryId}`,
+    credentials
+  );
+  return data;
+};
+
 export const getSubjectIcons = async (subjectId) => {
   const { data } = await instance.get(
     `/subject-item/icons?subject_id=${subjectId}`
@@ -89,5 +108,5 @@ export const updateSubjectLogo = async (id, file) => {
 
 export const addNewLesson = async (lesson) => {
   const { data } = await instance.post("lesson/create", lesson);
-  return data
+  return data;
 };

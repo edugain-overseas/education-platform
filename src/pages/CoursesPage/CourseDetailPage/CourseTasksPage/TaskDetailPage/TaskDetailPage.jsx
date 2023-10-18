@@ -45,7 +45,9 @@ export default function TaskDetailPage() {
     if (type && lessonId) {
       switch (type) {
         case "lecture":
-          dispatch(getLectureByTaskIdThunk(lessonId));
+          dispatch(getLectureByTaskIdThunk(lessonId)).then(()=>{
+            
+          });
           break;
         case "test":
           dispatch(getLTestByTaskIdThunk(lessonId));

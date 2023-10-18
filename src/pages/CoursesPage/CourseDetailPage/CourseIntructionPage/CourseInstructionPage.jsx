@@ -26,9 +26,6 @@ const CourseInstructionPage = () => {
   const { instructionId } = useParams();
   console.log(instructionId);
 
-  // const dataToDisplay = data.filter(
-  //   (item) => item.course_number === courseToDisplay
-  // );
 
   const dispatch = useDispatch();
 

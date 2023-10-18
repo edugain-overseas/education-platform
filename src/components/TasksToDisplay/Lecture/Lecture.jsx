@@ -6,8 +6,8 @@ import "./ant.css";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 import { ReactComponent as EditIcon } from "../../../images/icons/edit.svg";
-import styles from "./Lecture.module.scss";
 import LectureConstructor from "./LectureContructor./LectureConstructor";
+import styles from "./Lecture.module.scss";
 
 export default function Lecture({ lessonData }) {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -28,7 +28,7 @@ export default function Lecture({ lessonData }) {
 
   const renderLectureContent = () =>
     [...lectureContent]
-      .sort((itemA, ItemB) => itemA.attributeNumber - ItemB.attributeNumber)
+      .sort((itemA, itemB) => itemA.attributeNumber - itemB.attributeNumber)
       .map((section) => {
         const {
           attributeType: type,

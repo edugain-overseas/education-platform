@@ -31,3 +31,31 @@
 .navLink--active {
   background-color: rgba(228, 247, 255, 0.6);
 }
+
+li.addItem {
+  padding: 0;
+  border-radius: 2rem;
+  background: #d3d4d5;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+
+  &:before {
+    background: #f0f0f0;
+  }
+
+  &::after {
+    background: #d3d4d5;
+  }
+}
+
+.addCategoryBtn {
+  width: 100%;
+  height: 48rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & svg {
+    width: 18rem;
+    height: 18rem;
+  }
+}
