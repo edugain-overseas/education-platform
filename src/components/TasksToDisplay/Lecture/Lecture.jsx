@@ -17,7 +17,19 @@ export default function Lecture({ lessonData }) {
   const { id: lectureId } = lessonData;
   const lectureContent = lessonData?.data?.lectureInfo || null;
   const isEdit = useSelector(getIsEdit);
-  console.log(isTitleEdit);
+
+  const handleOpenModal = (open) => {
+    const modalRef = document.querySelector(".ant-modal-wrap.pdfReader");
+    const modalBodyRef = modalRef.querySelector(".ant-modal-body");
+    const handleClick = (e) => {
+      if (e.target === e.currentTarget) {
+        setFullscreen(false);
+      }
+    };
+    if (open) {
+      modalBodyRef.addEventListener("click", handleClick);
+    }
+  };
 
   useEffect(() => {
     if (isEdit) {
@@ -34,7 +46,6 @@ export default function Lecture({ lessonData }) {
           attributeType: type,
           attributeNumber: id,
           attributeTitle: title,
-          // attributeSubTitle: subTitle,
           attributeValue: content,
           downloadAllowed,
           fileName,
@@ -47,9 +58,6 @@ export default function Lecture({ lessonData }) {
             return (
               <section key={id} id={type} className={styles.section}>
                 {title && <h3 className={styles.sectionTitle}>{title}</h3>}
-                {/* {subTitle && (
-                <h4 className={styles.sectionSubTitle}>{subTitle}</h4>
-              )} */}
                 {content && (
                   <div className={styles.sectionContentWrapper}>{content}</div>
                 )}
@@ -71,11 +79,13 @@ export default function Lecture({ lessonData }) {
                 />
                 <Modal
                   open={fullscreen}
+                  afterOpenChange={handleOpenModal}
                   footer={null}
                   closeIcon={null}
                   mask={false}
                   width="100vw"
                   wrapClassName="pdfReader"
+                  destroyOnClose
                   style={{
                     inset: 0,
                     height: "100vh",

@@ -20,7 +20,7 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageLoadedSucces, setPageLoadedSucces] = useState(false);
-  const [pageHeight, setPageHeight] = useState(0);
+  // const [pageHeight, setPageHeight] = useState(0);
   const [play, setPlay] = useState(false);
 
   const containerRef = useRef(null);
@@ -30,15 +30,14 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const PrevBtnRef = useRef(null);
   const NextBtnRef = useRef(null);
 
+  const rootFontSize = parseFloat(document.documentElement.style.fontSize);
+  const pageWidthInRem = 470;
+  const pageWidthInPx = pageWidthInRem * rootFontSize;
+  const fullscreenHeight = window.window.outerHeight * 0.85;
+  console.log(fullscreenHeight);
+
   const onLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
-  };
-
-  const handlePageLoadSucces = () => {
-    if (!pageLoadedSucces || pageHeight < canvasRef.current.clientHeight) {
-      setPageHeight(canvasRef.current.clientHeight);
-      setPageLoadedSucces(true);
-    }
   };
 
   const handlePrev = () => {
@@ -68,14 +67,14 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     }
   };
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      if (pageHeight !== canvasRef.current?.clientHeight) {
-        setPageHeight(canvasRef.current.clientHeight);
-        setPageLoadedSucces(true);
-      }
-    }
-  }, [fullscreen, containerRef.current?.clientWidth, pageHeight]);
+  // useEffect(() => {
+  //   if (canvasRef.current) {
+  //     if (pageHeight !== canvasRef.current?.clientHeight) {
+  //       setPageHeight(canvasRef.current.clientHeight);
+  //       setPageLoadedSucces(true);
+  //     }
+  //   }
+  // }, [fullscreen, containerRef.current?.clientWidth, pageHeight]);
 
   useEffect(() => {
     if (play) {
@@ -97,7 +96,7 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     <div
       ref={containerRef}
       className={styles.documentContainer}
-      style={{ height: fullscreen ? "100%" : pageHeight }}
+      // style={{ height: fullscreen ? "100%" : pageHeight }}
       onMouseEnter={handleContainerMouseEnter}
     >
       {pageLoadedSucces && (
@@ -159,18 +158,10 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
           renderAnnotationLayer={false}
           renderTextLayer={false}
           className={styles.page}
-          // width={
-          //   containerRef?.current
-          //     ? containerRef.current.clientWidth / 2
-          //     : undefined
-          // }
-          height={
-            fullscreen && containerRef.current && canvasRef.current
-              ? containerRef?.current?.clientHeight
-              : canvasRef?.current?.clientHeight
-          }
-          canvasRef={canvasRef}
-          onLoadSuccess={handlePageLoadSucces}
+          width={fullscreen ? null : pageWidthInPx}
+          height={fullscreen ? fullscreenHeight : null}
+          // canvasRef={canvasRef}
+          onLoadSuccess={() => setPageLoadedSucces(true)}
           loading={null}
         />
         {pageNumber !== numPages && (
@@ -179,20 +170,11 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
             renderAnnotationLayer={false}
             renderTextLayer={false}
             className={styles.page}
-            // width={
-            //   containerRef?.current
-            //     ? containerRef.current.clientWidth / 2 -
-            //       containerRef.current.clientWidth * 0.05
-            //     : undefined
-            // }
-            height={
-              fullscreen && containerRef.current && canvasRef.current
-                ? containerRef.current?.clientHeight
-                : canvasRef.current?.clientHeight
-            }
+            width={fullscreen ? null : pageWidthInPx}
+            height={fullscreen ? fullscreenHeight : null}
             canvasRef={canvasRef}
             loading={null}
-            // onLoadSuccess={handlePageLoadSucces}
+            onLoadSuccess={() => setPageLoadedSucces(true)}
           />
         )}
       </Document>

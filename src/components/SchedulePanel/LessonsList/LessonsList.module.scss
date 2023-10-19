@@ -11,6 +11,7 @@
   height: 116rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 16rem 32rem 16rem 16rem;
   background: #fff;
   box-shadow: 0rem 0rem 4rem rgba(0, 0, 0, 0.12);
@@ -23,7 +24,7 @@
   line-height: 19rem;
   color: #000000;
   height: 37rem;
-  margin-bottom: 18rem;
+  // margin-bottom: 18rem;
 }
 
 .lessonTime,
@@ -64,4 +65,25 @@
   &:hover {
     border: 1rem solid rgba(0, 0, 0, 0.5);
   }
+}
+
+.teacherInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.infoText {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 10rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  & span {
+    color: #000;
+  }
+
 }

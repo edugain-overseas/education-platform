@@ -7,6 +7,7 @@ import { getUserType } from "../../../redux/user/userSelectors";
 import styles from "./LessonsList.module.scss";
 
 export function LessonsList({ lessons, day }) {
+  console.log(lessons);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isEdit = useSelector(getIsEdit);
   const userType = useSelector(getUserType);
@@ -21,14 +22,32 @@ export function LessonsList({ lessons, day }) {
         {lessons.map((lesson, index) => (
           <li key={index} className={styles.lessonsItem}>
             <h3 className={styles.lessonSubject}>{lesson.subject_name}</h3>
-            <p className={styles.lessonTime}>
-              Start {lesson.lesson_date.slice(11, 16)} -{" "}
-              {lesson.lesson_end.slice(0, -3)}
-            </p>
-            {userType !== "teacher" && (
-              <p
-                className={styles.lessonLecturer}
-              >{`${lesson.teacher_name} ${lesson.teacher_surname}`}</p>
+            {userType === "student" ? (
+              <div>
+                <p className={styles.infoText}>
+                  <span>Tema: </span>
+                  {lesson.lesson_name}
+                </p>
+                <p className={styles.infoText}>
+                  Start {lesson.lesson_date.slice(11, 16)} -{" "}
+                  {lesson.lesson_end.slice(0, -3)}
+                </p>
+                <p
+                  className={styles.infoText}
+                >{`${lesson.teacher_name} ${lesson.teacher_surname}`}</p>
+              </div>
+            ) : (
+              <div className={styles.teacherInfoWrapper}>
+                <p className={styles.infoText}>
+                  <span>Tema: </span>
+                  {lesson.lesson_name}
+                </p>
+                <p className={styles.infoText}>
+                  Start {lesson.lesson_date.slice(11, 16)} -{" "}
+                  {lesson.lesson_end.slice(0, -3)}
+                </p>
+                <p className={styles.infoText}>Group: {lesson.group_name}</p>
+              </div>
             )}
             <button className={styles.detailsButton}>
               <DetailsIcon />

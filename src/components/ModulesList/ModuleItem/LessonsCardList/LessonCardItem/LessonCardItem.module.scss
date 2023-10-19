@@ -6,6 +6,14 @@
   box-shadow: 0rem 0rem 3.7067272663116455rem 0rem rgba(0, 0, 0, 0.12);
   height: 178rem;
 
+  & > a {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   & .cardHeader {
     padding-bottom: 16rem;
     margin-bottom: 12rem;
@@ -55,6 +63,22 @@
   line-height: normal;
 }
 
+.infoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.lessonTime {
+  color:  rgba(0, 0, 0, 0.5);
+  font-family: Inter, sans-serif;
+  font-size: 14rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .lessonTitle {
   color: rgba(0, 0, 0, 0.5);
   font-family: Inter, sans-serif;
@@ -62,7 +86,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-bottom: 12rem;
+  // margin-bottom: 12rem;
 
   & span {
     color: #000;
