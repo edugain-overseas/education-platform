@@ -33,7 +33,7 @@
     width: 100%;
     margin-bottom: 16rem;
   }
-  
+
   & .titleInput {
     border: none;
     outline: 0;
@@ -82,7 +82,7 @@
   }
 }
 
-.section {
+section {
   margin-bottom: 60rem;
 
   &:last-child {
@@ -131,4 +131,99 @@ h4.sectionSubTitle {
 
 .modalWrap {
   background: red;
+}
+
+.videoWrapper {
+  max-width: 1080rem;
+  margin: 0 auto 24rem;
+}
+
+.sectionVideo > *:last-child,
+.sectionFiles > *:last-child {
+  margin-bottom: 0;
+}
+
+.filesWrapper {
+  display: flex;
+  gap: 48rem;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 1080rem;
+  margin: 0 auto 24rem;
+}
+
+.attachedDocumentWrapper {
+  display: flex;
+  gap: 12rem;
+  align-items: center;
+
+  & svg {
+    width: 16rem;
+    height: 16rem;
+  }
+
+  & .documentName {
+    font-family: Inter, sans-serif;
+    font-size: 15rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.3%;
+    letter-spacing: 0.45rem;
+  }
+
+  & .documentSize {
+    color: #bdbdbd;
+    font-family: Inter, sans-serif;
+    font-size: 15rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.3%;
+    letter-spacing: 0.45rem;
+  }
+
+  & .downloadLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & .deleteBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2rem);
+
+    &:hover path {
+      fill: #d60000;
+    }
+  }
+}
+
+.linksWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16rem;
+}
+
+.linkWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+
+  & span {
+    color: #4171cd;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 22rem; /* 157.143% */
+  }
+
+  &:hover span {
+    text-decoration-line: underline;
+  }
 }

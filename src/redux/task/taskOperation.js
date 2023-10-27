@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  addSingleFilePartToLecture,
   addTextPartToLecture,
   getLectureByTaskId,
   getTestByTaskId,
@@ -17,7 +18,7 @@ export const getLectureByTaskIdThunk = createAsyncThunk(
   }
 );
 
-export const getLTestByTaskIdThunk = createAsyncThunk(
+export const getTestByTaskIdThunk = createAsyncThunk(
   "task/getTestByLessonId",
   async (lessonId, { rejectWithValue }) => {
     try {
@@ -31,10 +32,22 @@ export const getLTestByTaskIdThunk = createAsyncThunk(
 
 export const addTextPartToLectureThunk = createAsyncThunk(
   "task/getTestByLessonId",
-  async ({lectureId, partData}, { rejectWithValue }) => {
+  async ({ lectureId, partData }, { rejectWithValue }) => {
     try {
       const response = await addTextPartToLecture(lectureId, partData);
-      return { lectureId, response};
+      return { lectureId, response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addSingleFilePartToLectureThunk = createAsyncThunk(
+  "task/getTestByLessonId",
+  async ({ lectureId, partData }, { rejectWithValue }) => {
+    try {
+      const response = await addSingleFilePartToLecture(lectureId, partData);
+      return { lectureId, response };
     } catch (error) {
       return rejectWithValue(error.message);
     }

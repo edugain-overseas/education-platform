@@ -6,7 +6,6 @@ import { Quill } from "../Quill/Quill";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserId, getUserType } from "../../../redux/user/userSelectors";
 import { AttachFiles } from "./AttachFiles/AttachFiles";
-import { HtmlRegExp } from "../../../constants/regExp";
 import { getMessageTypeByRecepient } from "../../../helpers/getMessageTypeByRecepient";
 import { getMessageRecepients } from "../../../helpers/getMessageRecepients";
 import {
@@ -29,6 +28,7 @@ import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
 import EmojiPanel from "./EmojiPanel/EmojiPanel";
 import { ReactComponent as PinIcon } from "../../../images/icons/pin.svg";
 import styles from "./MessageForm.module.scss";
+import { getStringFromHTMLString } from "../../../helpers/getStringFromHTMLString";
 
 export function MessageForm({ chatData = null }) {
   const [messageHTML, setMessageHTML] = useState("");
@@ -89,7 +89,7 @@ export function MessageForm({ chatData = null }) {
     event.preventDefault();
 
     if (
-      messageHTML.replaceAll(HtmlRegExp, "").trim() === "" &&
+      getStringFromHTMLString(messageHTML) === "" &&
       attachedFiles.length === 0
     ) {
       return;

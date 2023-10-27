@@ -20,8 +20,10 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageLoadedSucces, setPageLoadedSucces] = useState(false);
-  // const [pageHeight, setPageHeight] = useState(0);
   const [play, setPlay] = useState(false);
+  const [pageHeight, setPageHeight] = useState(0);
+  const [fileObj, setFileObj] = useState({ url: pdf });
+  console.log(setFileObj);
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -34,10 +36,14 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   const pageWidthInRem = 470;
   const pageWidthInPx = pageWidthInRem * rootFontSize;
   const fullscreenHeight = window.window.outerHeight * 0.85;
-  console.log(fullscreenHeight);
 
   const onLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
+  };
+
+  const handlePageLoadSuccess = (info) => {
+    setPageLoadedSucces(true);
+    setPageHeight(info.height);
   };
 
   const handlePrev = () => {
@@ -67,15 +73,6 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (canvasRef.current) {
-  //     if (pageHeight !== canvasRef.current?.clientHeight) {
-  //       setPageHeight(canvasRef.current.clientHeight);
-  //       setPageLoadedSucces(true);
-  //     }
-  //   }
-  // }, [fullscreen, containerRef.current?.clientWidth, pageHeight]);
-
   useEffect(() => {
     if (play) {
       interval.current = setInterval(() => {
@@ -96,8 +93,8 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
     <div
       ref={containerRef}
       className={styles.documentContainer}
-      // style={{ height: fullscreen ? "100%" : pageHeight }}
       onMouseEnter={handleContainerMouseEnter}
+      style={{ minHeight: pageLoadedSucces ? pageHeight : "auto" }}
     >
       {pageLoadedSucces && (
         <>
@@ -144,9 +141,8 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
           </button>
         </>
       )}
-
       <Document
-        file={{ url: pdf }}
+        file={fileObj}
         options={options}
         onLoadSuccess={onLoadSuccess}
         onLoadError={console.error}
@@ -160,8 +156,7 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
           className={styles.page}
           width={fullscreen ? null : pageWidthInPx}
           height={fullscreen ? fullscreenHeight : null}
-          // canvasRef={canvasRef}
-          onLoadSuccess={() => setPageLoadedSucces(true)}
+          onLoadSuccess={handlePageLoadSuccess}
           loading={null}
         />
         {pageNumber !== numPages && (
@@ -182,4 +177,11 @@ function PDFReader({ pdf, setFullscreen, fullscreen }) {
   );
 }
 
-export default PDFReader;
+function areEqual(prevProps, nextProps) {
+  return (
+    prevProps.pdf === nextProps.pdf &&
+    prevProps.fullscreen === nextProps.fullscreen
+  );
+}
+
+export default React.memo(PDFReader, areEqual);

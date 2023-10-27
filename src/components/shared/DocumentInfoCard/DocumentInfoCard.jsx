@@ -4,9 +4,12 @@ import { ReactComponent as DocumentIcon } from "../../../images/icons/document.s
 import { ReactComponent as DownloadIcon } from "../../../images/icons/downloadBigger.svg";
 import { ReactComponent as DeleteIcon } from "../../../images/icons/trash.svg";
 import { formatSize } from "../../../helpers/formatSize";
+import { useSelector } from "react-redux";
+import { getIsEdit } from "../../../redux/config/configSelectors";
 
 const DocumentInfoCard = ({ file, styles }) => {
   const { fileName, fileSize, filePath, fileType } = file;
+  const isEdit = useSelector(getIsEdit);
   console.log(fileType);
   return (
     <div className={styles.attachedDocumentWrapper}>
@@ -22,9 +25,11 @@ const DocumentInfoCard = ({ file, styles }) => {
       >
         <DownloadIcon />
       </a>
-      <button type="button" className={styles.deleteBtn}>
-        <DeleteIcon />
-      </button>
+      {isEdit && (
+        <button type="button" className={styles.deleteBtn}>
+          <DeleteIcon />
+        </button>
+      )}
     </div>
   );
 };

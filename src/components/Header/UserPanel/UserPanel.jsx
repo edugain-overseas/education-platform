@@ -38,8 +38,8 @@ export const UserPanel = () => {
     if (
       pathname === "/" ||
       pathname === "/schedule" ||
-      pathname.includes("/participants") ||
-      pathname.includes("/tasks")
+      pathname.includes("/participants") 
+      // pathname.includes("/tasks")
     ) {
       dispatch(setDefault());
       return;

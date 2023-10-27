@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getLTestByTaskIdThunk,
+  getTestByTaskIdThunk,
   getLectureByTaskIdThunk,
 } from "./taskOperation";
 
@@ -32,18 +32,18 @@ export const taskSlice = createSlice({
         state.error = payload;
       })
 
-      .addCase(getLTestByTaskIdThunk.pending, (state, _) => {
+      .addCase(getTestByTaskIdThunk.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getLTestByTaskIdThunk.fulfilled, (state, { payload }) => {
+      .addCase(getTestByTaskIdThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.tasks = [
           ...state.tasks.filter((task) => task.id !== payload.id),
           payload,
         ];
       })
-      .addCase(getLTestByTaskIdThunk.rejected, (state, { payload }) => {
+      .addCase(getTestByTaskIdThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

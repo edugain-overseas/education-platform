@@ -7,11 +7,22 @@ export const getLectureByTaskId = async (taskId) => {
 
 export const createLecture = async (lessonId) => {
   const { data } = await instance.post(`/lecture/create?lesson_id=${lessonId}`);
-  return data
+  return data;
 };
 
 export const addTextPartToLecture = async (lectureId, partData) => {
-  const { data } = await instance.post(`/lecture/text/${lectureId}`, partData);
+  const { data } = await instance.post(
+    `/lecture/create/text?lecture_id=${lectureId}`,
+    partData
+  );
+  return data;
+};
+
+export const addSingleFilePartToLecture = async (lectureId, partData) => {
+  const { data } = await instance.post(
+    `/lecture/create/file?lecture_id=${lectureId}`,
+    partData
+  );
   return data;
 };
 
@@ -19,3 +30,4 @@ export const getTestByTaskId = async (taskId) => {
   const { data } = await instance.get(`/test/${taskId}`);
   return data;
 };
+

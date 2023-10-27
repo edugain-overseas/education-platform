@@ -4,4 +4,34 @@
   border: 1rem solid #7e7e7e;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
   margin-bottom: 48rem;
+  position: relative;
+}
+
+.editPanel {
+  display: inline-flex;
+  gap: 8rem;
+  padding: 4rem 8rem;
+  align-items: center;
+
+  border-radius: 0 0 2rem 2rem;
+  border: 1rem solid #7e7e7e;
+
+  position: absolute;
+  top: 100%;
+  right: 28rem;
+
+  & svg {
+    width: 16rem;
+    height: 16rem;
+  }
+}
+
+.detailsBtn {
+  & rect {
+    fill: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.text {
+  margin-bottom: 28rem;
 }

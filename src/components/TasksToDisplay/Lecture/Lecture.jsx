@@ -8,6 +8,9 @@ import { getIsEdit } from "../../../redux/config/configSelectors";
 import { ReactComponent as EditIcon } from "../../../images/icons/edit.svg";
 import LectureConstructor from "./LectureContructor./LectureConstructor";
 import styles from "./Lecture.module.scss";
+import VideoPlayer from "../../VideoPlayer/VideoPlayer";
+import DocumentInfoCard from "../../shared/DocumentInfoCard/DocumentInfoCard";
+import LinkCard from "../../shared/LinkCard/LinkCard";
 
 export default function Lecture({ lessonData }) {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -44,22 +47,33 @@ export default function Lecture({ lessonData }) {
       .map((section) => {
         const {
           attributeType: type,
-          attributeNumber: id,
+          attributeId: id,
           attributeTitle: title,
-          attributeValue: content,
+          attributeText: text,
           downloadAllowed,
-          fileName,
-          fileSize,
+          // fileName,
+          // fileSize,
           filePath,
+          // hided,
+          attributeFiles,
+          attributeLinks,
         } = section;
         switch (type) {
           case "text":
-            console.log(fileName, fileSize);
+            // console.log(fileName, fileSize, hided);
             return (
               <section key={id} id={type} className={styles.section}>
-                {title && <h3 className={styles.sectionTitle}>{title}</h3>}
-                {content && (
-                  <div className={styles.sectionContentWrapper}>{content}</div>
+                {title && (
+                  <h3
+                    className={styles.sectionTitle}
+                    dangerouslySetInnerHTML={{ __html: title }}
+                  ></h3>
+                )}
+                {text && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
                 )}
               </section>
             );
@@ -71,7 +85,10 @@ export default function Lecture({ lessonData }) {
                 id={type}
                 className={`${styles.section} ${styles.sectionPDF}`}
               >
-                <h3 className={styles.sectionTitle}>{title}</h3>
+                <h3
+                  className={styles.sectionTitle}
+                  dangerouslySetInnerHTML={{ __html: title }}
+                ></h3>
                 <PDFReader
                   pdf={`${serverName}${encodedFilePathPresent}`}
                   setFullscreen={setFullscreen}
@@ -107,6 +124,12 @@ export default function Lecture({ lessonData }) {
                     fullscreen={fullscreen}
                   />
                 </Modal>
+                {text && text !== "" && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
+                )}
               </section>
             );
           case "audio":
@@ -117,7 +140,10 @@ export default function Lecture({ lessonData }) {
                 id={type}
                 className={`${styles.section} ${styles.sectionAudio}`}
               >
-                <h3 className={styles.sectionTitle}>{title}</h3>
+                <h3
+                  className={styles.sectionTitle}
+                  dangerouslySetInnerHTML={{ __html: title }}
+                ></h3>
                 <audio
                   src={`${serverName}${encodedFilePathAudio}`}
                   controls={true}
@@ -125,13 +151,97 @@ export default function Lecture({ lessonData }) {
                   height="auto"
                   controlsList={downloadAllowed ? "" : "nodownload"}
                 ></audio>
+                {text && text !== "" && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
+                )}
+              </section>
+            );
+          case "video":
+            const encodedFilePathVideo = filePath?.replace(/ /g, "%20");
+            return (
+              <section
+                key={id}
+                id={type}
+                className={`${styles.section} ${styles.sectionVideo}`}
+              >
+                <h3
+                  className={styles.sectionTitle}
+                  dangerouslySetInnerHTML={{ __html: title }}
+                ></h3>
+                <div className={styles.videoWrapper}>
+                  <VideoPlayer file={{ filePath: encodedFilePathVideo }} />
+                </div>
+                {text && text !== "" && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
+                )}
+              </section>
+            );
+          case "file":
+            return (
+              <section
+                key={id}
+                id={type}
+                className={`${styles.section} ${styles.sectionFiles}`}
+              >
+                <h3 className={styles.sectionTitle}>{title}</h3>
+                {attributeFiles && attributeFiles.length !== 0 && (
+                  <div className={styles.filesWrapper}>
+                    {attributeFiles.map((file) => (
+                      <DocumentInfoCard
+                        file={file}
+                        key={file.fileId}
+                        styles={styles}
+                      />
+                    ))}
+                  </div>
+                )}
+                {text && text !== "" && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
+                )}
+              </section>
+            );
+          case "link":
+            return (
+              <section
+                key={id}
+                id={type}
+                className={`${styles.section} ${styles.sectionFiles}`}
+              >
+                <h3 className={styles.sectionTitle}>{title}</h3>
+                {attributeLinks && attributeLinks.length !== 0 && (
+                  <div className={styles.linksWrapper}>
+                    {attributeLinks.map(({ linkId, link, anchor }) => (
+                      <LinkCard
+                        key={linkId}
+                        link={link}
+                        text={anchor}
+                        styles={styles}
+                      />
+                    ))}
+                  </div>
+                )}
+                {text && text !== "" && (
+                  <div
+                    className={styles.sectionContentWrapper}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
+                )}
               </section>
             );
           default:
             return null;
         }
       });
-  console.log(lectureContent);
+  // console.log(lectureContent);
   return (
     <div className={styles.lectureContainer}>
       <div className={styles.lectureContent}>
@@ -183,8 +293,10 @@ export default function Lecture({ lessonData }) {
         </div>
         {(lectureContent && lectureContent.length !== 0) || isEdit ? (
           <>
-            {renderLectureContent()}
-            {isEdit && <LectureConstructor />}
+            {lectureContent &&
+              lectureContent.length !== 0 &&
+              renderLectureContent()}
+            {isEdit && <LectureConstructor lectureId={lectureId} />}
           </>
         ) : (
           <Empty />

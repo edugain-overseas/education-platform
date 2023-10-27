@@ -25,7 +25,6 @@ export default function VideoPlayer({ file }) {
         console.error("Error fetching file:", error);
       }
     };
-
     fetchFile();
   }, [file.filePath]);
 

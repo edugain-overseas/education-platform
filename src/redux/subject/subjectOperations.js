@@ -74,7 +74,6 @@ export const createSubjectAboutThunk = createAsyncThunk(
   async ({ id, updatedSubjectAbout }, { rejectWithValue }) => {
     try {
       const response = await createSubjectAbout(id, updatedSubjectAbout);
-      console.log(response);
       return { response, id };
     } catch (error) {
       return rejectWithValue(error.message);

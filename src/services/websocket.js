@@ -15,13 +15,6 @@ import {
   setMessages as setTeacherMessages,
   setUsers as setTeacherUsers,
 } from "../redux/chats/chatsSlice";
-// import {
-//   addFeedback as addSubjectFeedback,
-//   addMessage as addSubjectMessage,
-//   setActiveData as setSubjectActiveData,
-//   setMessages as setSubjectMessages,
-//   setUsers as setSubjectUsers,
-// } from "../redux/subjectChats/subjectChatSlice";
 import { store } from "../redux/store";
 const dispatch = store.dispatch;
 
@@ -39,7 +32,6 @@ export const connectToWebSocket = (chatGroup, token) => {
         const data = JSON.parse(event.data);
         const participantsData = data.userInfo;
         const messagesData = data.messages;
-        console.log(data);
 
         if (messagesData) {
           if (participantsData) {

@@ -1,22 +1,16 @@
-.presentWrapper {
+.audioWrapper {
   padding: 24rem 16rem;
   border-radius: 2px;
   border: 1rem solid #7e7e7e;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
   margin-bottom: 48rem;
   position: relative;
-}
 
-.presentFileWrapper {
-  width: 1080rem;
-  height: 660rem;
-  margin: 0 auto 24rem;
-
-  border-radius: 2rem 2rem 0 0;
-  background: #f4f4f4;
-
-  /* Drop Shadow */
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.12);
+  & audio {
+    display: block;
+    width: 1080rem;
+    margin: 0 auto 24rem;
+  }
 }
 
 .editPanel {
@@ -48,46 +42,27 @@
   margin-bottom: 28rem;
 }
 
-.mainContentWrapper {
+.dragger {
   width: 1080rem;
-  min-height: 668rem;
+  height: 80rem;
   margin: 0 auto 24rem;
-  padding: 54rem 72rem;
 
   border-radius: 2rem 2rem 0 0;
-  background: #f4f4f4;
-  box-shadow: 0 0 16rem 0 rgba(0, 0, 0, 0.12);
   display: flex;
-  flex-direction: column;
-}
 
-.fileWrapper {
-  position: relative;
-  height: 100%;
-  flex-grow: 1;
-
-  border-radius: 8rem;
-
-  display: flex;
-  justify-content: center;
-}
-
-.dragger {
-  flex-grow: 1;
+  & .draggerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16rem;
+  }
 
   & svg {
-    width: 132rem;
-    height: 132rem;
-    margin-bottom: 4rem;
+    width: 28rem;
+    height: 28rem;
   }
 
   & p {
-    width: 248rem;
-    height: 40rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #b3b3b3;
     font-family: Inter, sans-serif;
     font-size: 16rem;

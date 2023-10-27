@@ -74,7 +74,7 @@ export default function Test({ lessonData }) {
               </div>
             );
           default:
-            return null
+            return null;
         }
       });
 
@@ -128,7 +128,7 @@ export default function Test({ lessonData }) {
           )}
         </div>
         {(testContent && testContent?.legth !== 0) || isEdit ? (
-          renderTestContent()
+          testContent && testContent?.legth !== 0 && renderTestContent()
         ) : (
           <Empty />
         )}

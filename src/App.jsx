@@ -42,6 +42,7 @@ import CourseInstructionPage from "./pages/CoursesPage/CourseDetailPage/CourseIn
 import IntructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/IntructionContent/IntructionContent";
 import ClassRoomNotification from "./pages/ClassRoomNotificationPage/ClassRoomNotification";
 import { getSubjectTapesByIdThunk } from "./redux/subject/subjectOperations";
+import CourseJournalPage from "./pages/CoursesPage/CourseDetailPage/CourseJournalPage/CourseJournalPage";
 
 export const WebsocketContext = createContext(null);
 export const WebsocketsContext = createContext(null);
@@ -98,7 +99,6 @@ function App() {
 
     if (subjects) {
       subjects.forEach(({ subject_id }) => {
-        console.log(subject_id, typeof(subject_id));
         dispatch(getSubjectTapesByIdThunk(+subject_id));
       });
     }
@@ -153,7 +153,7 @@ function App() {
                 <Route path=":lessonId" element={<TaskDetailPage />} />
               </Route>
               <Route path="participants" element={<CourseParticipantPage />} />
-              <Route path="journal" />
+              <Route path="journal" element={<CourseJournalPage />} />
               <Route path="about" element={<CourseItemPage />} />
               <Route path="instructions" element={<CourseInstructionPage />}>
                 <Route path=":instructionId" element={<IntructionContent />} />

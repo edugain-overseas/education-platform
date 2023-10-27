@@ -10,7 +10,7 @@ import { ReactComponent as ArrowLeftIcon } from "../../../../../images/icons/arr
 import { ReactComponent as QuestionIcon } from "../../../../../images/icons/question.svg";
 import { useDispatch } from "react-redux";
 import {
-  getLTestByTaskIdThunk,
+  getTestByTaskIdThunk,
   getLectureByTaskIdThunk,
 } from "../../../../../redux/task/taskOperation";
 import { getTasks } from "../../../../../redux/task/taskSelectors";
@@ -40,8 +40,6 @@ export default function TaskDetailPage() {
   }, [subjectData, id, lessonId]);
 
   useEffect(() => {
-    console.log(type);
-    console.log(type, +lessonId);
     if (type && lessonId) {
       switch (type) {
         case "lecture":
@@ -50,7 +48,7 @@ export default function TaskDetailPage() {
           });
           break;
         case "test":
-          dispatch(getLTestByTaskIdThunk(lessonId));
+          dispatch(getTestByTaskIdThunk(lessonId));
           break;
         default:
           break;
@@ -83,7 +81,6 @@ export default function TaskDetailPage() {
     }
     navigate(`/courses/${id}/tasks/${+lessonId - 1}`);
   };
-  console.log(lessonData);
   return (
     <div className={styles.taskDetailWrapper}>
       <div className={styles.controlPanel}>

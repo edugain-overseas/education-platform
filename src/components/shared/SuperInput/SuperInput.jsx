@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
-import { EditorState, convertToRaw} from "draft-js";
-// import htmlToDraft from "html-to-draftjs";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import undo from "../../../images/icons/editTextIcons/undo.svg";
 import redo from "../../../images/icons/editTextIcons/redo.svg";
@@ -53,15 +53,26 @@ const toolbar = {
 
 const SuperInput = ({ state, setState, placeholder, styles }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  useEffect(() => {
+    if (state !== "") {
+      const contentBlock = htmlToDraft(state);
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
+    }
+    // eslint-disable-next-line
+  }, []);
   // const contentBlock = htmlToDraft(state);
   // const contentState = ContentState.createFromBlockArray(
-  //   contentBlock.contentBlocks);
-  // const editorState = EditorState.createWithContent(contentState);
-
+  //   contentBlock.contentBlocks
+  // );
+  // const editorStateQ = EditorState.createWithContent(contentState);
   const onChange = (value) => {
     setEditorState(value);
     setState(draftToHtml(convertToRaw(value.getCurrentContent())));
-    console.log(draftToHtml(convertToRaw(value.getCurrentContent())));
   };
 
   return (

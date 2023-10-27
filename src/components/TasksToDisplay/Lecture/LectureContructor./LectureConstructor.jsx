@@ -5,46 +5,216 @@ import TextPart from "./LectureParts/TextPart/TextPart";
 import { useSelector } from "react-redux";
 import { getIsSubmit } from "../../../../redux/config/configSelectors";
 import { useDispatch } from "react-redux";
-import { addTextPartToLectureThunk } from "../../../../redux/task/taskOperation";
+import {
+  addSingleFilePartToLectureThunk,
+  addTextPartToLectureThunk,
+  getLectureByTaskIdThunk,
+} from "../../../../redux/task/taskOperation";
+import PresentationPart from "./LectureParts/PresentationPart/PresentationPart";
+import AudioPart from "./LectureParts/AudioPart/AudioPart";
+import PicturePart from "./LectureParts/PicturePart/PicturePart";
+import { setDefault } from "../../../../redux/config/configSlice";
+import { useParams } from "react-router-dom";
+import VideoPart from "./LectureParts/VideoPart/VideoPart";
 
 const renderLecturePart = (part, state, setState) => {
-  const { attr_type: type, id } = part;
+  const { attributeType: type, id } = part;
   switch (type) {
     case "text":
       const textState = state.find((partFromState) => partFromState.id === id);
+      console.log(type);
       return <TextPart key={id} state={textState} setState={setState} />;
+    case "present":
+      const presentState = state.find(
+        (partFromState) => partFromState.id === id
+      );
+      return (
+        <PresentationPart key={id} state={presentState} setState={setState} />
+      );
+    case "audio":
+      const audioState = state.find((partFromState) => partFromState.id === id);
+      return <AudioPart key={id} state={audioState} setState={setState} />;
+    case "picture":
+      const pictureState = state.find(
+        (partFromState) => partFromState.id === id
+      );
+      return <PicturePart key={id} state={pictureState} setState={setState} />;
+    case "video":
+      const videoState = state.find((partFromState) => partFromState.id === id);
+      return <VideoPart key={id} state={videoState} setState={setState} />;
     default:
       break;
   }
 };
 
-const LectureConstructor = () => {
+const validateTextPart = ({ attributeTitle, attributeText }) => {
+  if (attributeTitle !== "" && attributeText !== "") {
+    return true;
+  }
+  return false;
+};
+
+const validatePicturePart = ({ attributeTitle, attributeImages }) => {
+  if (attributeTitle !== "" && attributeImages?.length !== 0) {
+    return true;
+  }
+  return false;
+};
+
+const validateSingleFilePart = ({
+  attributeTitle,
+  fileName,
+  fileSize,
+  filePath,
+}) => {
+  if (
+    attributeTitle !== "" &&
+    fileName !== "" &&
+    fileSize !== 0 &&
+    filePath !== ""
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const LectureConstructor = ({ lectureId }) => {
   const [lectureParts, setLectureParts] = useState([]);
   const isSumbit = useSelector(getIsSubmit);
   const dispatch = useDispatch();
+  const { lessonId } = useParams();
 
   useEffect(() => {
     const handleSumbit = () => {
-      lectureParts.map((part) => {
-        switch (part.attr_type) {
+      console.log("sumbit");
+      lectureParts.forEach((part) => {
+        switch (part.attributeType) {
           case "text":
             const textData = {
-              attr_type: "text",
-              attr_title: part.attr_title,
-              attr_number: part.attr_number,
-              value: part.value,
+              attributeType: "text",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: part.hided,
             };
-            dispatch(addTextPartToLectureThunk(textData));
-            return null;
+            if (validateTextPart(textData)) {
+              dispatch(
+                addTextPartToLectureThunk({ lectureId, partData: textData })
+              );
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            } else {
+            }
+            break;
+          case "present":
+            const presentData = {
+              attributeType: "present",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: part.hided,
+              fileName: part.fileName,
+              fileSize: part.fileSize,
+              filePath: part.filePath,
+              downloadAllowed: part.downloadAllowed,
+            };
+            if (validateSingleFilePart(presentData)) {
+              console.log(presentData);
+              dispatch(
+                addSingleFilePartToLectureThunk({
+                  lectureId,
+                  partData: presentData,
+                })
+              );
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            } else {
+            }
+            break;
+          case "audio":
+            const audioData = {
+              attributeType: "audio",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: part.hided,
+              fileName: part.fileName,
+              fileSize: part.fileSize,
+              filePath: part.filePath,
+              downloadAllowed: part.downloadAllowed,
+            };
+            if (validateSingleFilePart(audioData)) {
+              dispatch(
+                addSingleFilePartToLectureThunk({
+                  lectureId,
+                  partData: audioData,
+                })
+              ).then(() => dispatch(setDefault()));
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            } else {
+            }
+            break;
+          case "picture":
+            const pictureData = {
+              attributeType: "picture",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: false,
+            };
+            if (validatePicturePart(pictureData)) {
+              // dispatch(addTextPartToLectureThunk(textData));
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            } else {
+            }
+            break;
+          case "video":
+            const videoData = {
+              attributeType: "video",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: part.hided,
+              fileName: part.fileName,
+              fileSize: part.fileSize,
+              filePath: part.filePath,
+              downloadAllowed: part.downloadAllowed,
+            };
+            if (validateSingleFilePart(videoData)) {
+              dispatch(
+                addSingleFilePartToLectureThunk({
+                  lectureId,
+                  partData: videoData,
+                })
+              ).then(() => dispatch(setDefault()));
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            } else {
+            }
+            break;
           default:
-            return null;
+            break;
         }
       });
+      dispatch(setDefault());
+      dispatch(getLectureByTaskIdThunk(lessonId));
     };
     if (isSumbit) {
       handleSumbit();
     }
-  }, [isSumbit, lectureParts, dispatch]);
+  }, [isSumbit, lectureParts, dispatch, lectureId, lessonId]);
 
   return (
     <div className={styles.lectureConstructorWrapper}>

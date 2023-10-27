@@ -12,13 +12,11 @@ const CourseTasksPage = () => {
   const subject = useSelector(getSubjectData).find(
     (subject) => `${subject.id}` === id
   );
-  console.log(subject);
   let modules = subject?.subjects_lessons
     ? [...subject?.subjects_lessons].sort(
         (itemA, itemB) => itemA.module_number - itemB.module_number
       )
     : null;
-  console.log(modules);
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>
