@@ -23,7 +23,6 @@ const CourseJournalPage = () => {
   const [isSortedByDate, setIsSortedByDate] = useState(false);
   const [isSortedByType, setIsSortedByType] = useState(false);
   const [isSortedByScore, setIsSortedByScore] = useState(false);
-
   const { id: subjectId } = useParams();
 
   const subjectData = useSelector(getSubjectData)?.find(
@@ -48,6 +47,7 @@ const CourseJournalPage = () => {
 
     const sortedLessonsByDate = sortLessonsByDate(lessons);
     setLessonsData(sortedLessonsByDate);
+    // eslint-disable-next-line
   }, [modules.length]);
 
   const sortByDate = () => {
