@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { getIsSubmit } from "../../../../redux/config/configSelectors";
 import { useDispatch } from "react-redux";
 import {
+  addImagesPartToLectureThunk,
+  addMultipleFilesPartToLectureThunk,
   addSingleFilePartToLectureThunk,
   addTextPartToLectureThunk,
   getLectureByTaskIdThunk,
@@ -16,6 +18,7 @@ import PicturePart from "./LectureParts/PicturePart/PicturePart";
 import { setDefault } from "../../../../redux/config/configSlice";
 import { useParams } from "react-router-dom";
 import VideoPart from "./LectureParts/VideoPart/VideoPart";
+import FilePart from "./LectureParts/FilePart/FilePart";
 
 const renderLecturePart = (part, state, setState) => {
   const { attributeType: type, id } = part;
@@ -42,6 +45,9 @@ const renderLecturePart = (part, state, setState) => {
     case "video":
       const videoState = state.find((partFromState) => partFromState.id === id);
       return <VideoPart key={id} state={videoState} setState={setState} />;
+    case "file":
+      const fileState = state.find((partFromState) => partFromState.id === id);
+      return <FilePart key={id} state={fileState} setState={setState} />;
     default:
       break;
   }
@@ -85,7 +91,7 @@ const LectureConstructor = ({ lectureId }) => {
   const { lessonId } = useParams();
 
   useEffect(() => {
-    const handleSumbit = () => {
+    const handleSumbit = async () => {
       console.log("sumbit");
       lectureParts.forEach((part) => {
         switch (part.attributeType) {
@@ -100,7 +106,7 @@ const LectureConstructor = ({ lectureId }) => {
             if (validateTextPart(textData)) {
               dispatch(
                 addTextPartToLectureThunk({ lectureId, partData: textData })
-              );
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
               setLectureParts((prev) => {
                 const updatedState = prev.filter((item) => item.id !== part.id);
                 return updatedState;
@@ -127,7 +133,7 @@ const LectureConstructor = ({ lectureId }) => {
                   lectureId,
                   partData: presentData,
                 })
-              );
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
               setLectureParts((prev) => {
                 const updatedState = prev.filter((item) => item.id !== part.id);
                 return updatedState;
@@ -153,7 +159,7 @@ const LectureConstructor = ({ lectureId }) => {
                   lectureId,
                   partData: audioData,
                 })
-              ).then(() => dispatch(setDefault()));
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
               setLectureParts((prev) => {
                 const updatedState = prev.filter((item) => item.id !== part.id);
                 return updatedState;
@@ -168,9 +174,15 @@ const LectureConstructor = ({ lectureId }) => {
               attributeNumber: part.attributeNumber,
               attributeText: part.attributeText,
               hided: false,
+              attributeImages: part.attributeImages,
             };
             if (validatePicturePart(pictureData)) {
-              // dispatch(addTextPartToLectureThunk(textData));
+              dispatch(
+                addImagesPartToLectureThunk({
+                  lectureId,
+                  partData: pictureData,
+                })
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
               setLectureParts((prev) => {
                 const updatedState = prev.filter((item) => item.id !== part.id);
                 return updatedState;
@@ -196,13 +208,36 @@ const LectureConstructor = ({ lectureId }) => {
                   lectureId,
                   partData: videoData,
                 })
-              ).then(() => dispatch(setDefault()));
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
               setLectureParts((prev) => {
                 const updatedState = prev.filter((item) => item.id !== part.id);
                 return updatedState;
               });
             } else {
             }
+            break;
+          case "file":
+            const fileData = {
+              attributeType: "file",
+              attributeTitle: part.attributeTitle,
+              attributeNumber: part.attributeNumber,
+              attributeText: part.attributeText,
+              hided: false,
+              attributeFiles: part.attributeFiles,
+            };
+            // if (validatePicturePart(pictureData)) {
+              dispatch(
+                addMultipleFilesPartToLectureThunk({
+                  lectureId,
+                  partData: fileData,
+                })
+              ).then(() => dispatch(getLectureByTaskIdThunk(lessonId)));
+              setLectureParts((prev) => {
+                const updatedState = prev.filter((item) => item.id !== part.id);
+                return updatedState;
+              });
+            // } else {
+            // }
             break;
           default:
             break;

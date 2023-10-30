@@ -39,7 +39,7 @@ import CourseParticipantPage from "./pages/CoursesPage/CourseDetailPage/CoursePa
 import TaskDetailPage from "./pages/CoursesPage/CourseDetailPage/CourseTasksPage/TaskDetailPage/TaskDetailPage";
 import VideoChatRoom from "./pages/VIdeoChatRoomPage/VideoChatRoom";
 import CourseInstructionPage from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/CourseInstructionPage";
-import IntructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/IntructionContent/IntructionContent";
+import InstructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntructionPage/InstructionContent/InstructionContent";
 import ClassRoomNotification from "./pages/ClassRoomNotificationPage/ClassRoomNotification";
 import { getSubjectTapesByIdThunk } from "./redux/subject/subjectOperations";
 import CourseJournalPage from "./pages/CoursesPage/CourseDetailPage/CourseJournalPage/CourseJournalPage";
@@ -156,7 +156,7 @@ function App() {
               <Route path="journal" element={<CourseJournalPage />} />
               <Route path="about" element={<CourseItemPage />} />
               <Route path="instructions" element={<CourseInstructionPage />}>
-                <Route path=":instructionId" element={<IntructionContent />} />
+                <Route path=":instructionId" element={<InstructionContent />} />
               </Route>
             </Route>
           </Route>

@@ -10,19 +10,20 @@ import { ReactComponent as HideIcon } from "../../../../../../images/icons/displ
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
 // import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trash.svg";
 import Dragger from "../../../../../shared/Dragger/Dragger";
-import { serverName } from "../../../../../../constants/server";
-import styles from "./VideoPart.module.scss";
+import styles from "./FilePart.module.scss";
+import DocumentInfoCard from "../../../../../shared/DocumentInfoCard/DocumentInfoCard";
 
-const VideoPart = ({ state, setState }) => {
+const FilePart = ({ state, setState }) => {
   const [isEditValue, setIsEditValue] = useState(false);
 
-  const setVideoFile = ({ fileName, fileSize, filePath }) => {
+  const addFiles = (newFile) => {
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
-          part.fileName = fileName;
-          part.fileSize = fileSize;
-          part.filePath = filePath;
+          part.attributeFiles.push({
+            ...newFile,
+            downloadAllowed: false,
+          });
         }
         return part;
       });
@@ -67,8 +68,13 @@ const VideoPart = ({ state, setState }) => {
       return updatedState;
     });
   };
+
+  const handleDelete = (file, index) => {
+    console.log(file, index);
+  };
+
   return (
-    <div className={styles.videoWrapper}>
+    <div className={styles.filesWrapper}>
       {isEditValue ? (
         <SuperInput
           state={state.attributeTitle}
@@ -86,24 +92,29 @@ const VideoPart = ({ state, setState }) => {
           }}
         ></p>
       )}
-      <div className={styles.mainContentWrapper}>
-        {state.filePath ? (
-          <video
-            src={`${serverName}${state.filePath}`}
-            controls={true}
-            width="true"
-            height="auto"
-            controlsList={"nodownload"}
-          ></video>
-        ) : (
-          <Dragger
-            styles={styles}
-            setFileResponse={setVideoFile}
-            accept={"video/*"}
-            title="Click or drag to download video"
-          />
-        )}
-      </div>
+      {state.attributeFiles.length !== 0 && (
+        <div className={styles.documentsCardsWrapper}>
+          {state.attributeFiles.map((file, index) => (
+            <DocumentInfoCard
+              key={index}
+              file={file}
+              handleDelete={() => handleDelete(file, index)}
+              styles={styles}
+            />
+          ))}
+        </div>
+      )}
+      <Dragger
+        styles={styles}
+        setFileResponse={addFiles}
+        accept={
+          "application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel, application/json, application/zip, application/x-rar-compressed, text/plain"
+        }
+        title="Click or drag to download document"
+        multiple={true}
+        size="small"
+      />
+
       {isEditValue ? (
         <SuperInput
           state={state.attributeText}
@@ -154,4 +165,4 @@ const VideoPart = ({ state, setState }) => {
   );
 };
 
-export default VideoPart;
+export default FilePart;

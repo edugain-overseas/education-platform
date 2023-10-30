@@ -4,22 +4,27 @@ import { serverName } from "../../../constants/server";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 
-const ImageGroup = ({ imagesData, setState, styles = {}, isDesc }) => {
+const ImageGroup = ({
+  imagesData,
+  setState = () => {},
+  styles = {},
+  isDesc,
+}) => {
   console.log(imagesData);
   const isEdit = useSelector(getIsEdit);
 
-//   const handleChange = (index, e) => {
-//     const value = e.target.value;
-//     setState((prev) => {
-//       const updatedState = prev.map((image, i) => {
-//         if (i === index) {
-//           image.imageDescription = value;
-//         }
-//         return image;
-//       });
-//       return updatedState;
-//     });
-//   };
+  //   const handleChange = (index, e) => {
+  //     const value = e.target.value;
+  //     setState((prev) => {
+  //       const updatedState = prev.map((image, i) => {
+  //         if (i === index) {
+  //           image.imageDescription = value;
+  //         }
+  //         return image;
+  //       });
+  //       return updatedState;
+  //     });
+  //   };
 
   return (
     <div>

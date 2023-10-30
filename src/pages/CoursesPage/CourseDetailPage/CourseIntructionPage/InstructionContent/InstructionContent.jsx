@@ -8,9 +8,9 @@ import { ReactComponent as LinkIcon } from "../../../../../images/icons/link.svg
 import { useSelector } from "react-redux";
 import { getSubjectInstructions } from "../../../../../redux/subject/subjectSelectors";
 import { attachedFileToInstruction } from "../../../../../helpers/attachedFileToInstruction";
-import styles from "./IntructionContent.module.scss";
+import styles from "./InstructionContent.module.scss";
 
-const IntructionContent = () => {
+const InstructionContent = () => {
   const { id, instructionId } = useParams();
   const navigate = useNavigate();
 
@@ -70,7 +70,10 @@ const IntructionContent = () => {
               >
                 <PrevIcon />
               </button>
-              <button onClick={handleNextInstructionClick}>
+              <button
+                onClick={handleNextInstructionClick}
+                disabled={instructionId === "2"}
+              >
                 <NextIcon />
               </button>
             </div>
@@ -104,4 +107,4 @@ const IntructionContent = () => {
   );
 };
 
-export default IntructionContent;
+export default InstructionContent;

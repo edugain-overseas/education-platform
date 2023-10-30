@@ -7,7 +7,7 @@ import { formatSize } from "../../../helpers/formatSize";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 
-const DocumentInfoCard = ({ file, styles }) => {
+const DocumentInfoCard = ({ file, handleDelete = () => {}, styles }) => {
   const { fileName, fileSize, filePath, fileType } = file;
   const isEdit = useSelector(getIsEdit);
   console.log(fileType);
@@ -26,7 +26,11 @@ const DocumentInfoCard = ({ file, styles }) => {
         <DownloadIcon />
       </a>
       {isEdit && (
-        <button type="button" className={styles.deleteBtn}>
+        <button
+          type="button"
+          className={styles.deleteBtn}
+          onClick={handleDelete}
+        >
           <DeleteIcon />
         </button>
       )}

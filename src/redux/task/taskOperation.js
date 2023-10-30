@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  addImagesPartToLecture,
+  addMultipleFilesPartToLecture,
   addSingleFilePartToLecture,
   addTextPartToLecture,
   getLectureByTaskId,
@@ -31,7 +33,7 @@ export const getTestByTaskIdThunk = createAsyncThunk(
 );
 
 export const addTextPartToLectureThunk = createAsyncThunk(
-  "task/getTestByLessonId",
+  "task/addTextPartByLessonId",
   async ({ lectureId, partData }, { rejectWithValue }) => {
     try {
       const response = await addTextPartToLecture(lectureId, partData);
@@ -42,11 +44,35 @@ export const addTextPartToLectureThunk = createAsyncThunk(
   }
 );
 
+export const addImagesPartToLectureThunk = createAsyncThunk(
+  "task/addPicturePartByLessonId",
+  async ({ lectureId, partData }, { rejectWithValue }) => {
+    try {
+      const response = await addImagesPartToLecture(lectureId, partData);
+      return { lectureId, response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const addSingleFilePartToLectureThunk = createAsyncThunk(
-  "task/getTestByLessonId",
+  "task/addSingleFilePartByLessonId",
   async ({ lectureId, partData }, { rejectWithValue }) => {
     try {
       const response = await addSingleFilePartToLecture(lectureId, partData);
+      return { lectureId, response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addMultipleFilesPartToLectureThunk = createAsyncThunk(
+  "task/addMultipleFilesPartLessonId",
+  async ({ lectureId, partData }, { rejectWithValue }) => {
+    try {
+      const response = await addMultipleFilesPartToLecture(lectureId, partData);
       return { lectureId, response };
     } catch (error) {
       return rejectWithValue(error.message);

@@ -19,11 +19,11 @@ const PresentationPart = ({ state, setState }) => {
   const [isEditValue, setIsEditValue] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
-  const setPresentationFile = ({ filename, fileSize, filePath }) => {
+  const setPresentationFile = ({ fileName, fileSize, filePath }) => {
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
-          part.fileName = filename;
+          part.fileName = fileName;
           part.fileSize = fileSize;
           part.filePath = filePath;
         }

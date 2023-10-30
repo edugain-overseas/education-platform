@@ -9,18 +9,18 @@ import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/min
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
 // import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trash.svg";
-import styles from "./AudioPart.module.scss";
 import Dragger from "../../../../../shared/Dragger/Dragger";
 import { serverName } from "../../../../../../constants/server";
+import styles from "./AudioPart.module.scss";
 
 const AudioPart = ({ state, setState }) => {
   const [isEditValue, setIsEditValue] = useState(false);
 
-  const setAudioFile = ({ filename, fileSize, filePath }) => {
+  const setAudioFile = ({ fileName, fileSize, filePath }) => {
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
-          part.fileName = filename;
+          part.fileName = fileName;
           part.fileSize = fileSize;
           part.filePath = filePath;
         }

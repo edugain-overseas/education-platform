@@ -11,6 +11,7 @@ import styles from "./Lecture.module.scss";
 import VideoPlayer from "../../VideoPlayer/VideoPlayer";
 import DocumentInfoCard from "../../shared/DocumentInfoCard/DocumentInfoCard";
 import LinkCard from "../../shared/LinkCard/LinkCard";
+import ImageGroup from "../../shared/ImageGroup/ImageGroup";
 
 export default function Lecture({ lessonData }) {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -57,6 +58,7 @@ export default function Lecture({ lessonData }) {
           // hided,
           attributeFiles,
           attributeLinks,
+          attributeImages,
         } = section;
         switch (type) {
           case "text":
@@ -237,6 +239,20 @@ export default function Lecture({ lessonData }) {
                 )}
               </section>
             );
+          case "picture":
+            return (
+              <section key={id} id={type} className={styles.section}>
+                <h3
+                  className={styles.sectionTitle}
+                  dangerouslySetInnerHTML={{ __html: title }}
+                ></h3>
+                <ImageGroup
+                  imagesData={attributeImages}
+                  styles={styles}
+                  isDesc={true}
+                />
+              </section>
+            );
           default:
             return null;
         }
@@ -253,11 +269,12 @@ export default function Lecture({ lessonData }) {
           }
         >
           {isEdit && isTitleEdit ? (
-            <input
+            <textarea
               className={styles.titleInput}
               type="text"
               value={lectureTitle}
               onChange={(e) => setLectureTitle(e.target.value)}
+              rows="auto"
             />
           ) : (
             <h2>

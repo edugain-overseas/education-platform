@@ -16,14 +16,13 @@ import ImageGroup from "../../../../../shared/ImageGroup/ImageGroup";
 
 const PicturePart = ({ state, setState }) => {
   const [isEditValue, setIsEditValue] = useState(false);
-  console.log(state);
 
   const addPictures = (newPicture) => {
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
           part.attributeImages.push({
-            imageName: newPicture.filename,
+            imageName: newPicture.fileName,
             imagePath: newPicture.filePath,
             imageSize: newPicture.fileSize,
             imageDescription: "",
@@ -45,6 +44,7 @@ const PicturePart = ({ state, setState }) => {
   };
 
   const imgDescChange = (index, e) => {
+    console.log(state);
     const value = e.target.value;
     setState((prev) => {
       const updatedState = prev.map((part) => {

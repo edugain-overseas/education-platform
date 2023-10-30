@@ -26,6 +26,22 @@ export const addSingleFilePartToLecture = async (lectureId, partData) => {
   return data;
 };
 
+export const addImagesPartToLecture = async (lectureId, partData) => {
+  const { data } = await instance.post(
+    `/lecture/create/images?lecture_id=${lectureId}`,
+    partData
+  );
+  return data;
+};
+
+export const addMultipleFilesPartToLecture = async (lectureId, partData) => {
+  const { data } = await instance.post(
+    `/lecture/create/files?lecture_id=${lectureId}`,
+    partData
+  );
+  return data;
+};
+
 export const getTestByTaskId = async (taskId) => {
   const { data } = await instance.get(`/test/${taskId}`);
   return data;
