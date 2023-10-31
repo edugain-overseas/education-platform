@@ -30,10 +30,6 @@ export const NavBar = () => {
         <GridIcon />
         <span>Courses</span>
       </NavLink>
-      <NavLink to="/task" className={styles.navLink}>
-        <GridIcon />
-        <span>My tasks</span>
-      </NavLink>
       <NavLink to="/register" className={styles.navLink}>
         <GridIcon />
         <span>Register</span>

@@ -84,11 +84,12 @@ const validateSingleFilePart = ({
   return false;
 };
 
-const LectureConstructor = ({ lectureId }) => {
+const LectureConstructor = ({ lectureId, lectureContent }) => {
   const [lectureParts, setLectureParts] = useState([]);
   const isSumbit = useSelector(getIsSubmit);
   const dispatch = useDispatch();
   const { lessonId } = useParams();
+  console.log(lectureContent);
 
   useEffect(() => {
     const handleSumbit = async () => {
@@ -253,6 +254,9 @@ const LectureConstructor = ({ lectureId }) => {
 
   return (
     <div className={styles.lectureConstructorWrapper}>
+      <div className={styles.lectureEditingPartsWrapper}>
+        {/* {lectureContent && lectureContent.map()} */}
+      </div>
       {lectureParts &&
         lectureParts.map((part) =>
           renderLecturePart(part, lectureParts, setLectureParts)

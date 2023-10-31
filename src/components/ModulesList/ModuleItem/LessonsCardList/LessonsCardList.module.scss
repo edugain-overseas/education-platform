@@ -1,6 +1,27 @@
 .lessonsCardList {
-    padding: 10rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10rem;
+  padding: 10rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rem;
+}
+
+.lessonsAddItem {
+  flex-basis: calc(25% - 7.5rem);
+  height: 178rem;
+  box-shadow: 0px 0px 4rem 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2rem;
+  overflow: hidden;
+
+  & button {
+    width: 100%;
+    background: rgba(202, 202, 202, 0.4);
+    color: rgba($color: #000, $alpha: 0.5);
+    height: 100%;
+    font-size: 32rem;
+    line-height: normal;
+  }
+
+  &:hover {
+    border: 1rem solid rgba(0, 0, 0, 0.5);
+  }
 }

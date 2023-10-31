@@ -128,8 +128,10 @@ export default function CourseParticipantPage() {
         key={student.id}
         className={
           isEdit
-            ? `${styles.studentItemBody} ${styles.itemEdit}`
-            : styles.studentItemBody
+            ? `${styles.studentItemBodyFull} ${styles.itemEdit}`
+            : userType === "student"
+            ? styles.studentItemBody
+            : `${styles.studentItemBodyFull} ${styles.studentItemBody}`
         }
       >
         <div className={styles.studentName}>
@@ -142,19 +144,23 @@ export default function CourseParticipantPage() {
         <div>
           {student.last_active ? student.last_active.replaceAll("-", ".") : "-"}
         </div>{" "}
-        <div>67%</div>
-        <div>172 (B)</div>
-        <div>
-          {!Array.isArray(student.participant_comment)
-            ? student.participant_comment
-            : "Non comment"}
-        </div>
-        {isEdit && (
-          <Checkbox
-            onChange={() => handleCheckboxCheck(student.id)}
-            checked={checked.includes(student.id)}
-            className={styles.checkbox}
-          />
+        {userType !== "student" && (
+          <>
+            <div>67%</div>
+            <div>172 (B)</div>
+            <div>
+              {!Array.isArray(student.participant_comment)
+                ? student.participant_comment
+                : "Non comment"}
+            </div>
+            {userType !== "students" && (
+              <Checkbox
+                onChange={() => handleCheckboxCheck(student.id)}
+                checked={checked.includes(student.id)}
+                className={styles.checkbox}
+              />
+            )}
+          </>
         )}
       </li>
     ));
@@ -215,7 +221,7 @@ export default function CourseParticipantPage() {
                 <span>Download</span>
                 <DownloadIcon />
               </button>
-              {isEdit && (
+              {isEdit && userType === "moder" && (
                 <>
                   <button className={styles.addStudentBtn}>
                     <span>Add student</span>
@@ -232,14 +238,26 @@ export default function CourseParticipantPage() {
 
           <div className={styles.studentListWrapper}>
             <ul className={styles.studentsList}>
-              <li className={styles.studentsItemHeader}>
+              <li
+                className={
+                  userType === "student"
+                    ? styles.studentsItemHeader
+                    : `${styles.studentItemBodyFull} ${styles.studentItemBody}`
+                }
+              >
                 <div>Name</div>
                 <div>Email</div>
                 <div>Activity</div>
-                <div>Progress</div>
-                <div>Average rating</div>
-                <div>A comment</div>
+                {userType !== "student" && (
+                  <>
+                    <div>Progress</div>
+                    <div>Average rating</div>
+                    <div>A comment</div>
+                  </>
+                )}
               </li>
+              {students && renderStudents(students)}
+              {students && renderStudents(students)}
               {students && renderStudents(students)}
             </ul>
           </div>

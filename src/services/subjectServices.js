@@ -110,3 +110,8 @@ export const addNewLesson = async (lesson) => {
   const { data } = await instance.post("lesson/create", lesson);
   return data;
 };
+
+export const addNewModule = async (moduleData) => {
+  const { data } = await instance.post("/module/create", moduleData);
+  return data;
+};

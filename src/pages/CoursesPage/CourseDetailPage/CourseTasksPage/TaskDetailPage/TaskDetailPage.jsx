@@ -8,6 +8,9 @@ import { ReactComponent as PrevIcon } from "../../../../../images/icons/prev.svg
 import { ReactComponent as NextIcon } from "../../../../../images/icons/next.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../../../../images/icons/arrow-left.svg";
 import { ReactComponent as QuestionIcon } from "../../../../../images/icons/question.svg";
+import { ReactComponent as SaveTemplateIcon } from "../../../../../images/icons/saveTemplate.svg";
+import { ReactComponent as OpenTemplateIcon } from "../../../../../images/icons/openTemplate.svg";
+import { ReactComponent as CompleteIcon } from "../../../../../images/icons/complete.svg";
 import { useDispatch } from "react-redux";
 import {
   getTestByTaskIdThunk,
@@ -15,6 +18,7 @@ import {
 } from "../../../../../redux/task/taskOperation";
 import { getTasks } from "../../../../../redux/task/taskSelectors";
 import { Empty } from "antd";
+import { getUserType } from "../../../../../redux/user/userSelectors";
 import styles from "./TaskDetailPage.module.scss";
 
 export default function TaskDetailPage() {
@@ -25,6 +29,7 @@ export default function TaskDetailPage() {
   const lessonData = useSelector(getTasks).find(
     (lesson) => lesson.id === lessonId
   );
+  const userType = useSelector(getUserType);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,9 +48,7 @@ export default function TaskDetailPage() {
     if (type && lessonId) {
       switch (type) {
         case "lecture":
-          dispatch(getLectureByTaskIdThunk(lessonId)).then(()=>{
-            
-          });
+          dispatch(getLectureByTaskIdThunk(lessonId)).then(() => {});
           break;
         case "test":
           dispatch(getTestByTaskIdThunk(lessonId));
@@ -98,10 +101,31 @@ export default function TaskDetailPage() {
             <span>Back to task selection</span>
             <ArrowLeftIcon />
           </button>
-          <button className={styles.questionBtn}>
-            <span>Ask the teacher a question</span>
-            <QuestionIcon />
-          </button>
+          {userType === "student" ? (
+            <>
+              <button className={styles.questionBtn}>
+                <span>Ask the teacher a question</span>
+                <QuestionIcon />
+              </button>
+              {type === "lecture" && (
+                <button className={styles.completeBtn}>
+                  <span>Complete</span>
+                  <CompleteIcon />
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <button>
+                <span>Save as template</span>
+                <SaveTemplateIcon />
+              </button>
+              <button className={styles.outlinedBtn}>
+                <span>Open template</span>
+                <OpenTemplateIcon />
+              </button>
+            </>
+          )}
         </div>
       </div>
       {lessonData ? getComponentByType() : <Empty />}

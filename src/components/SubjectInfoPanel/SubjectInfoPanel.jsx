@@ -5,13 +5,19 @@ import { ReactComponent as CheckedIcon } from "../../images/icons/checked.svg";
 // import { useSelector } from "react-redux";
 // import { getUserGroup } from "../../redux/user/userSelectors";
 import { serverName } from "../../constants/server";
+// import { useSelector } from "react-redux";
+// import { getSubjectMainInfo } from "../../redux/subject/subjectSelectors";
 import styles from "./SubjectInfoPanel.module.scss";
+import { useSelector } from "react-redux";
+import { getUserType } from "../../redux/user/userSelectors";
 
 export default function SubjectInfoPanel({ subjectData }) {
   const groupName = 'Med-23-1';
+  const userType = useSelector(getUserType)
   // const groupName = useSelector(getSubjectMainInfo)?.find(
   //   (subject) => subject.id === +id
   // )?.group_id;
+  // console.log(groupName);
 
 
   const handleLinkClick = () => {
@@ -19,7 +25,7 @@ export default function SubjectInfoPanel({ subjectData }) {
   };
 
   return (
-    <div className={styles.mainWrapper}>
+    <div className={userType === 'student' ? styles.mainWrapper : `${styles.mainWrapper} ${styles.mainWrapperBigger}`}>
       <div>
         <div className={styles.imageWrapper}>
           <img

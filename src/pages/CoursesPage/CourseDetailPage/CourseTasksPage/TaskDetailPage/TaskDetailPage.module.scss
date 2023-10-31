@@ -60,11 +60,21 @@
       line-height: normal;
     }
 
-    & svg path {
+    &:first-child svg path {
       fill: rgba(0, 0, 0, 0.5);
     }
   }
+
+  & button.completeBtn {
+    background: #39BA6D;
+    border: none;
+
+    & span {
+      color: #fff;
+    }
+  }
 }
+
 
 h1 {
   color: rgba(0, 0, 0, 0.7);

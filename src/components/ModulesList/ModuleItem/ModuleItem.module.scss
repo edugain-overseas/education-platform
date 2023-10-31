@@ -1,8 +1,8 @@
 .moduleSimestr {
   padding: 16rem 2rem;
   text-align: center;
-  color:  #b3b3b3;
-  font-family: Inter,sans-serif;
+  color: #b3b3b3;
+  font-family: Inter, sans-serif;
   font-size: 16rem;
   font-style: normal;
   font-weight: 500;
@@ -44,5 +44,61 @@
 .antCollapse {
   & div > div {
     padding: 0 !important;
+  }
+}
+
+.addModuleBtn {
+  width: 100%;
+  padding: 12rem;
+  margin-top: 8rem;
+
+  background: rgba(202, 202, 202, 0.4);
+  color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  font-size: 32rem;
+  line-height: normal;
+  border: 1rem solid transparent;
+
+  border-radius: 2rem;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    border: 1rem solid rgba(0, 0, 0, 0.5);
+  }
+}
+
+.dialogTitle {
+  display: block;
+  width: 100%;
+  font-family: Inter, sans-serif;
+  font-size: 18rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: #000;
+  text-align: center;
+}
+
+.addModuleForm {
+  padding-block: 16rem;
+  width: 480rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16rem;
+
+  & input {
+    display: block;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    font-size: 16rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #000;
+    border-bottom: 1rem solid rgba(0, 0, 0, 0.12);
+
+    &::placeholder {
+      color: #d9d9d9;
+    }
   }
 }

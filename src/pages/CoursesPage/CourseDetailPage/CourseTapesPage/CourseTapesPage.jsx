@@ -10,12 +10,14 @@ import { Chat } from "../../../../components/Chat/Chat";
 import ProgressPanel from "../../../../components/ProgressPanel/ProgressPanel";
 import { getSubjectChatData } from "../../../../redux/subjectChats/subjectChatSelectors";
 import styles from "./CourseTapesPage.module.scss";
+import { getUserType } from "../../../../redux/user/userSelectors";
 
 export const TypeContext = createContext(null);
 
 export default function CourseTapesPage() {
   const { id } = useParams();
   const subjectChatData = useSelector(getSubjectChatData);
+  const userType = useSelector(getUserType);
 
   const subjectData = {
     ...useSelector(getSubjectData)?.find((subject) => `${subject.id}` === id),
@@ -35,8 +37,7 @@ export default function CourseTapesPage() {
           chatData={subjectChatData}
         />
       </TypeContext.Provider>
-
-      <ProgressPanel subjectData={subjectData} />
+      {userType === "student" && <ProgressPanel subjectData={subjectData} />}
     </div>
   );
 }

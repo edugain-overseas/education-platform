@@ -6,6 +6,6 @@ export const getSubjectData = (state) => state.subject.subjectsData;
 export const getSubjectsParticipants = (state) =>
   state.subject.subjectsParticipants;
 export const getSubjectIcons = (state) => state.subject.icons;
-export const getSubjectMainInfo = (state) => state.subject.subjectsMainInfo;
+export const getSubjectMainInfo = (state) => state.subject?.subjectsMainInfo;
 export const getSubjectInstructions = (state) =>
   state.subject.subjectsInstructions;

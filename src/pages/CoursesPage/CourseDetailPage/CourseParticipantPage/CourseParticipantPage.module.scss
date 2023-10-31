@@ -330,8 +330,8 @@
   transform: translateY(-50%);
 }
 
-.studentsItemHeader,
-.studentItemBody {
+.studentsItemHeaderFull,
+.studentItemBodyFull {
   & > div:nth-child(1) {
     flex-basis: 408rem;
   }

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addNewLesson,
+  addNewModule,
   createSubjectAbout,
   createSubjectInstructionCategory,
   getAllSubjectsByGroupName,
@@ -244,6 +245,18 @@ export const addNewLessonThunk = createAsyncThunk(
       }
       console.log(response);
       return { subjectId, data: response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addNewModuleThunk = createAsyncThunk(
+  "subject/addModule",
+  async (moduleData, { rejectWithValue }) => {
+    try {
+      const response = await addNewModule(moduleData);
+      return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }

@@ -17,6 +17,7 @@ import {
   addNewLessonThunk,
   createSubjectInstructionCategoryThunk,
   updateSubjectInstructionCategoryThunk,
+  addNewModuleThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -423,6 +424,35 @@ export const subjectSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(addNewLessonThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(addNewModuleThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addNewModuleThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.subjectsData = [
+          ...state.subjectsData.map((subject) => {
+            if (subject.id === payload.subject_id) {
+              subject.subjects_lessons = [
+                ...subject.subjects_lessons,
+                {
+                  module_id: payload.id,
+                  module_name: payload.name,
+                  module_number: payload.number,
+                  module_desc: payload.description,
+                  module_lessons: [],
+                },
+              ];
+            }
+            return subject;
+          }),
+        ];
+      })
+      .addCase(addNewModuleThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

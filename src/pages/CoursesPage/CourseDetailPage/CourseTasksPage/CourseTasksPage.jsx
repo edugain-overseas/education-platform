@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ModulesList from "../../../../components/ModulesList/ModulesList";
 import { ReactComponent as SortIcon } from "../../../../images/icons/sort.svg";
 import { ReactComponent as SearchIcon } from "../../../../images/icons/search.svg";
@@ -6,17 +6,27 @@ import { useSelector } from "react-redux";
 import { getSubjectData } from "../../../../redux/subject/subjectSelectors";
 import { Outlet, useParams } from "react-router-dom";
 import styles from "./CourseTasksPage.module.scss";
+import { getIsSubmit } from "../../../../redux/config/configSelectors";
+import { useDispatch } from "react-redux";
+import { setDefault } from "../../../../redux/config/configSlice";
 
 const CourseTasksPage = () => {
   const { id, lessonId } = useParams();
+  const isSubmit = useSelector(getIsSubmit);
+  const dispatch = useDispatch();
   const subject = useSelector(getSubjectData).find(
     (subject) => `${subject.id}` === id
   );
-  let modules = subject?.subjects_lessons
+  const modules = subject?.subjects_lessons
     ? [...subject?.subjects_lessons].sort(
         (itemA, itemB) => itemA.module_number - itemB.module_number
       )
     : null;
+  useEffect(() => {
+    if (isSubmit) {
+      dispatch(setDefault());
+    }
+  }, [isSubmit, dispatch]);
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>

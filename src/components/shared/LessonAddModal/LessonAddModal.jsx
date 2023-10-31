@@ -13,17 +13,25 @@ import {
   getTeacherSubjects,
 } from "../../../redux/user/userSelectors";
 import { lessonTypes } from "../../../constants/lessonTypes";
-import styles from "./LessonAddModal.module.scss";
 import { useDispatch } from "react-redux";
-import { addNewLessonThunk } from "../../../redux/subject/subjectOperations";
+import {
+  addNewLessonThunk,
+  getSubjectTapesByIdThunk,
+} from "../../../redux/subject/subjectOperations";
 import { getTeacherScheduleThunk } from "../../../redux/schedule/scheduleOperations";
+import styles from "./LessonAddModal.module.scss";
 
 dayjs.extend(updateLocale);
 dayjs.updateLocale("en", {
   weekStart: 1,
 });
 
-export default function ScheduleModal({ isOpen, onClose, day, disabledSlots }) {
+export default function ScheduleModal({
+  isOpen,
+  onClose,
+  day = "",
+  disabledSlots = [],
+}) {
   const [date, setDate] = useState(null);
   const [subject, setSubject] = useState(null);
   const [time, setTime] = useState(null);
@@ -188,6 +196,8 @@ export default function ScheduleModal({ isOpen, onClose, day, disabledSlots }) {
       addNewLessonThunk({ subjectId: subject.value, data: newLesson })
     ).then(() => {
       dispatch(getTeacherScheduleThunk(teacherId));
+      dispatch(getSubjectTapesByIdThunk(subject.value));
+      onClose();
     });
     console.log(newLesson);
   };
