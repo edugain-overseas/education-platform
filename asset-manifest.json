@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/education-platform/static/css/main.c6c2e46b.css",
-    "main.js": "/education-platform/static/js/main.2f8f2b41.js",
+    "main.css": "/education-platform/static/css/main.54349d42.css",
+    "main.js": "/education-platform/static/js/main.06d1e50b.js",
     "static/js/850.9c78ccfc.chunk.js": "/education-platform/static/js/850.9c78ccfc.chunk.js",
     "static/js/353.d80e8819.chunk.js": "/education-platform/static/js/353.d80e8819.chunk.js",
     "static/media/login-bg.png": "/education-platform/static/media/login-bg.4363596cec990c8af020.png",
@@ -81,13 +81,13 @@
     "static/media/italic.svg": "/education-platform/static/media/italic.82fde2a8fb5d2706612763f78b3061e9.svg",
     "static/media/fileFilled.svg": "/education-platform/static/media/fileFilled.1ffe0135508bd37099d735441daf3e44.svg",
     "static/media/feedback.svg": "/education-platform/static/media/feedback.04619657e92de14b870f1572f8bb1e16.svg",
-    "main.c6c2e46b.css.map": "/education-platform/static/css/main.c6c2e46b.css.map",
-    "main.2f8f2b41.js.map": "/education-platform/static/js/main.2f8f2b41.js.map",
+    "main.54349d42.css.map": "/education-platform/static/css/main.54349d42.css.map",
+    "main.06d1e50b.js.map": "/education-platform/static/js/main.06d1e50b.js.map",
     "850.9c78ccfc.chunk.js.map": "/education-platform/static/js/850.9c78ccfc.chunk.js.map",
     "353.d80e8819.chunk.js.map": "/education-platform/static/js/353.d80e8819.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c6c2e46b.css",
-    "static/js/main.2f8f2b41.js"
+    "static/css/main.54349d42.css",
+    "static/js/main.06d1e50b.js"
   ]
 }
