@@ -276,6 +276,7 @@ export default function ScheduleModal({
               canEdit={true}
               error={validate && !moduleTitle}
               disabled={!moduleTitleOptions ? true : false}
+              subjectId={subject?.value}
             />
           </div>
           <div className={styles.formRow}>

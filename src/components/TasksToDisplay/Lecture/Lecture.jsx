@@ -101,7 +101,6 @@ export default function Lecture({ lessonData }) {
                 open={fullscreen}
                 afterOpenChange={handleOpenModal}
                 footer={null}
-                closeIcon={null}
                 mask={false}
                 width="100vw"
                 wrapClassName="pdfReader"

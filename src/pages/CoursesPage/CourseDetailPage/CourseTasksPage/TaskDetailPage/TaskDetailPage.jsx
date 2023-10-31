@@ -19,6 +19,7 @@ import {
 import { getTasks } from "../../../../../redux/task/taskSelectors";
 import { Empty } from "antd";
 import { getUserType } from "../../../../../redux/user/userSelectors";
+import StudentTest from "./StudentTest/StudentTest";
 import styles from "./TaskDetailPage.module.scss";
 
 export default function TaskDetailPage() {
@@ -64,7 +65,11 @@ export default function TaskDetailPage() {
       case "lecture":
         return <Lecture lessonData={lessonData} />;
       case "test":
-        return <Test lessonData={lessonData} />;
+        return userType === "student" ? (
+          <StudentTest lessonData={lessonData} />
+        ) : (
+          <Test lessonData={lessonData} />
+        );
       default:
         break;
     }

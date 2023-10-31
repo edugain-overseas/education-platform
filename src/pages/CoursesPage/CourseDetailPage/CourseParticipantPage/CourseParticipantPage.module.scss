@@ -97,7 +97,7 @@
   }
 }
 
-.itemEdit div:nth-last-child(2)::after {
+.studentItemBody div:nth-last-child(2)::after {
   content: none;
 }
 
@@ -301,7 +301,8 @@
       line-height: normal;
     }
 
-    & path, & rect {
+    & path,
+    & rect {
       fill: #fff;
       fill-opacity: 1;
       width: 16rem;
@@ -318,7 +319,7 @@
   }
 
   & .removeStudentBtn {
-    background: #BA3939;
+    background: #ba3939;
   }
 }
 

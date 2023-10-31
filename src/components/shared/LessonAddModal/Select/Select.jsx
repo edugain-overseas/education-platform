@@ -4,6 +4,10 @@ import { ReactComponent as EditIcon } from "../../../../images/icons/edit.svg";
 import { ReactComponent as SubmitIcon } from "../../../../images/icons/check.svg";
 import { ReactComponent as CancelIcon } from "../../../../images/icons/cross.svg";
 import "./Select.css";
+import { useDispatch } from "react-redux";
+import { addNewModuleThunk } from "../../../../redux/subject/subjectOperations";
+import { useSelector } from "react-redux";
+import { getSubjectData } from "../../../../redux/subject/subjectSelectors";
 
 export default function Select({
   type,
@@ -14,10 +18,17 @@ export default function Select({
   error = false,
   disabled = false,
   disabledSlots = null,
+  subjectId = null,
 }) {
   const [newValue, setNewValue] = useState("");
   const [isEdit, setEdit] = useState(false);
+  const [created, setCreated] = useState(false);
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const subjectModules = useSelector(getSubjectData).find(
+    (subject) => +subject.id === +subjectId
+  )?.subjects_lessons;
 
   const getIsDisabled = (option) => {
     if (
@@ -35,6 +46,22 @@ export default function Select({
   };
 
   const handleSave = () => {
+    if (type === "module title") {
+      console.log(subjectId);
+      if (newValue === "") {
+        return;
+      }
+      const newModule = {
+        number: subjectModules.length + 1,
+        name: newValue,
+        subject_id: subjectId,
+      };
+      dispatch(addNewModuleThunk(newModule)).then(({ payload }) => {
+        onChange({ value: payload.id, label: payload.name });
+        setCreated(true);
+      });
+      setNewValue("");
+    }
     setEdit(false);
   };
 
@@ -53,15 +80,19 @@ export default function Select({
           {option.label}
         </Checkbox>
       ))}
-      {canEdit && (
+      {canEdit && !created && (
         <Checkbox
           key="new value"
           value={newValue}
           checked={state?.value === newValue}
           disabled={newValue === "" || isEdit}
-          onChange={() => {
-            onChange({ value: newValue, label: newValue });
-          }}
+          onChange={
+            type === "module title"
+              ? () => {}
+              : () => {
+                  onChange({ value: newValue, label: newValue });
+                }
+          }
         >
           <div className="inputWrapper">
             {isEdit ? (

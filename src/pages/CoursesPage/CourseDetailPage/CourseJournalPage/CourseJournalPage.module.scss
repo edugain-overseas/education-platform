@@ -1,5 +1,6 @@
 .pageWrapper {
   height: 100%;
+  width: 100%;
   padding-top: 2rem;
   display: flex;
   gap: 16rem;
@@ -9,6 +10,7 @@
   padding-left: 28rem;
   padding-bottom: 12rem;
   flex-grow: 1;
+  max-width: 100%;
 }
 
 .journalTitile {
@@ -39,12 +41,12 @@
   padding: 20rem;
   padding-right: 0;
   border-radius: 2rem;
-  background:  #fff;
+  background: #fff;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+  overflow-y: scroll;
 }
 
 .journalBody {
-    height: 100%;
-    overflow-y: scroll;
-    padding-right: 20rem;
+  height: 100%;
+  padding-right: 20rem;
 }

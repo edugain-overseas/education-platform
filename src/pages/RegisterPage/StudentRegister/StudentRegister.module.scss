@@ -1,11 +1,38 @@
-.journalBody {
+.studentRegisterWrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.registerTitile {
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 20rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 6rem;
+  text-transform: uppercase;
+  padding-inline: 24rem;
+  margin-bottom: 24rem;
+}
+
+.journalWrapper {
+  padding-inline: 16rem;
+  padding-right: 16rem;
+  height: calc(100% - 48rem);
   overflow-x: scroll;
+}
+
+.journalBody {
+  width: fit-content;
   & > li {
     display: flex;
     padding-block: 5rem;
+    background: #fff;
     position: relative;
+
     & > div {
-      height: 24rem;
+      // height: 24rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -35,24 +62,17 @@
       }
     }
 
-    & div:nth-child(1) {
-      width: 120rem;
+    & > div:nth-child(1) {
+      width: 336rem;
     }
-    & div:nth-child(2) {
-      flex-grow: 1;
-    }
-    & div:nth-child(3) {
+    & > div {
       width: 160rem;
-    }
-    & div:nth-child(4) {
-      width: 100rem;
     }
   }
 }
 
 li.journalHeader {
   border-radius: 4rem;
-  background: #fff;
   box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
 
   position: sticky;
@@ -81,7 +101,7 @@ li.journalHeader {
   & div.theme {
     justify-content: flex-start;
   }
-  & div::before {
+  & > div::before {
     content: "";
     position: absolute;
     bottom: -5rem;
@@ -90,5 +110,16 @@ li.journalHeader {
     height: 1rem;
     border-radius: 4rem;
     background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+  }
+
+  & .dayLessonsWrapper {
+    flex-direction: column;
+  }
+
+  & .lessonWrapper {
+    & span:nth-child(2) {
+      color: #000;
+    }
   }
 }

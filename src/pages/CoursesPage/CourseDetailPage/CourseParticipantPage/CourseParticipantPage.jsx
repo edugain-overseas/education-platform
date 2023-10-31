@@ -128,7 +128,7 @@ export default function CourseParticipantPage() {
         key={student.id}
         className={
           isEdit
-            ? `${styles.studentItemBodyFull} ${styles.itemEdit}`
+            ? `${styles.studentItemBodyFull} ${styles.itemEdit} ${styles.studentItemBody}`
             : userType === "student"
             ? styles.studentItemBody
             : `${styles.studentItemBodyFull} ${styles.studentItemBody}`
@@ -153,13 +153,11 @@ export default function CourseParticipantPage() {
                 ? student.participant_comment
                 : "Non comment"}
             </div>
-            {userType !== "students" && (
-              <Checkbox
-                onChange={() => handleCheckboxCheck(student.id)}
-                checked={checked.includes(student.id)}
-                className={styles.checkbox}
-              />
-            )}
+            <Checkbox
+              onChange={() => handleCheckboxCheck(student.id)}
+              checked={checked.includes(student.id)}
+              className={styles.checkbox}
+            />
           </>
         )}
       </li>
@@ -242,7 +240,7 @@ export default function CourseParticipantPage() {
                 className={
                   userType === "student"
                     ? styles.studentsItemHeader
-                    : `${styles.studentItemBodyFull} ${styles.studentItemBody}`
+                    : `${styles.studentItemBodyFull} ${styles.studentsItemHeader}`
                 }
               >
                 <div>Name</div>

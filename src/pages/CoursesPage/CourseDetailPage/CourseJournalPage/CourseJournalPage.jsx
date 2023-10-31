@@ -11,9 +11,11 @@ import {
   sortLessonsByScore,
   sortLessonsByType,
 } from "../../../../helpers/sortLessons";
+import { getUserType } from "../../../../redux/user/userSelectors";
 import ProgressPanel from "../../../../components/ProgressPanel/ProgressPanel";
 import StudentsJounal from "./StudentsJounal/StudentsJounal";
 import styles from "./CourseJournalPage.module.scss";
+import TeachersJournal from "./TeachersJournal/TeachersJournal";
 
 const generateRandomScore = () =>
   Math.floor(Math.random() * (200 - 100 + 1)) + 100;
@@ -24,6 +26,8 @@ const CourseJournalPage = () => {
   const [isSortedByType, setIsSortedByType] = useState(false);
   const [isSortedByScore, setIsSortedByScore] = useState(false);
   const { id: subjectId } = useParams();
+
+  const userType = useSelector(getUserType);
 
   const subjectData = useSelector(getSubjectData)?.find(
     ({ id }) => id === +subjectId
@@ -90,25 +94,35 @@ const CourseJournalPage = () => {
         )}
         <div className={styles.journalBodyWrapper}>
           <div className={styles.journalBody}>
-            {lessonsData.length !== 0 ? (
-              <StudentsJounal
-                lessonsData={lessonsData}
-                isSortedByDate={isSortedByDate}
-                sortByDate={sortByDate}
-                isSortedByType={isSortedByType}
-                sortByType={sortByType}
-                isSortedByScore={isSortedByScore}
-                sortByScore={sortByScore}
-              />
+            {userType === "student" ? (
+              lessonsData.length !== 0 ? (
+                <StudentsJounal
+                  lessonsData={lessonsData}
+                  isSortedByDate={isSortedByDate}
+                  sortByDate={sortByDate}
+                  isSortedByType={isSortedByType}
+                  sortByType={sortByType}
+                  isSortedByScore={isSortedByScore}
+                  sortByScore={sortByScore}
+                />
+              ) : (
+                <Empty />
+              )
             ) : (
-              <Empty />
+              <TeachersJournal
+                lessonsData={[...lessonsData].sort(
+                  (itemA, itemB) => itemA.lesson_number - itemB.lesson_number
+                )}
+              />
             )}
           </div>
         </div>
       </div>
-      <div className={styles.progressBar}>
-        {subjectData && <ProgressPanel subjectData={subjectData} />}
-      </div>
+      {userType === "student" && (
+        <div className={styles.progressBar}>
+          {subjectData && <ProgressPanel subjectData={subjectData} />}
+        </div>
+      )}
     </div>
   );
 };

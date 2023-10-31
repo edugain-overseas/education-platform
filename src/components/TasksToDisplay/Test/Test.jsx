@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 import { ReactComponent as EditIcon } from "../../../images/icons/edit.svg";
+import { ReactComponent as CompleteIcon } from "../../../images/icons/complete.svg";
 import { Empty } from "antd";
 import QuestionTest from "./Questions/QuestionTest/QuestionTest";
 import { shuffleArray } from "../../../helpers/shuffleArray";
-import styles from "./Test.module.scss";
 import QuestionMatching from "./Questions/QuestionMatching/QuestionMatching";
+import QuestionMultipleChoice from "./Questions/QuestionMultipleChoice/QuestionMultipleChoice";
+import QuestionPhotoAnswers from "./Questions/QuestionPhotoAnswers/QuestionPhotoAnswers";
+import QuestionPhoto from "./Questions/QuestionPhoto/QuestionPhoto";
+import styles from "./Test.module.scss";
 
 export default function Test({ lessonData }) {
   const [testTitle, setTestTitle] = useState("");
@@ -17,6 +21,10 @@ export default function Test({ lessonData }) {
   const testContent = lessonData?.data?.testQuestions || null;
 
   const { testId } = lessonData?.data;
+
+  const handleSubmitTest = () => {
+    console.log("submit test");
+  };
 
   useEffect(() => {
     if (isEdit) {
@@ -29,7 +37,6 @@ export default function Test({ lessonData }) {
     [...testContent]
       .sort((itemA, itemB) => itemA.questionNumber - itemB.questionNumber)
       .map((question) => {
-        console.log(question);
         const {
           questionId: id,
           questionNumber: number,
@@ -41,7 +48,6 @@ export default function Test({ lessonData }) {
 
         switch (type) {
           case "test":
-            console.log("test");
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -49,13 +55,12 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/0`}</span>
+                  <span className={styles.score}>{`${score}/135`}</span>
                 </div>
                 <QuestionTest answers={shuffleArray([...answers])} />
               </div>
             );
-          case "matching":
-            console.log(answers);
+          case "multiple_choice":
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -63,7 +68,46 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/80`}</span>
+                  <span className={styles.score}>{`${score}/135`}</span>
+                </div>
+                <QuestionMultipleChoice answers={shuffleArray([...answers])} />
+              </div>
+            );
+          case "answer_with_photo":
+            return (
+              <div key={id} className={styles.questionWrapper}>
+                <div className={styles.questionHeader}>
+                  <p className={styles.text}>
+                    <span>{`${number})`}</span>
+                    {text}
+                  </p>
+                  <span className={styles.score}>{`${score}/135`}</span>
+                </div>
+                <QuestionPhotoAnswers answers={shuffleArray([...answers])} />
+              </div>
+            );
+          case "question_with_photo":
+            return (
+              <div key={id} className={styles.questionWrapper}>
+                <div className={styles.questionHeader}>
+                  <p className={styles.text}>
+                    <span>{`${number})`}</span>
+                    {text}
+                  </p>
+                  <span className={styles.score}>{`${score}/135`}</span>
+                </div>
+                <QuestionPhoto answers={shuffleArray([...answers])} />
+              </div>
+            );
+          case "matching":
+            return (
+              <div key={id} className={styles.questionWrapper}>
+                <div className={styles.questionHeader}>
+                  <p className={styles.text}>
+                    <span>{`${number})`}</span>
+                    {text}
+                  </p>
+                  <span className={styles.score}>{`${score}/135`}</span>
                 </div>
                 <QuestionMatching
                   answers={{
@@ -71,6 +115,19 @@ export default function Test({ lessonData }) {
                     right: shuffleArray([...answers.right]),
                   }}
                 />
+              </div>
+            );
+          case "boolean":
+            return (
+              <div key={id} className={styles.questionWrapper}>
+                <div className={styles.questionHeader}>
+                  <p className={styles.text}>
+                    <span>{`${number})`}</span>
+                    {text}
+                  </p>
+                  <span className={styles.score}>{`${score}/135`}</span>
+                </div>
+                <QuestionTest answers={shuffleArray([...answers])} />
               </div>
             );
           default:
@@ -132,6 +189,12 @@ export default function Test({ lessonData }) {
         ) : (
           <Empty />
         )}
+        <div className={styles.submitTestBtnWrapper}>
+          <button className={styles.completeBtn} onClick={handleSubmitTest}>
+            <span>Complete</span>
+            <CompleteIcon />
+          </button>
+        </div>
       </div>
     </div>
   );

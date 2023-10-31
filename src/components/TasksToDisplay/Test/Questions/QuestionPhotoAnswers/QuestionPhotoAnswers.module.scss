@@ -1,0 +1,35 @@
+.answersWrapper {
+  padding-block: 16rem;
+  display: flex;
+  justify-content: center;
+  gap: 56rem;
+
+  & .imageCard {
+    width: 290rem;
+    border-radius: 4rem;
+    box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
+
+    & img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+  }
+
+  & .option {
+    padding: 10rem;
+    display: flex;
+    align-items: center;
+    gap: 12rem;
+
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  & .optionChecked {
+    color: #4171cd;
+  }
+}

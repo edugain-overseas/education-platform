@@ -1,0 +1,153 @@
+.journalBody {
+  position: relative;
+  & > li {
+    display: flex;
+    width: fit-content;
+    padding-block: 5rem;
+    position: relative;
+    & > div {
+      height: 24rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding-inline: 8rem;
+      //   gap: 4rem;
+
+      &:not(:first-child)::after {
+        content: "";
+        width: 1rem;
+        height: 100%;
+        position: absolute;
+        left: -0.5rem;
+        border-radius: 3rem;
+        background: rgba(0, 0, 0, 0.5);
+      }
+      &:nth-child(2)::before {
+        content: "";
+        width: 1rem;
+        height: 100%;
+        position: absolute;
+        right: -0.5rem;
+        border-radius: 3rem;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      & span {
+        color: rgba(0, 0, 0, 0.5);
+        text-align: center;
+        font-family: Inter, sans-serif;
+        font-size: 14rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+      }
+    }
+
+    & div:nth-child(1) {
+      width: 116rem;
+    }
+    & div:nth-child(2) {
+      width: 364rem;
+    }
+  }
+}
+
+li.journalHeader {
+  border-radius: 4px;
+  background: #f4f4f4;
+  box-shadow: 0px 0px 3.70673rem 0px rgba(0, 0, 0, 0.12);
+
+  position: sticky;
+  top: -20rem;
+  z-index: 3;
+
+  & div:nth-child(1) {
+    position: sticky;
+    left: -20rem;
+    z-index: 3;
+    background: #f4f4f4;
+  }
+  & div:nth-child(2) {
+    position: sticky;
+    left: 96rem;
+    z-index: 3;
+    background: #f4f4f4;
+  }
+
+  & div {
+    height: 64rem;
+  }
+  & div.lesson {
+    min-width: 152rem;
+    flex-direction: column;
+    justify-content: initial;
+
+    &.module {
+      border-radius: 4px;
+      background: var(--4171-cd, #4171cd);
+      margin-inline: 8rem;
+      box-shadow: 0px 0px 3.70673px 0px rgba(0, 0, 0, 0.12);
+      & span {
+        color: #fff;
+      }
+      &::after {
+        left: -7.5rem;
+      }
+    }
+
+    & span {
+      height: 32rem;
+      display: flex;
+      align-items: center;
+      position: relative;
+      &:first-child::after {
+        content: "";
+        width: 100%;
+        height: 1rem;
+        position: absolute;
+        bottom: -0.5rem;
+        border-radius: 3rem;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+
+.journalBodyItem {
+  & div.lesson {
+    min-width: 152rem;
+    flex-direction: column;
+    justify-content: initial;
+    justify-content: center;
+
+    &.module {
+      margin-inline: 8rem;
+      background: #f4f4f4;
+
+      &::after {
+        left: -7.5rem;
+      }
+    }
+
+    & span {
+      //   height: 32rem;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+  }
+
+  & div:nth-child(1) {
+    position: sticky;
+    left: -20rem;
+    z-index: 2;
+    background: #fff;
+  }
+  & div:nth-child(2) {
+    position: sticky;
+    left: 96rem;
+    z-index: 2;
+    background: #fff;
+  }
+}

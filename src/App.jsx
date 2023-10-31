@@ -43,6 +43,7 @@ import InstructionContent from "./pages/CoursesPage/CourseDetailPage/CourseIntru
 import ClassRoomNotification from "./pages/ClassRoomNotificationPage/ClassRoomNotification";
 import { getSubjectTapesByIdThunk } from "./redux/subject/subjectOperations";
 import CourseJournalPage from "./pages/CoursesPage/CourseDetailPage/CourseJournalPage/CourseJournalPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
 export const WebsocketContext = createContext(null);
 export const WebsocketsContext = createContext(null);
@@ -160,7 +161,7 @@ function App() {
               </Route>
             </Route>
           </Route>
-          <Route path="register" element={<div>Register page</div>} />
+          <Route path="register" element={<RegisterPage />} />
           <Route
             path="class-rooms-notification"
             element={<ClassRoomNotification />}

@@ -1,0 +1,38 @@
+.questionBody {
+  display: flex;
+  gap: 40rem;
+  padding-block: 16rem;
+
+  & .imageWrapper {
+    width: 360rem;
+
+    & img {
+      object-fit: cover;
+      height: 100%;
+      aspect-ratio: 16/9;
+    }
+  }
+}
+
+.answersWrapper {
+  padding-block: 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+
+  & .option {
+    display: flex;
+    align-items: center;
+    gap: 12rem;
+
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  & .optionChecked {
+    color: #4171cd;
+  }
+}
