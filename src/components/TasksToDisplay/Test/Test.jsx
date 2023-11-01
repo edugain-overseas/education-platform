@@ -5,25 +5,47 @@ import { ReactComponent as EditIcon } from "../../../images/icons/edit.svg";
 import { ReactComponent as CompleteIcon } from "../../../images/icons/complete.svg";
 import { Empty } from "antd";
 import QuestionTest from "./Questions/QuestionTest/QuestionTest";
-import { shuffleArray } from "../../../helpers/shuffleArray";
+// import { shuffleArray } from "../../../helpers/shuffleArray";
 import QuestionMatching from "./Questions/QuestionMatching/QuestionMatching";
 import QuestionMultipleChoice from "./Questions/QuestionMultipleChoice/QuestionMultipleChoice";
 import QuestionPhotoAnswers from "./Questions/QuestionPhotoAnswers/QuestionPhotoAnswers";
 import QuestionPhoto from "./Questions/QuestionPhoto/QuestionPhoto";
+import { getUserType } from "../../../redux/user/userSelectors";
+import { getUserInfo } from "../../../redux/user/userSelectors";
+import { instance } from "../../../services/instance";
 import styles from "./Test.module.scss";
 
 export default function Test({ lessonData }) {
   const [testTitle, setTestTitle] = useState("");
   const [testDesc, setTestDesc] = useState("");
   const [isTitleEdit, setIsTitleEdit] = useState(false);
+  const [studentAnswers, setStudentAnswers] = useState([]);
+  const [result, setResult] = useState(null);
   const isEdit = useSelector(getIsEdit);
+  const userType = useSelector(getUserType);
+  const studentId = useSelector(getUserInfo)?.student_id;
 
   const testContent = lessonData?.data?.testQuestions || null;
 
   const { testId } = lessonData?.data;
 
-  const handleSubmitTest = () => {
-    console.log("submit test");
+  const handleSubmitTest = async () => {
+    const studentTestData = {
+      studentId,
+      testId,
+      studentAnswers,
+    };
+    console.log(studentTestData);
+    try {
+      const { data } = await instance.post(
+        "/student-test/create",
+        studentTestData
+      );
+      setResult(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -32,6 +54,63 @@ export default function Test({ lessonData }) {
       setTestDesc(lessonData?.data?.lessonDescription);
     }
   }, [isEdit, lessonData]);
+
+  const setSingleAnswerState = (id, value) => {
+    setStudentAnswers((prev) => {
+      const updatedState = prev.map((question) => {
+        if (question.questionId === id) {
+          question.answerId = value;
+        }
+        return question;
+      });
+      return updatedState;
+    });
+  };
+
+  const setMultipleAnswersState = (id, value) => {
+    setStudentAnswers((prev) => {
+      const updatedState = prev.map((question) => {
+        if (question.questionId === id) {
+          if (question.answersIds.includes(value)) {
+            question.answersIds = question.answerIds.filter((v) => v !== value);
+          } else {
+            question.answersIds.push(value);
+          }
+        }
+        return question;
+      });
+      return updatedState;
+    });
+  };
+
+  const setMatchingState = (id, leftOptionId, value) => {
+    setStudentAnswers((prev) => {
+      const updatedState = prev.map((question) => {
+        if (question.questionId === id) {
+          if (
+            question.matching.find(
+              ({ leftOptionId: leftId }) => leftId === leftOptionId
+            )
+          ) {
+            question.matching.map((i) => {
+              if (i.leftOptionId === leftOptionId) {
+                i.rightOptionId = value;
+              }
+              return i;
+            });
+          } else {
+            question.matching.push({
+              leftOptionId: leftOptionId,
+              rightOptionId: value,
+            });
+          }
+          console.log(leftOptionId, value);
+        }
+        return question;
+      });
+      return updatedState;
+    });
+  };
 
   const renderTestContent = () =>
     [...testContent]
@@ -44,10 +123,21 @@ export default function Test({ lessonData }) {
           questionText: text,
           questionType: type,
           questionAnswers: answers,
+          imagePath,
         } = question;
 
         switch (type) {
           case "test":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, answerId: 0 },
+              ]);
+            }
+            const testState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.answerId;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -55,12 +145,28 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
-                <QuestionTest answers={shuffleArray([...answers])} />
+                <QuestionTest
+                  // answers={shuffleArray([...answers])}
+                  answers={answers}
+                  setState={setSingleAnswerState}
+                  state={testState}
+                  id={id}
+                />
               </div>
             );
           case "multiple_choice":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, answersIds: [] },
+              ]);
+            }
+            const multipleChoiseState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.answersIds;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -68,12 +174,28 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
-                <QuestionMultipleChoice answers={shuffleArray([...answers])} />
+                <QuestionMultipleChoice
+                  // answers={shuffleArray([...answers])}
+                  answers={answers}
+                  state={multipleChoiseState}
+                  setState={setMultipleAnswersState}
+                  id={id}
+                />
               </div>
             );
           case "answer_with_photo":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, answerId: 0 },
+              ]);
+            }
+            const photoAnswersState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.answerId;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -81,12 +203,28 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
-                <QuestionPhotoAnswers answers={shuffleArray([...answers])} />
+                <QuestionPhotoAnswers
+                  // answers={shuffleArray([...answers])}
+                  answers={answers}
+                  state={photoAnswersState}
+                  setState={setSingleAnswerState}
+                  id={id}
+                />
               </div>
             );
           case "question_with_photo":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, answerId: 0 },
+              ]);
+            }
+            const photoState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.answerId;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -94,12 +232,29 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
-                <QuestionPhoto answers={shuffleArray([...answers])} />
+                <QuestionPhoto
+                  // answers={shuffleArray([...answers])}
+                  answers={answers}
+                  state={photoState}
+                  setState={setSingleAnswerState}
+                  id={id}
+                  imagePath={imagePath}
+                />
               </div>
             );
           case "matching":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, matching: [] },
+              ]);
+            }
+            const matchingState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.matching;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -107,17 +262,32 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
                 <QuestionMatching
                   answers={{
-                    left: shuffleArray([...answers.left]),
-                    right: shuffleArray([...answers.right]),
+                    // left: shuffleArray([...answers.left]),
+                    // right: shuffleArray([...answers.right]),
+                    left: answers.left,
+                    right: answers.right,
                   }}
+                  state={matchingState}
+                  setState={setMatchingState}
+                  id={id}
                 />
               </div>
             );
           case "boolean":
+            if (studentAnswers.find(({ questionId }) => questionId === id)) {
+            } else {
+              setStudentAnswers((prev) => [
+                ...prev,
+                { questionId: id, questionType: type, answerId: 0 },
+              ]);
+            }
+            const booleanState = studentAnswers.find(
+              ({ questionId }) => questionId === id
+            )?.answerId;
             return (
               <div key={id} className={styles.questionWrapper}>
                 <div className={styles.questionHeader}>
@@ -125,9 +295,15 @@ export default function Test({ lessonData }) {
                     <span>{`${number})`}</span>
                     {text}
                   </p>
-                  <span className={styles.score}>{`${score}/135`}</span>
+                  <span className={styles.score}>{`${score}/200`}</span>
                 </div>
-                <QuestionTest answers={shuffleArray([...answers])} />
+                <QuestionTest
+                  answers={answers}
+                  // answers={shuffleArray([...answers])}
+                  state={booleanState}
+                  setState={setSingleAnswerState}
+                  id={id}
+                />
               </div>
             );
           default:
@@ -189,12 +365,16 @@ export default function Test({ lessonData }) {
         ) : (
           <Empty />
         )}
-        <div className={styles.submitTestBtnWrapper}>
-          <button className={styles.completeBtn} onClick={handleSubmitTest}>
-            <span>Complete</span>
-            <CompleteIcon />
-          </button>
-        </div>
+        {userType === "student" && result ? (
+          <h3>{result.message}</h3>
+        ) : (
+          <div className={styles.submitTestBtnWrapper}>
+            <button className={styles.completeBtn} onClick={handleSubmitTest}>
+              <span>Complete</span>
+              <CompleteIcon />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

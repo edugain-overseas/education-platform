@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { getLetterVatiantsByIndex } from "../../../../../helpers/getLetterVatiantsByIndex";
 import { Image } from "antd";
 import { serverName } from "../../../../../constants/server";
 import noImage from "../../../../../images/noImage.jpeg";
 import styles from "./QuestionPhotoAnswers.module.scss";
 
-const QuestionPhotoAnswers = ({ answers }) => {
-  const [value, setValue] = useState("");
-
+const QuestionPhotoAnswers = ({ answers, state, setState, id }) => {
   const onRadioInputChange = (e) => {
-    const value = e.target.value;
-    setValue(value);
+    const value = +e.target.value;
+    setState(id, value);
   };
 
   const renderAnswers = () => {
@@ -21,14 +19,10 @@ const QuestionPhotoAnswers = ({ answers }) => {
     return answers.map(({ answerId, answerText, imagePath }, index) => {
       return (
         <div key={answerId} className={styles.imageCard}>
-          <Image
-            src={`${serverName}${imagePath}`}
-            // fallback="../../../../../images/noImage.jpeg"
-            fallback={noImage}
-          />
+          <Image src={`${serverName}${imagePath}`} fallback={noImage} />
           <label
             className={
-              +value === answerId
+              state === answerId
                 ? `${styles.option} ${styles.optionChecked}`
                 : styles.option
             }
@@ -37,7 +31,7 @@ const QuestionPhotoAnswers = ({ answers }) => {
               type="radio"
               name={`answerText`}
               value={answerId}
-              checked={+value === answerId}
+              checked={state === answerId}
               onChange={onRadioInputChange}
             />
             {getLetterVatiantsByIndex(index)} {answerText}

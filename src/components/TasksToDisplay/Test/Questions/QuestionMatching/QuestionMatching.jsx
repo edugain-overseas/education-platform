@@ -3,12 +3,12 @@ import styles from "./QuestionMatching.module.scss";
 import { getLetterVatiantsByIndex } from "../../../../../helpers/getLetterVatiantsByIndex";
 import { Select } from "antd";
 
-const QuestionMatching = ({ answers }) => {
+const QuestionMatching = ({ answers, setState, id }) => {
   const leftOptions = answers?.left || [];
   const rightOptions = answers?.right || [];
 
   const options = rightOptions.map(({ id }, index) => ({
-    label: (<span>{getLetterVatiantsByIndex(index)}</span>),
+    label: <span>{getLetterVatiantsByIndex(index)}</span>,
     value: id,
   }));
 
@@ -37,10 +37,14 @@ const QuestionMatching = ({ answers }) => {
       <div className={styles.selectOptionsWrapper}>
         <span className={styles.matchPointer}>Answer options:</span>
         <ul>
-          {leftOptions.map(({ id }, index) => (
-            <li key={id}>
+          {leftOptions.map(({ id: leftOptionId }, index) => (
+            <li key={leftOptionId}>
               <span>{`${index + 1}) = `}</span>
-              <Select options={options} bordered={false}/>
+              <Select
+                options={options}
+                bordered={false}
+                onChange={(value) => setState(id, leftOptionId, +value)}
+              />
             </li>
           ))}
         </ul>

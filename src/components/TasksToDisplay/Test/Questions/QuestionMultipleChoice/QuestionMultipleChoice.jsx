@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { getLetterVatiantsByIndex } from "../../../../../helpers/getLetterVatiantsByIndex";
 import styles from "./QuestionMultipleChoice.module.scss";
 
-const QuestionMultipleChoice = ({ answers }) => {
-  const [values, setValues] = useState([]);
-
+const QuestionMultipleChoice = ({ answers, state, setState, id }) => {
   const onCheckboxInputChange = (e) => {
     const value = +e.target.value;
-    setValues((prev) =>
-      prev.includes(value)
-        ? prev.filter((selectedValue) => selectedValue !== value)
-        : [...prev, value]
-    );
+    setState(id, value);
   };
 
   const renderAnswers = () => {
@@ -23,7 +17,7 @@ const QuestionMultipleChoice = ({ answers }) => {
       <label
         key={answerId}
         className={
-          values.includes(answerId)
+          state.includes(answerId)
             ? `${styles.option} ${styles.optionChecked}`
             : styles.option
         }
@@ -32,7 +26,7 @@ const QuestionMultipleChoice = ({ answers }) => {
           type="checkbox"
           name={`answerText`}
           value={answerId}
-          checked={values.includes(answerId)}
+          checked={state.includes(answerId)}
           onChange={onCheckboxInputChange}
         />
         {getLetterVatiantsByIndex(index)} {answerText}

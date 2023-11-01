@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image } from "antd";
 import { getLetterVatiantsByIndex } from "../../../../../helpers/getLetterVatiantsByIndex";
 import noImage from "../../../../../images/noImage.jpeg";
+import { serverName } from "../../../../../constants/server";
 import styles from "./QuestionPhoto.module.scss";
 
-const QuestionPhoto = ({ answers }) => {
-  const [value, setValue] = useState("");
-
+const QuestionPhoto = ({ answers, state, setState, id, imagePath }) => {
   const onRadioInputChange = (e) => {
-    const value = e.target.value;
-    setValue(value);
+    const value = +e.target.value;
+    setState(id, value);
   };
 
   const renderAnswers = () => {
@@ -22,7 +21,7 @@ const QuestionPhoto = ({ answers }) => {
         <label
           key={answerId}
           className={
-            +value === answerId
+            state === answerId
               ? `${styles.option} ${styles.optionChecked}`
               : styles.option
           }
@@ -31,7 +30,7 @@ const QuestionPhoto = ({ answers }) => {
             type="radio"
             name={`answerText`}
             value={answerId}
-            checked={+value === answerId}
+            checked={state === answerId}
             onChange={onRadioInputChange}
           />
           {getLetterVatiantsByIndex(index)} {answerText}
@@ -42,7 +41,7 @@ const QuestionPhoto = ({ answers }) => {
   return (
     <div className={styles.questionBody}>
       <div className={styles.imageWrapper}>
-        <Image src={answers.imagePath} fallback={noImage} />
+        <Image src={`${serverName}${imagePath}`} fallback={noImage} />
       </div>
       <form className={styles.answersWrapper}>{renderAnswers()}</form>
     </div>

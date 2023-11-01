@@ -41,33 +41,13 @@ export function Chat({
     ({ subject_id }) => +subject_id === chatData.subjectId
   )?.subject_title;
 
-  // const participantsData = useSelector(
-  //   type === "group" ? getParticipantsData : getSubjectParticipantsData
-  // );
+
   const participantsData = chatData?.participantsData;
-  // const activeUsers = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.activeUsers
-  //       : getActiveUsers
-  //     : getSubjectActiveUsers
-  // );
+
   const activeUsers = chatData?.activeData;
-  // const replyTo = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.replyTo
-  //       : getFeedbackData
-  //     : getSubjectFeedbackData
-  // );
+
   const replyTo = chatData?.feedbackTo;
-  // const messages = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.messages
-  //       : getMessages
-  //     : getSubjectMessages
-  // );
+
   const messages = chatData?.messages;
   const targetMessage = messages?.find(
     (messege) => messege.messageId === replyTo
@@ -75,17 +55,9 @@ export function Chat({
   const receiverUser = participantsData?.find(
     (user) => user.userId === targetMessage?.senderId
   );
-  // const isLoading = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.isLoading
-  //       : getIsLoading
-  //     : getSubjectIsLoading
-  // );
+
   const isLoading = chatData?.isLoading;
-  // const historyEnd = useSelector(
-  //   type === "group" ? getHistoryEnd : getSubjectHistoryEnd
-  // );
+
   const historyEnd = chatData?.historyEnd;
   const fixedMessages =
     messages?.filter(({ messageFixed }) => messageFixed) || [];
@@ -173,12 +145,13 @@ export function Chat({
               {participantsData &&
                 participantsData.map((participant, index) => {
                   if (participant.imagePath) {
+                    const online = activeUsers?.idsActiveUsers?.includes(
+                      participant.userId
+                    );
                     return (
-                      <img
+                      <div
                         key={participant.userId}
-                        src={`${serverName}${participant.imagePath}`}
-                        alt={`${participant.name} ${participant.surname} avatar`}
-                        className={styles.avatarImage}
+                        className={styles.imageWrapper}
                         style={
                           isShowMore
                             ? {
@@ -191,7 +164,20 @@ export function Chat({
                               }
                             : {}
                         }
-                      />
+                      >
+                        <img
+                          src={`${serverName}${participant.imagePath}`}
+                          alt={`${participant.name} ${participant.surname} avatar`}
+                          className={styles.avatarImage}
+                        />
+                        <div
+                          className={
+                            online
+                              ? `${styles.status} ${styles.online}`
+                              : `${styles.status} ${styles.offline}`
+                          }
+                        ></div>
+                      </div>
                     );
                   }
                   return (

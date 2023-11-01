@@ -19,10 +19,12 @@ export default function Lecture({ lessonData }) {
   const [isTitleEdit, setIsTitleEdit] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { id: lectureId } = lessonData;
-  const lectureContent =
-    [...lessonData?.data?.lectureInfo].sort(
-      (itemA, itemB) => itemA.attributeNumber - itemB.attributeNumber
-    ) || null;
+  console.log(lessonData?.data?.lectureInfo);
+  const lectureContent = lessonData?.data?.lectureInfo
+    ? [...lessonData?.data?.lectureInfo]?.sort(
+        (itemA, itemB) => itemA.attributeNumber - itemB.attributeNumber
+      )
+    : null;
   const isEdit = useSelector(getIsEdit);
 
   const handleOpenModal = (open) => {

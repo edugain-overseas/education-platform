@@ -37,10 +37,14 @@
   width: 54rem;
   align-items: center;
 
-  & :first-child {
+  & > div:first-child {
     transform: translateX(50%);
-    z-index: 2;
+    z-index: 4;
     position: relative;
+
+    & .status {
+      z-index: 4;
+    }
   }
 
   &.more {
@@ -48,7 +52,7 @@
   }
 }
 
-.avatarImage {
+.imageWrapper {
   position: absolute;
   width: 28rem;
   height: 28rem;
@@ -57,7 +61,38 @@
   border: 2rem solid #fff;
   left: 0;
   transition: transform 500ms ease-out;
-  object-fit: cover;
+
+  & .avatarImage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 26rem;
+    height: 26rem;
+
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  & .status {
+    position: absolute;
+    bottom: -4rem;
+    right: -2rem;
+    box-sizing: content-box;
+    width: 6rem;
+    height: 6rem;
+    border: 2rem solid #fff;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  & .online {
+    background-color: #00c808;
+  }
+
+  & .offline {
+    background-color: #f00;
+  }
 }
 
 .noImageAvatar {
