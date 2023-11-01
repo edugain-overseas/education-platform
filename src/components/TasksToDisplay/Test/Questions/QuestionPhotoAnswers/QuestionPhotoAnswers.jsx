@@ -5,6 +5,7 @@ import { serverName } from "../../../../../constants/server";
 import noImage from "../../../../../images/noImage.jpeg";
 import styles from "./QuestionPhotoAnswers.module.scss";
 
+
 const QuestionPhotoAnswers = ({ answers, state, setState, id }) => {
   const onRadioInputChange = (e) => {
     const value = +e.target.value;

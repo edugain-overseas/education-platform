@@ -41,7 +41,6 @@ export function Chat({
     ({ subject_id }) => +subject_id === chatData.subjectId
   )?.subject_title;
 
-
   const participantsData = chatData?.participantsData;
 
   const activeUsers = chatData?.activeData;
@@ -144,10 +143,10 @@ export function Chat({
             >
               {participantsData &&
                 participantsData.map((participant, index) => {
+                  const online = activeUsers?.idsActiveUsers?.includes(
+                    participant.userId
+                  );
                   if (participant.imagePath) {
-                    const online = activeUsers?.idsActiveUsers?.includes(
-                      participant.userId
-                    );
                     return (
                       <div
                         key={participant.userId}
@@ -181,9 +180,9 @@ export function Chat({
                     );
                   }
                   return (
-                    <span
+                    <div
                       key={participant.userId}
-                      className={`${styles.avatarImage} ${styles.noImageAvatar}`}
+                      className={styles.imageWrapper}
                       style={
                         isShowMore
                           ? {
@@ -197,8 +196,20 @@ export function Chat({
                           : {}
                       }
                     >
-                      {participant.username[0].toUpperCase()}
-                    </span>
+                      <span
+                        key={participant.userId}
+                        className={`${styles.avatarImage} ${styles.noImageAvatar}`}
+                      >
+                        {participant.username[0].toUpperCase()}
+                      </span>
+                      <div
+                        className={
+                          online
+                            ? `${styles.status} ${styles.online}`
+                            : `${styles.status} ${styles.offline}`
+                        }
+                      ></div>
+                    </div>
                   );
                 })}
               {isShowMore ? (
