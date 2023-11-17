@@ -7,14 +7,22 @@ import { ReactComponent as CancelIcon } from "../../../../../../images/icons/cro
 import { ReactComponent as DragIcon } from "../../../../../../images/icons/burger.svg";
 import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/minus.svg";
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
+import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
-// import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trash.svg";
+import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trashRounded.svg";
 import Dragger from "../../../../../shared/Dragger/Dragger";
 import { serverName } from "../../../../../../constants/server";
+import { useDispatch } from "react-redux";
 import styles from "./VideoPart.module.scss";
+import {
+  deleteSectionThunk,
+  updateLectureSingleFileThunk,
+  updateLectureTextThunk,
+} from "../../../../../../redux/task/taskOperation";
 
-const VideoPart = ({ state, setState }) => {
+const VideoPart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
+  const dispatch = useDispatch();
 
   const setVideoFile = ({ fileName, fileSize, filePath }) => {
     setState((prev) => {
@@ -28,9 +36,34 @@ const VideoPart = ({ state, setState }) => {
       });
       return updatedState;
     });
+
+    if (state.attributeId) {
+      dispatch(
+        updateLectureSingleFileThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            filePath,
+            fileSize,
+            fileName,
+            downloadAllowed: false,
+          },
+        })
+      );
+    }
   };
 
   const handleSumbit = () => {
+    if (state.attributeId) {
+      dispatch(
+        updateLectureTextThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            attributeText: state.attributeText,
+            attributeTitle: state.attributeTitle,
+          },
+        })
+      );
+    }
     setIsEditValue(false);
   };
 
@@ -67,6 +100,73 @@ const VideoPart = ({ state, setState }) => {
       return updatedState;
     });
   };
+
+  const handleDeleteSection = () => {
+    setState((prev) => {
+      const updatedState = prev.filter(({ id }) => id !== state.id);
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(deleteSectionThunk(state.attributeId));
+    }
+  };
+
+  const handleDeleteFile = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          return {
+            ...part,
+            fileName: "",
+            fileSize: 0,
+            filePath: "",
+            downloadAllowed: false,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(
+        updateLectureSingleFileThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            filePath: "",
+            fileSize: 0,
+            fileName: "",
+            downloadAllowed: false,
+          },
+        })
+      );
+    }
+  };
+
+  const handleSwitchDisplay = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          if (part.attributeId) {
+            dispatch(
+              updateLectureTextThunk({
+                attrId: part.attributeId,
+                updatedData: {
+                  hided: !part.hided,
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            hided: !part.hided,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+  };
+
   return (
     <div className={styles.videoWrapper}>
       {isEditValue ? (
@@ -88,13 +188,18 @@ const VideoPart = ({ state, setState }) => {
       )}
       <div className={styles.mainContentWrapper}>
         {state.filePath ? (
-          <video
-            src={`${serverName}${state.filePath}`}
-            controls={true}
-            width="true"
-            height="auto"
-            controlsList={"nodownload"}
-          ></video>
+          <>
+            <video
+              src={`${serverName}${state.filePath}`}
+              controls={true}
+              width="true"
+              height="auto"
+              controlsList={"nodownload"}
+            ></video>
+            <button onClick={handleDeleteFile} className={styles.deleteBtn}>
+              <TrashIcon />
+            </button>
+          </>
         ) : (
           <Dragger
             styles={styles}
@@ -137,14 +242,14 @@ const VideoPart = ({ state, setState }) => {
             <EditIcon />
           </button>
         )}
-        <button>
+        <button {...dragHandleProps}>
           <DragIcon />
         </button>
-        <button>
+        <button onClick={handleDeleteSection}>
           <DeleteIcon />
         </button>
-        <button>
-          <HideIcon />
+        <button onClick={handleSwitchDisplay}>
+          {state.hided ? <HideIcon /> : <ShowIcon />}
         </button>
         <button className={styles.detailsBtn}>
           <DetailsIcon />

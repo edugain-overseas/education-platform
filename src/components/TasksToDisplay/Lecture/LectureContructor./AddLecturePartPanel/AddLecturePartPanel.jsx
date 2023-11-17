@@ -1,5 +1,5 @@
 import React from "react";
-import {lecturePartsTemplate} from "../../../../../constants/lecturePartsTemplate";
+import { lecturePartsTemplate } from "../../../../../constants/lecturePartsTemplate";
 import { ReactComponent as TextIcon } from "../../../../../images/icons/mediaTypesIcons/text.svg";
 import { ReactComponent as PresentationIcon } from "../../../../../images/icons/mediaTypesIcons/presentation.svg";
 import { ReactComponent as AudioIcon } from "../../../../../images/icons/mediaTypesIcons/audio.svg";
@@ -9,12 +9,22 @@ import { ReactComponent as FileIcon } from "../../../../../images/icons/mediaTyp
 import { ReactComponent as LinkIcon } from "../../../../../images/icons/mediaTypesIcons/link.svg";
 import { ReactComponent as HomeworkIcon } from "../../../../../images/icons/mediaTypesIcons/homework.svg";
 
-const AddLecturePartPanel = ({ styles, setLectureParts }) => {
+const AddLecturePartPanel = ({
+  styles,
+  setLectureParts,
+  sectionsAmount = 0,
+}) => {
   return (
     <div className={styles.addSectionPanel}>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().text])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().text,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <TextIcon />
@@ -22,7 +32,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().present])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().present,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <PresentationIcon />
@@ -30,7 +46,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().audio])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().audio,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <AudioIcon />
@@ -38,7 +60,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().picture])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().picture,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <PictureIcon />
@@ -46,7 +74,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().video])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().video,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <VideoIcon />
@@ -54,7 +88,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().file])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().file,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <FileIcon />
@@ -62,7 +102,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().link])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().link,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <LinkIcon />
@@ -70,7 +116,13 @@ const AddLecturePartPanel = ({ styles, setLectureParts }) => {
       </button>
       <button
         onClick={() =>
-          setLectureParts((prev) => [...prev, lecturePartsTemplate().homework])
+          setLectureParts((prev) => [
+            ...prev,
+            {
+              ...lecturePartsTemplate().homework,
+              attributeNumber: sectionsAmount + 1,
+            },
+          ])
         }
       >
         <HomeworkIcon />

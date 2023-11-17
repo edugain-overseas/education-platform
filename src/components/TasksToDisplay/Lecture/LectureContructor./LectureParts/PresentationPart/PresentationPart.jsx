@@ -8,16 +8,24 @@ import { ReactComponent as CancelIcon } from "../../../../../../images/icons/cro
 import { ReactComponent as DragIcon } from "../../../../../../images/icons/burger.svg";
 import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/minus.svg";
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
+import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
-// import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trash.svg";
-import styles from "./PresentationPart.module.scss";
+import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trashRounded.svg";
 import { serverName } from "../../../../../../constants/server";
 import PDFReader from "../../../../../shared/PDFReader/PDFReader";
 import Dragger from "../../../../../shared/Dragger/Dragger";
+import {
+  deleteSectionThunk,
+  updateLectureSingleFileThunk,
+  updateLectureTextThunk,
+} from "../../../../../../redux/task/taskOperation";
+import { useDispatch } from "react-redux";
+import styles from "./PresentationPart.module.scss";
 
-const PresentationPart = ({ state, setState }) => {
+const PresentationPart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const dispatch = useDispatch();
 
   const setPresentationFile = ({ fileName, fileSize, filePath }) => {
     setState((prev) => {
@@ -31,9 +39,33 @@ const PresentationPart = ({ state, setState }) => {
       });
       return updatedState;
     });
+    if (state.attributeId) {
+      dispatch(
+        updateLectureSingleFileThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            filePath,
+            fileSize,
+            fileName,
+            downloadAllowed: false,
+          },
+        })
+      );
+    }
   };
 
   const handleSumbit = () => {
+    if (state.attributeId) {
+      dispatch(
+        updateLectureTextThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            attributeText: state.attributeText,
+            attributeTitle: state.attributeTitle,
+          },
+        })
+      );
+    }
     setIsEditValue(false);
   };
 
@@ -71,6 +103,47 @@ const PresentationPart = ({ state, setState }) => {
     });
   };
 
+  const handleDeleteFile = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          return {
+            ...part,
+            fileName: "",
+            fileSize: 0,
+            filePath: "",
+            downloadAllowed: false,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(
+        updateLectureSingleFileThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            filePath: "",
+            fileSize: 0,
+            fileName: "",
+            downloadAllowed: false,
+          },
+        })
+      );
+    }
+  };
+
+  const handleDeleteSection = () => {
+    setState((prev) => {
+      const updatedState = prev.filter(({ id }) => id !== state.id);
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(deleteSectionThunk(state.attributeId));
+    }
+  };
+
   const handleOpenModal = (open) => {
     const modalRef = document.querySelector(".ant-modal-wrap.pdfReader");
     const modalBodyRef = modalRef.querySelector(".ant-modal-body");
@@ -82,6 +155,31 @@ const PresentationPart = ({ state, setState }) => {
     if (open) {
       modalBodyRef.addEventListener("click", handleClick);
     }
+  };
+
+  const handleSwitchDisplay = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          if (part.attributeId) {
+            dispatch(
+              updateLectureTextThunk({
+                attrId: part.attributeId,
+                updatedData: {
+                  hided: !part.hided,
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            hided: !part.hided,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
   };
 
   return (
@@ -151,6 +249,11 @@ const PresentationPart = ({ state, setState }) => {
               title="Click or drag to download presentation"
             />
           )}
+          {state.filePath !== "" && (
+            <button className={styles.deleteBtn} onClick={handleDeleteFile}>
+              <TrashIcon />
+            </button>
+          )}
         </div>
         {isEditValue ? (
           <SuperInput
@@ -185,14 +288,14 @@ const PresentationPart = ({ state, setState }) => {
               <EditIcon />
             </button>
           )}
-          <button>
+          <button {...dragHandleProps}>
             <DragIcon />
           </button>
-          <button>
+          <button onClick={handleDeleteSection}>
             <DeleteIcon />
           </button>
-          <button>
-            <HideIcon />
+          <button onClick={handleSwitchDisplay}>
+            {state.hided ? <HideIcon /> : <ShowIcon />}
           </button>
           <button className={styles.detailsBtn}>
             <DetailsIcon />

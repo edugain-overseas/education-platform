@@ -86,6 +86,10 @@
 section {
   margin-bottom: 60rem;
 
+  & > *:not(:last-child) {
+    margin-bottom: 24rem;
+  }
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -244,7 +248,8 @@ h4.sectionSubTitle {
 }
 
 .imageWrapper {
-  flex: 1;
+  // flex: 1;
+  width: 290rem;
   border-radius: 2rem;
   overflow: hidden;
 

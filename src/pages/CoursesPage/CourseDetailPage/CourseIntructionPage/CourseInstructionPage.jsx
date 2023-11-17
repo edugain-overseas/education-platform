@@ -18,13 +18,11 @@ const CourseInstructionPage = () => {
   const subjectInstructions = useSelector(getSubjectInstructions)?.find(
     (instructionsData) => instructionsData.id === id
   )?.data;
-  console.log(subjectInstructions);
 
   const isEdit = useSelector(getIsEdit);
   const isSubmit = useSelector(getIsSubmit);
 
   const { instructionId } = useParams();
-  console.log(instructionId);
 
 
   const dispatch = useDispatch();

@@ -2,8 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addNewLesson,
   addNewModule,
+  attachFilesToInstruction,
+  attachLinkToInstruction,
   createSubjectAbout,
+  createSubjectInstruction,
   createSubjectInstructionCategory,
+  deleteFileFromInstruction,
+  deleteInstruction,
+  deleteInstructionCategory,
+  deleteLinkFromInstruction,
   getAllSubjectsByGroupName,
   getDopSubjectsByStudentId,
   getListOfParticipant,
@@ -15,6 +22,7 @@ import {
   updateSubjectAbout,
   updateSubjectById,
   updateSubjectImage,
+  updateSubjectInstruction,
   updateSubjectInstructionCategory,
   updateSubjectLogo,
   uploadSubjectIcon,
@@ -141,6 +149,112 @@ export const updateSubjectInstructionCategoryThunk = createAsyncThunk(
       );
       return response;
     } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createSubjectInstructionThunk = createAsyncThunk(
+  "subject/createInstruction",
+  async (instructionData, { rejectWithValue }) => {
+    try {
+      const response = await createSubjectInstruction(instructionData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSubjectInstructionThunk = createAsyncThunk(
+  "subject/updateInstruction",
+  async ({ instrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateSubjectInstruction(instrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const attachFilesToInstructionThunk = createAsyncThunk(
+  "subject/attachFilesToInsruction",
+  async ({ instrId, files, filesAmount }, { rejectWithValue }) => {
+    try {
+      const response = await attachFilesToInstruction(
+        instrId,
+        files,
+        filesAmount
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const attachLinkToInstructionThunk = createAsyncThunk(
+  "subject/attachLinkToInsruction",
+  async ({ linkData }, { rejectWithValue }) => {
+    try {
+      const response = await attachLinkToInstruction(linkData);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteFileFromInstructionThunk = createAsyncThunk(
+  "subject/deleteFileFromInstruction",
+  async ({ file }, { rejectWithValue }) => {
+    try {
+      const response = await deleteFileFromInstruction(file.fileId);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteLinkFromInstructionThunk = createAsyncThunk(
+  "subject/deleteLinkFromInstruction",
+  async ({ linkId }, { rejectWithValue }) => {
+    try {
+      const response = await deleteLinkFromInstruction(linkId);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteInstructionThunk = createAsyncThunk(
+  "subject/deleteInstruction",
+  async ({ instructionId }, { rejectWithValue }) => {
+    try {
+      const response = await deleteInstruction(instructionId);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteInstructionCategoryThunk = createAsyncThunk(
+  "subject/deleteInstructionCategory",
+  async ({ categoryId }, { rejectWithValue }) => {
+    try {
+      const response = await deleteInstructionCategory(categoryId);
+      return response;
+    } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }

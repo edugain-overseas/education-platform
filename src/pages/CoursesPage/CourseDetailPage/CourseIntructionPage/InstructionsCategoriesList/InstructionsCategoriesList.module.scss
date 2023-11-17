@@ -13,7 +13,7 @@
     position: relative;
 
     &:not(.addItem) {
-      min-height: 200rem;
+      min-height: 144rem;
     }
 
     & > h3,
@@ -72,8 +72,17 @@
   top: 60rem;
   left: 28rem;
 
+  & button {
+    width: 16rem;
+    height: 16rem;
+
+    & svg {
+      width: 16rem;
+      height: 16rem;
+    }
+  }
+
   & button:first-child svg {
-    width: 16px;
     & path {
       fill: #000;
       fill-opacity: 0.5;
@@ -132,4 +141,10 @@ li.addItem {
     width: 18rem;
     height: 18rem;
   }
+}
+
+ul.categoriesList > li.displayOff:not(.addItem) {
+  height: 0;
+  min-height: initial;
+  overflow: hidden;
 }

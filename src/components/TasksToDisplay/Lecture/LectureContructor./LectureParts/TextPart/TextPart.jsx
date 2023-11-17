@@ -7,15 +7,33 @@ import { ReactComponent as CancelIcon } from "../../../../../../images/icons/cro
 import { ReactComponent as DragIcon } from "../../../../../../images/icons/burger.svg";
 import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/minus.svg";
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
+import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
+import { useDispatch } from "react-redux";
+import {
+  deleteSectionThunk,
+  updateLectureTextThunk,
+} from "../../../../../../redux/task/taskOperation";
 import styles from "./TextPart.module.scss";
 
-const TextPart = ({ state, setState }) => {
+const TextPart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSumbit = () => {
+    if (state.attributeId) {
+      dispatch(
+        updateLectureTextThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            attributeText: state.attributeText,
+            attributeTitle: state.attributeTitle,
+          },
+        })
+      );
+    }
     setIsEditValue(false);
-  }; 
+  };
 
   const handleCancel = () => {
     setIsEditValue(false);
@@ -43,6 +61,41 @@ const TextPart = ({ state, setState }) => {
           return {
             ...part,
             attributeText: value,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+  };
+
+  const handleDeleteSection = () => {
+    setState((prev) => {
+      const updatedState = prev.filter(({ id }) => id !== state.id);
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(deleteSectionThunk(state.attributeId));
+    }
+  };
+
+  const handleSwitchDisplay = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          if (part.attributeId) {
+            dispatch(
+              updateLectureTextThunk({
+                attrId: part.attributeId,
+                updatedData: {
+                  hided: !part.hided,
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            hided: !part.hided,
           };
         }
         return part;
@@ -103,14 +156,14 @@ const TextPart = ({ state, setState }) => {
             <EditIcon />
           </button>
         )}
-        <button>
+        <button {...dragHandleProps}>
           <DragIcon />
         </button>
-        <button>
+        <button onClick={handleDeleteSection}>
           <DeleteIcon />
         </button>
-        <button>
-          <HideIcon />
+        <button onClick={handleSwitchDisplay}>
+          {state.hided ? <HideIcon /> : <ShowIcon />}
         </button>
         <button className={styles.detailsBtn}>
           <DetailsIcon />

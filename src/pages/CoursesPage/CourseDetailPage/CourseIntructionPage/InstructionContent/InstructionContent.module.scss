@@ -11,6 +11,7 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1rem solid #cfcfcf;
+  gap: 8rem;
 
   & svg {
     width: 16rem;
@@ -39,23 +40,41 @@
 }
 
 .instructionTitle {
-  margin-bottom: 10rem;
+  flex: 1;
+  // margin-bottom: 10rem;
   color: rgba(0, 0, 0, 0.5);
   font-family: Inter, sans-serif;
   font-size: 16rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.instructionSubTitle {
+.instructionSubTitleWrapper {
   margin-bottom: 10rem;
-  color: #b3b3b3;
-  font-family: Inter, sans-serif;
-  font-size: 14rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+
+  & h4,
+  & input {
+    color: #b3b3b3;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  & input {
+    position: relative;
+    width: 100%;
+    padding-bottom: 2rem;
+    border-bottom: 1rem solid #d9d9d9;
+    &::placeholder {
+      color: #b3b3b3;
+    }
+  }
 }
 
 .instructionText {
@@ -69,8 +88,21 @@
 }
 
 .instructionFiles {
+  margin-bottom: 32rem;
   & > *:not(:last-child) {
-    margin-bottom: 16rem;
+    margin-bottom: 28rem;
+  }
+}
+
+.linkWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+
+  & svg {
+    width: 24rem;
+    height: 24rem;
+    flex-shrink: 0;
   }
 }
 
@@ -78,6 +110,7 @@
   display: flex;
   align-items: center;
   gap: 8rem;
+  max-width: calc(100% - 32rem);
 
   & span {
     color: #4171cd;
@@ -86,6 +119,11 @@
     font-style: italic;
     font-weight: 400;
     line-height: 22rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    padding-inline: 2rem;
   }
 
   &:hover span {
@@ -93,15 +131,16 @@
   }
 }
 
+.documentsWrapper {
+  display: flex;
+  gap: 16rem;
+  flex-wrap: wrap;
+}
+
 .attachedDocumentWrapper {
   display: flex;
   gap: 12rem;
   align-items: center;
-
-  & svg {
-    width: 16rem;
-    height: 16rem;
-  }
 
   & .documentName {
     font-family: Inter, sans-serif;
@@ -127,18 +166,151 @@
     align-items: center;
     justify-content: center;
   }
+}
 
-  & .deleteBtn {
+.addComponentPanel {
+  display: flex;
+  gap: 24rem;
+  justify-content: center;
+
+  & button {
+    width: 84rem;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: rgba(0, 155, 0, 0.2);
+    }
+
+    & span {
+      color: #b3b3b3;
+      text-align: center;
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+
+    & svg {
+      width: 32rem;
+      aspect-ratio: 1;
+    }
+
+    & input[type="file"] {
+      display: none;
+    }
+  }
+}
+
+.imagesWrapper {
+  display: flex;
+  gap: 16rem;
+
+  & .imagesIcon {
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(2rem);
+    width: 24rem;
+    height: 24rem;
+    border: 1rem solid rgba($color: #001c54, $alpha: 0.5);
+    border-radius: 2rem;
 
-    &:hover path {
-      fill: #d60000;
+    & svg {
+      width: 16rem;
+      height: 16rem;
+    }
+
+    & path {
+      fill: #001c54;
+    }
+  }
+
+  & .images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8rem;
+  }
+  & .imageWrapper {
+    display: flex;
+    gap: 4rem;
+
+    & .image {
+      height: 44rem;
+    }
+
+    & .deleteBtn {
+    }
+  }
+}
+
+.audiosWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+
+  & .audioWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+
+    & audio {
+      height: 40rem;
+    }
+  }
+}
+
+.deleteBtn {
+  width: 16rem;
+  height: 16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 2px 4rem 0px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4rem);
+
+  & svg {
+    width: 12rem;
+    aspect-ratio: 1;
+  }
+  &:hover path {
+    fill: #d60000;
+  }
+}
+
+.linkPopconfirm {
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+
+  & svg {
+    width: 20px;
+  }
+  & input {
+    width: 300rem;
+    color: #4171cd;
+    font-family: Inter, sans-serif;
+    font-size: 14rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 20rem;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 }

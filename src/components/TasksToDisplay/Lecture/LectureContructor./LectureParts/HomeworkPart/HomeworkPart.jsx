@@ -9,20 +9,90 @@ import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/min
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
 import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
+import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trashRounded.svg";
+import { ReactComponent as LinkIcon } from "../../../../../../images/icons/link.svg";
 import Dragger from "../../../../../shared/Dragger/Dragger";
 import DocumentInfoCard from "../../../../../shared/DocumentInfoCard/DocumentInfoCard";
 import {
   deleteLectureFileThunk,
   deleteSectionThunk,
   updateLectureFilesThunk,
+  updateLectureLinkThunk,
   updateLectureTextThunk,
 } from "../../../../../../redux/task/taskOperation";
 import { useDispatch } from "react-redux";
-import styles from "./FilePart.module.scss";
+import styles from "./HomeworkPart.module.scss";
+import LinkCard from "../../../../../shared/LinkCard/LinkCard";
 
-const FilePart = ({ state, setState, dragHandleProps }) => {
+const HomeworkPart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
+  const [newLink, setNewLink] = useState("");
+  const [newAnchor, setNewAnchor] = useState("");
   const dispatch = useDispatch();
+
+  const handleSumbitNewLink = () => {
+    if (newLink === "") {
+      return;
+    }
+    setState((prev) => {
+      const updatedState = prev.map((part) => {
+        if (part.id === state.id) {
+          if (state.attributeId) {
+            dispatch(
+              updateLectureLinkThunk({
+                attrId: state.attributeId,
+                updatedData: {
+                  attributeLinks: [
+                    ...part.attributeLinks.map(({ link, anchor }) => ({
+                      link,
+                      anchor,
+                    })),
+                    { link: newLink, anchor: newAnchor },
+                  ],
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            attributeLinks: [
+              ...part.attributeLinks,
+              { link: newLink, anchor: newAnchor },
+            ],
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+    setNewLink("");
+    setNewAnchor("");
+  };
+
+  const handleDeleteLink = (index) => {
+    setState((prev) => {
+      const updatedState = prev.map((part) => {
+        if (part.id === state.id) {
+          dispatch(
+            updateLectureLinkThunk({
+              attrId: state.attributeId,
+              updatedData: {
+                attributeLinks: part.attributeLinks
+                  .filter((_, i) => i !== index)
+                  .map(({ link, anchor }) => ({ link, anchor })),
+              },
+            })
+          );
+          return {
+            ...part,
+            attributeLinks: part.attributeLinks.filter((_, i) => i !== index),
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+  };
 
   const addFiles = (newFile) => {
     setState((prev) => {
@@ -219,7 +289,46 @@ const FilePart = ({ state, setState, dragHandleProps }) => {
           }}
         ></p>
       )}
-
+      <div className={styles.linksWrapper}>
+        {state.attributeLinks &&
+          state.attributeLinks.length !== 0 &&
+          state.attributeLinks.map(({ linkId, link, anchor }, index) => (
+            <div key={linkId || index}>
+              <LinkCard link={link} text={anchor} styles={styles} />
+              <button
+                className={styles.deleteBtn}
+                onClick={() => handleDeleteLink(index)}
+              >
+                <TrashIcon />
+              </button>
+            </div>
+          ))}
+        <div className={styles.newLinkWrapper}>
+          <input
+            type="text"
+            className={styles.newLink}
+            placeholder="Please write your link here..."
+            value={newLink}
+            onChange={(e) => setNewLink(e.target.value)}
+          />
+          <input
+            type="text"
+            className={styles.newAnchor}
+            placeholder="Please write link label here..."
+            value={newAnchor}
+            onChange={(e) => setNewAnchor(e.target.value)}
+          />
+          <span className={styles.linkIcon}>
+            <LinkIcon />
+          </span>
+          <button
+            className={styles.submitNewLinkBtn}
+            onClick={handleSumbitNewLink}
+          >
+            <SumbitIcon />
+          </button>
+        </div>
+      </div>
       <div className={styles.editPanel}>
         {isEditValue ? (
           <>
@@ -252,4 +361,4 @@ const FilePart = ({ state, setState, dragHandleProps }) => {
   );
 };
 
-export default FilePart;
+export default HomeworkPart;

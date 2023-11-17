@@ -36,7 +36,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload;
+        state.error = payload.message;
       })
 
       .addCase(getUserInfoThunk.pending, (state, _) => {

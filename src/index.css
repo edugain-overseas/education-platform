@@ -19,6 +19,10 @@ code {
   text-decoration: none;
 }
 
+ins {
+  text-decoration: underline;
+}
+
 button {
   border: none;
   background: transparent;

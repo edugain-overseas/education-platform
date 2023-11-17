@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { getStringFromHTMLString } from "../../../../../../helpers/getStringFromHTMLString";
-import SuperInput from "../../../../../shared/SuperInput/SuperInput";
 import { ReactComponent as EditIcon } from "../../../../../../images/icons/editBlack.svg";
 import { ReactComponent as SumbitIcon } from "../../../../../../images/icons/check.svg";
 import { ReactComponent as CancelIcon } from "../../../../../../images/icons/cross.svg";
@@ -10,54 +9,55 @@ import { ReactComponent as HideIcon } from "../../../../../../images/icons/displ
 import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
 import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trashRounded.svg";
-import Dragger from "../../../../../shared/Dragger/Dragger";
-import { serverName } from "../../../../../../constants/server";
+import { ReactComponent as LinkIcon } from "../../../../../../images/icons/link.svg";
 import { useDispatch } from "react-redux";
 import {
   deleteSectionThunk,
-  updateLectureSingleFileThunk,
+  updateLectureLinkThunk,
   updateLectureTextThunk,
 } from "../../../../../../redux/task/taskOperation";
-import styles from "./AudioPart.module.scss";
+import styles from "./LinkPart.module.scss";
+import SuperInput from "../../../../../shared/SuperInput/SuperInput";
+import LinkCard from "../../../../../shared/LinkCard/LinkCard";
 
-const AudioPart = ({ state, setState, dragHandleProps }) => {
+const LinkPart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
+  const [newLink, setNewLink] = useState("");
+  const [newAnchor, setNewAnchor] = useState("");
   const dispatch = useDispatch();
 
-  const setAudioFile = ({ fileName, fileSize, filePath }) => {
-    setState((prev) => {
-      const updatedState = prev.map((part) => {
-        if (part.id === state.id) {
-          part.fileName = fileName;
-          part.fileSize = fileSize;
-          part.filePath = filePath;
-        }
-        return part;
-      });
-      return updatedState;
-    });
-
+  const handleSumbit = () => {
     if (state.attributeId) {
       dispatch(
-        updateLectureSingleFileThunk({
+        updateLectureTextThunk({
           attrId: state.attributeId,
           updatedData: {
-            filePath,
-            fileSize,
-            fileName,
-            downloadAllowed: false,
+            attributeText: state.attributeText,
+            attributeTitle: state.attributeTitle,
           },
         })
       );
     }
-  };
-
-  const handleSumbit = () => {
     setIsEditValue(false);
   };
 
   const handleCancel = () => {
     setIsEditValue(false);
+  };
+
+  const onTitleChange = (value) => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          return {
+            ...part,
+            attributeTitle: value,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
   };
 
   const onTextChange = (value) => {
@@ -75,44 +75,62 @@ const AudioPart = ({ state, setState, dragHandleProps }) => {
     });
   };
 
-  const handleDeleteFile = () => {
-    setState((prevState) => {
-      const updatedState = prevState.map((part) => {
+  const handleSumbitNewLink = () => {
+    if (newLink === "") {
+      return;
+    }
+    setState((prev) => {
+      const updatedState = prev.map((part) => {
         if (part.id === state.id) {
+          if (state.attributeId) {
+            dispatch(
+              updateLectureLinkThunk({
+                attrId: state.attributeId,
+                updatedData: {
+                  attributeLinks: [
+                    ...part.attributeLinks.map(({ link, anchor }) => ({
+                      link,
+                      anchor,
+                    })),
+                    { link: newLink, anchor: newAnchor },
+                  ],
+                },
+              })
+            );
+          }
           return {
             ...part,
-            fileName: "",
-            fileSize: 0,
-            filePath: "",
-            downloadAllowed: false,
+            attributeLinks: [
+              ...part.attributeLinks,
+              { link: newLink, anchor: newAnchor },
+            ],
           };
         }
         return part;
       });
       return updatedState;
     });
-    if (state.attributeId) {
-      dispatch(
-        updateLectureSingleFileThunk({
-          attrId: state.attributeId,
-          updatedData: {
-            filePath: "",
-            fileSize: 0,
-            fileName: "",
-            downloadAllowed: false,
-          },
-        })
-      );
-    }
+    setNewLink("");
+    setNewAnchor("");
   };
 
-  const onTitleChange = (value) => {
-    setState((prevState) => {
-      const updatedState = prevState.map((part) => {
+  const handleDeleteLink = (index) => {
+    setState((prev) => {
+      const updatedState = prev.map((part) => {
         if (part.id === state.id) {
+          dispatch(
+            updateLectureLinkThunk({
+              attrId: state.attributeId,
+              updatedData: {
+                attributeLinks: part.attributeLinks
+                  .filter((_, i) => i !== index)
+                  .map(({ link, anchor }) => ({ link, anchor })),
+              },
+            })
+          );
           return {
             ...part,
-            attributeTitle: value,
+            attributeLinks: part.attributeLinks.filter((_, i) => i !== index),
           };
         }
         return part;
@@ -157,7 +175,7 @@ const AudioPart = ({ state, setState, dragHandleProps }) => {
   };
 
   return (
-    <div className={styles.audioWrapper}>
+    <div className={styles.linkPartWrapper}>
       {isEditValue ? (
         <SuperInput
           state={state.attributeTitle}
@@ -175,35 +193,51 @@ const AudioPart = ({ state, setState, dragHandleProps }) => {
           }}
         ></p>
       )}
-      <div className={styles.mainContentWrapper}>
-        {state.filePath ? (
-          <audio
-            src={`${serverName}${state.filePath}`}
-            controls={true}
-            width="true"
-            height="auto"
-            controlsList={"nodownload"}
-          ></audio>
-        ) : (
-          <Dragger
-            styles={styles}
-            setFileResponse={setAudioFile}
-            accept={"audio/*"}
-            title="Click or drag to download audio"
-            size="small"
+      <div className={styles.linksWrapper}>
+        {state.attributeLinks &&
+          state.attributeLinks.length !== 0 &&
+          state.attributeLinks.map(({ linkId, link, anchor }, index) => (
+            <div key={linkId || index}>
+              <LinkCard link={link} text={anchor} styles={styles} />
+              <button
+                className={styles.deleteBtn}
+                onClick={() => handleDeleteLink(index)}
+              >
+                <TrashIcon />
+              </button>
+            </div>
+          ))}
+        <div className={styles.newLinkWrapper}>
+          <input
+            type="text"
+            className={styles.newLink}
+            placeholder="Please write your link here..."
+            value={newLink}
+            onChange={(e) => setNewLink(e.target.value)}
           />
-        )}
-        {state.filePath !== "" && (
-          <button className={styles.deleteBtn} onClick={handleDeleteFile}>
-            <TrashIcon />
+          <input
+            type="text"
+            className={styles.newAnchor}
+            placeholder="Please write link label here..."
+            value={newAnchor}
+            onChange={(e) => setNewAnchor(e.target.value)}
+          />
+          <span className={styles.linkIcon}>
+            <LinkIcon />
+          </span>
+          <button
+            className={styles.submitNewLinkBtn}
+            onClick={handleSumbitNewLink}
+          >
+            <SumbitIcon />
           </button>
-        )}
+        </div>
       </div>
       {isEditValue ? (
         <SuperInput
           state={state.attributeText}
           setState={onTextChange}
-          placeholder="Please write your titule here..."
+          placeholder="Please write your text here..."
           styles={styles}
         />
       ) : (
@@ -212,7 +246,7 @@ const AudioPart = ({ state, setState, dragHandleProps }) => {
           dangerouslySetInnerHTML={{
             __html: getStringFromHTMLString(state.attributeText)
               ? state.attributeText
-              : "<span style=color:#D9D9D9>Please write your text here...</span>",
+              : "<span style=color:#D9D9D9>Please write your title here...</span>",
           }}
         ></p>
       )}
@@ -249,4 +283,4 @@ const AudioPart = ({ state, setState, dragHandleProps }) => {
   );
 };
 
-export default AudioPart;
+export default LinkPart;

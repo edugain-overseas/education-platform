@@ -18,6 +18,14 @@ import {
   createSubjectInstructionCategoryThunk,
   updateSubjectInstructionCategoryThunk,
   addNewModuleThunk,
+  createSubjectInstructionThunk,
+  updateSubjectInstructionThunk,
+  attachFilesToInstructionThunk,
+  attachLinkToInstructionThunk,
+  deleteFileFromInstructionThunk,
+  deleteLinkFromInstructionThunk,
+  deleteInstructionThunk,
+  deleteInstructionCategoryThunk,
 } from "./subjectOperations";
 import { v4 } from "uuid";
 
@@ -330,6 +338,318 @@ export const subjectSlice = createSlice({
       )
       .addCase(
         updateSubjectInstructionCategoryThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
+
+      .addCase(createSubjectInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createSubjectInstructionThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const { subject_id: subjectId, subject_category_id: categoryId } =
+          action.meta.arg;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (categ.categoryId === categoryId) {
+                  delete action.payload.subjectCategoryId;
+                  categ.instructions = [...categ.instructions, action.payload];
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(createSubjectInstructionThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(updateSubjectInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        updateSubjectInstructionThunk.fulfilled,
+        (state, { payload }) => {
+          state.isLoading = false;
+          const { subject_id: subjectId, subject_category_id: categoryId } =
+            payload;
+          state.subjectsInstructions = [
+            ...state.subjectsInstructions.map((subj) => {
+              if (subj.id !== subjectId) {
+                subj.data.map((categ) => {
+                  if (categ.categoryId === categoryId) {
+                    categ.instructions = categ.instructions.map((instr) => {
+                      if (instr.instructionId === payload.id) {
+                        return {
+                          ...instr,
+                          isView: payload.is_view,
+                          number: payload.number,
+                          subTitle: payload.subtitle,
+                          title: payload.title,
+                          text: payload.text,
+                        };
+                      }
+                      return instr;
+                    });
+                  }
+                  return categ;
+                });
+              }
+              return subj;
+            }),
+          ];
+        }
+      )
+      .addCase(updateSubjectInstructionThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(attachFilesToInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(attachFilesToInstructionThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const { subjectId, instrId } = action.meta.arg;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (
+                  categ.instructions.find(
+                    (instr) => instr.instructionId === instrId
+                  )
+                ) {
+                  categ.instructions = categ.instructions.map((instr) => {
+                    if (instr.instructionId === instrId) {
+                      return {
+                        ...instr,
+                        files: [
+                          ...instr.files,
+                          ...action.payload.map((file) => ({
+                            fileId: file.id,
+                            fileName: file.filename,
+                            fileSize: file.file_size,
+                            fileType: file.file_type,
+                            filePath: file.file_path,
+                            number: file.number,
+                          })),
+                        ],
+                      };
+                    }
+                    return instr;
+                  });
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(attachFilesToInstructionThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(attachLinkToInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(attachLinkToInstructionThunk.fulfilled, (state, action) => {
+        const { subjectId, instructionId } = action.meta.arg;
+        const responseLinkBody = action.payload[0];
+        state.isLoading = false;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (
+                  categ.instructions.find(
+                    (instr) => instr.instructionId === instructionId
+                  )
+                ) {
+                  categ.instructions = categ.instructions.map((instr) => {
+                    if (instr.instructionId === instructionId) {
+                      return {
+                        ...instr,
+                        links: [
+                          ...instr.links,
+                          {
+                            linkId: responseLinkBody.id,
+                            link: responseLinkBody.link,
+                            number: responseLinkBody.number,
+                          },
+                        ],
+                      };
+                    }
+                    return instr;
+                  });
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(attachLinkToInstructionThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(deleteFileFromInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteFileFromInstructionThunk.fulfilled, (state, action) => {
+        const { subjectId, instructionId, file } = action.meta.arg;
+        state.isLoading = false;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (
+                  categ.instructions.find(
+                    (instr) => instr.instructionId === instructionId
+                  )
+                ) {
+                  categ.instructions = categ.instructions.map((instr) => {
+                    if (instr.instructionId === instructionId) {
+                      return {
+                        ...instr,
+                        files: [
+                          ...instr.files.filter(
+                            ({ fileId }) => fileId !== file.fileId
+                          ),
+                        ],
+                      };
+                    }
+                    return instr;
+                  });
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(
+        deleteFileFromInstructionThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
+
+      .addCase(deleteLinkFromInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteLinkFromInstructionThunk.fulfilled, (state, action) => {
+        const { subjectId, instructionId, linkId } = action.meta.arg;
+        state.isLoading = false;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (
+                  categ.instructions.find(
+                    (instr) => instr.instructionId === instructionId
+                  )
+                ) {
+                  categ.instructions = categ.instructions.map((instr) => {
+                    if (instr.instructionId === instructionId) {
+                      return {
+                        ...instr,
+                        links: [
+                          ...instr.links.filter(
+                            ({ linkId: id }) => id !== linkId
+                          ),
+                        ],
+                      };
+                    }
+                    return instr;
+                  });
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(
+        deleteLinkFromInstructionThunk.rejected,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.error = payload;
+        }
+      )
+
+      .addCase(deleteInstructionThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteInstructionThunk.fulfilled, (state, action) => {
+        const { subjectId, instructionId } = action.meta.arg;
+        state.isLoading = false;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data.map((categ) => {
+                if (
+                  categ.instructions.find(
+                    (instr) => instr.instructionId === instructionId
+                  )
+                ) {
+                  categ.instructions = categ.instructions.filter(
+                    ({ instructionId: id }) => id !== instructionId
+                  );
+                }
+                return categ;
+              });
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(deleteInstructionThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(deleteInstructionCategoryThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteInstructionCategoryThunk.fulfilled, (state, action) => {
+        const { subjectId, categoryId } = action.meta.arg;
+        state.isLoading = false;
+        state.subjectsInstructions = [
+          ...state.subjectsInstructions.map((subj) => {
+            if (subj.id !== subjectId) {
+              subj.data = subj.data.filter(
+                ({ categoryId: id }) => id !== categoryId
+              );
+            }
+            return subj;
+          }),
+        ];
+      })
+      .addCase(
+        deleteInstructionCategoryThunk.rejected,
         (state, { payload }) => {
           state.isLoading = false;
           state.error = payload;

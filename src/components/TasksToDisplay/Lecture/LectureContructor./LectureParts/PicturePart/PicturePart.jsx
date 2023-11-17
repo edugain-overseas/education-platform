@@ -8,26 +8,60 @@ import { ReactComponent as DragIcon } from "../../../../../../images/icons/burge
 import { ReactComponent as DeleteIcon } from "../../../../../../images/icons/minus.svg";
 import { ReactComponent as HideIcon } from "../../../../../../images/icons/displayOff.svg";
 import { ReactComponent as DetailsIcon } from "../../../../../../images/icons/details.svg";
+import { ReactComponent as ShowIcon } from "../../../../../../images/icons/displayOn.svg";
 // import { ReactComponent as UploadIcon } from "../../../../../../images/icons/uploadBig.svg";
 // import { ReactComponent as TrashIcon } from "../../../../../../images/icons/trash.svg";
 import styles from "./PicturePart.module.scss";
 import Dragger from "../../../../../shared/Dragger/Dragger";
 import ImageGroup from "../../../../../shared/ImageGroup/ImageGroup";
+import { useDispatch } from "react-redux";
+import {
+  deleteLectureFileThunk,
+  deleteSectionThunk,
+  updateLectureImagesThunk,
+  updateLectureTextThunk,
+} from "../../../../../../redux/task/taskOperation";
 
-const PicturePart = ({ state, setState }) => {
+const PicturePart = ({ state, setState, dragHandleProps }) => {
   const [isEditValue, setIsEditValue] = useState(false);
+  const dispatch = useDispatch();
 
   const addPictures = (newPicture) => {
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
-          part.attributeImages.push({
-            imageName: newPicture.fileName,
-            imagePath: newPicture.filePath,
-            imageSize: newPicture.fileSize,
-            imageDescription: "",
-            downloadAllowed: false,
-          });
+          if (state.attributeId) {
+            dispatch(
+              updateLectureImagesThunk({
+                attrId: state.attributeId,
+                updatedData: {
+                  attributeImages: [
+                    ...part.attributeImages,
+                    {
+                      imageName: newPicture.fileName,
+                      imagePath: newPicture.filePath,
+                      imageSize: newPicture.fileSize,
+                      imageDescription: "",
+                      downloadAllowed: false,
+                    },
+                  ],
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            attributeImages: [
+              ...part.attributeImages,
+              {
+                imageName: newPicture.fileName,
+                imagePath: newPicture.filePath,
+                imageSize: newPicture.fileSize,
+                imageDescription: "",
+                downloadAllowed: false,
+              },
+            ],
+          };
         }
         return part;
       });
@@ -36,6 +70,17 @@ const PicturePart = ({ state, setState }) => {
   };
 
   const handleSumbit = () => {
+    if (state.attributeId) {
+      dispatch(
+        updateLectureTextThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            attributeText: state.attributeText,
+            attributeTitle: state.attributeTitle,
+          },
+        })
+      );
+    }
     setIsEditValue(false);
   };
 
@@ -44,14 +89,16 @@ const PicturePart = ({ state, setState }) => {
   };
 
   const imgDescChange = (index, e) => {
-    console.log(state);
     const value = e.target.value;
     setState((prev) => {
       const updatedState = prev.map((part) => {
         if (part.id === state.id) {
           part.attributeImages = part.attributeImages.map((image, i) => {
             if (i === index) {
-              image.imageDescription = value;
+              return {
+                ...image,
+                imageDescription: value,
+              };
             }
             return image;
           });
@@ -92,6 +139,75 @@ const PicturePart = ({ state, setState }) => {
     });
   };
 
+  const handleDeleteFile = (imagePath) => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          return {
+            ...part,
+            attributeImages: part.attributeImages.filter(
+              (image) => image.imagePath !== imagePath
+            ),
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+
+    if (state.attributeId) {
+      dispatch(deleteLectureFileThunk(imagePath));
+    }
+  };
+
+  const handleInputBlur = () => {
+    if (state.attributeId) {
+      dispatch(
+        updateLectureImagesThunk({
+          attrId: state.attributeId,
+          updatedData: {
+            attributeImages: state.attributeImages,
+          },
+        })
+      );
+    }
+  };
+
+  const handleDeleteSection = () => {
+    setState((prev) => {
+      const updatedState = prev.filter(({ id }) => id !== state.id);
+      return updatedState;
+    });
+    if (state.attributeId) {
+      dispatch(deleteSectionThunk(state.attributeId));
+    }
+  };
+
+  const handleSwitchDisplay = () => {
+    setState((prevState) => {
+      const updatedState = prevState.map((part) => {
+        if (part.id === state.id) {
+          if (part.attributeId) {
+            dispatch(
+              updateLectureTextThunk({
+                attrId: part.attributeId,
+                updatedData: {
+                  hided: !part.hided,
+                },
+              })
+            );
+          }
+          return {
+            ...part,
+            hided: !part.hided,
+          };
+        }
+        return part;
+      });
+      return updatedState;
+    });
+  };
+
   return (
     <div className={styles.pictureWrapper}>
       {isEditValue ? (
@@ -117,6 +233,8 @@ const PicturePart = ({ state, setState }) => {
           styles={styles}
           isDesc={true}
           setState={imgDescChange}
+          handleDeleteFile={handleDeleteFile}
+          handleInputBlur={handleInputBlur}
         />
       )}
       {state.attributeImages.length < 3 && (
@@ -162,14 +280,14 @@ const PicturePart = ({ state, setState }) => {
             <EditIcon />
           </button>
         )}
-        <button>
+        <button {...dragHandleProps}>
           <DragIcon />
         </button>
-        <button>
+        <button onClick={handleDeleteSection}>
           <DeleteIcon />
         </button>
-        <button>
-          <HideIcon />
+        <button onClick={handleSwitchDisplay}>
+          {state.hided ? <HideIcon /> : <ShowIcon />}
         </button>
         <button className={styles.detailsBtn}>
           <DetailsIcon />

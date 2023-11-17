@@ -1,12 +1,9 @@
 import DocumentInfoCard from "../components/shared/DocumentInfoCard/DocumentInfoCard";
+import { documentsFormats } from "../constants/fileFormats";
 
 export const attachedFileToInstruction = (file, styles) => {
   console.log(file);
-  switch (file.fileType) {
-    case "pdf":
-      return <DocumentInfoCard file={file} styles={styles} key={file.number} />;
-
-    default:
-      break;
+  if (documentsFormats.includes(file.fileType)) {
+    return <DocumentInfoCard file={file} styles={styles} key={file.number} />;
   }
 };

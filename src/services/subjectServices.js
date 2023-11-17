@@ -70,6 +70,93 @@ export const updateSubjectInstructionCategory = async (
   return data;
 };
 
+export const createSubjectInstruction = async (instructionData) => {
+  const { data } = await instance.post("/subject/instruction", instructionData);
+  return data;
+};
+
+export const updateSubjectInstruction = async (instrId, updatedData) => {
+  const { data } = await instance.put(
+    `/subject/instruction?instruction_id=${instrId}`,
+    updatedData
+  );
+  return data;
+};
+
+export const attachFilesToInstruction = async (
+  instructionId,
+  files,
+  filesAmount
+) => {
+  const formData = new FormData();
+
+  [...files].forEach((file) => {
+    formData.append("files", file);
+  });
+
+  // const fileTypes = [...files].map(({ name }) => name.split(".").pop());
+  instance.defaults.headers["Content-Type"] = "multipart/form-data";
+
+  const { data: filesResponse } = await instance.post(
+    "/subject/instruction/file",
+    formData
+  );
+
+  instance.defaults.headers["Content-Type"] = "application/json";
+
+  const newFiles = await Promise.all(
+    filesResponse.map(async (file, index) => {
+      const { data } = await instance.post(
+        "/subjects/instruction/attach-file",
+        {
+          subject_instruction_id: instructionId,
+          number: filesAmount + 1 + index,
+          file_type: file.fileType,
+          filename: file.fileName,
+          file_size: file.fileSize,
+          file_path: file.filePath,
+        }
+      );
+      return data;
+    })
+  );
+
+  return newFiles;
+};
+
+export const attachLinkToInstruction = async (linkData) => {
+  const { data } = await instance.post("/subject/instruction/link", linkData);
+  return data;
+};
+
+export const deleteFileFromInstruction = async (fileId) => {
+  const { data } = await instance.delete(
+    `/subject/instruction/file?file_id=${fileId}`
+  );
+  return data;
+};
+
+export const deleteLinkFromInstruction = async (linkId) => {
+  const { data } = await instance.delete(
+    `/subject/instruction/link?instruction_link_id=${linkId}`
+  );
+  return data;
+};
+
+export const deleteInstruction = async (instructionId) => {
+  const { data } = await instance.delete(
+    `/subject/instruction?instruction_id=${instructionId}`
+  );
+  return data;
+};
+
+export const deleteInstructionCategory = async (categoryId) => {
+  const { data } = await instance.delete(
+    `/subject/instruction/category?instruction_category_id=${categoryId}`
+  );
+  return data;
+};
+
 export const getSubjectIcons = async (subjectId) => {
   const { data } = await instance.get(
     `/subject-item/icons?subject_id=${subjectId}`
@@ -101,7 +188,6 @@ export const updateSubjectImage = async (id, file) => {
 };
 
 export const updateSubjectLogo = async (id, file) => {
-  console.log(id, file);
   const { data } = await instance.put(`subject/update/${id}/logo`, file);
   return data;
 };

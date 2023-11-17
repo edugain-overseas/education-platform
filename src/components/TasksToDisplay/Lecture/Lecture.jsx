@@ -19,7 +19,6 @@ export default function Lecture({ lessonData }) {
   const [isTitleEdit, setIsTitleEdit] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { id: lectureId } = lessonData;
-  console.log(lessonData?.data?.lectureInfo);
   const lectureContent = lessonData?.data?.lectureInfo
     ? [...lessonData?.data?.lectureInfo]?.sort(
         (itemA, itemB) => itemA.attributeNumber - itemB.attributeNumber
@@ -48,7 +47,7 @@ export default function Lecture({ lessonData }) {
   }, [isEdit, lessonData]);
 
   const renderLectureContent = () =>
-    lectureContent.map((section) => {
+    lectureContent?.map((section) => {
       const {
         attributeType: type,
         attributeId: id,
@@ -58,16 +57,19 @@ export default function Lecture({ lessonData }) {
         // fileName,
         // fileSize,
         filePath,
-        // hided,
+        hided,
         attributeFiles,
         attributeLinks,
         attributeImages,
       } = section;
       switch (type) {
         case "text":
-          // console.log(fileName, fileSize, hided);
           return (
-            <section key={id} id={type} className={styles.section}>
+            <section
+              key={id}
+              id={type}
+              className={hided ? `${styles.section} hidden` : styles.section}
+            >
               {title && (
                 <h3
                   className={styles.sectionTitle}
@@ -88,7 +90,9 @@ export default function Lecture({ lessonData }) {
             <section
               key={id}
               id={type}
-              className={`${styles.section} ${styles.sectionPDF}`}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionPDF}`
+              }
             >
               <h3
                 className={styles.sectionTitle}
@@ -142,7 +146,9 @@ export default function Lecture({ lessonData }) {
             <section
               key={id}
               id={type}
-              className={`${styles.section} ${styles.sectionAudio}`}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionAudio}`
+              }
             >
               <h3
                 className={styles.sectionTitle}
@@ -169,7 +175,9 @@ export default function Lecture({ lessonData }) {
             <section
               key={id}
               id={type}
-              className={`${styles.section} ${styles.sectionVideo}`}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionVideo}`
+              }
             >
               <h3
                 className={styles.sectionTitle}
@@ -191,9 +199,14 @@ export default function Lecture({ lessonData }) {
             <section
               key={id}
               id={type}
-              className={`${styles.section} ${styles.sectionFiles}`}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionFiles}`
+              }
             >
-              <h3 className={styles.sectionTitle}>{title}</h3>
+              <h3
+                className={styles.sectionTitle}
+                dangerouslySetInnerHTML={{ __html: title }}
+              ></h3>
               {attributeFiles && attributeFiles.length !== 0 && (
                 <div className={styles.filesWrapper}>
                   {attributeFiles.map((file) => (
@@ -218,9 +231,14 @@ export default function Lecture({ lessonData }) {
             <section
               key={id}
               id={type}
-              className={`${styles.section} ${styles.sectionFiles}`}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionFiles}`
+              }
             >
-              <h3 className={styles.sectionTitle}>{title}</h3>
+              <h3
+                className={styles.sectionTitle}
+                dangerouslySetInnerHTML={{ __html: title }}
+              ></h3>
               {attributeLinks && attributeLinks.length !== 0 && (
                 <div className={styles.linksWrapper}>
                   {attributeLinks.map(({ linkId, link, anchor }) => (
@@ -243,7 +261,11 @@ export default function Lecture({ lessonData }) {
           );
         case "picture":
           return (
-            <section key={id} id={type} className={styles.section}>
+            <section
+              key={id}
+              id={type}
+              className={hided ? "hidden" : styles.section}
+            >
               <h3
                 className={styles.sectionTitle}
                 dangerouslySetInnerHTML={{ __html: title }}
@@ -253,13 +275,62 @@ export default function Lecture({ lessonData }) {
                 styles={styles}
                 isDesc={true}
               />
+              {text && (
+                <div
+                  className={styles.sectionContentWrapper}
+                  dangerouslySetInnerHTML={{ __html: text }}
+                ></div>
+              )}
+            </section>
+          );
+        case "homework":
+          return (
+            <section
+              key={id}
+              id={type}
+              className={
+                hided ? "hidden" : `${styles.section} ${styles.sectionFiles}`
+              }
+            >
+              <h3
+                className={styles.sectionTitle}
+                dangerouslySetInnerHTML={{ __html: title }}
+              ></h3>
+              {attributeFiles && attributeFiles.length !== 0 && (
+                <div className={styles.filesWrapper}>
+                  {attributeFiles.map((file) => (
+                    <DocumentInfoCard
+                      file={file}
+                      key={file.fileId}
+                      styles={styles}
+                    />
+                  ))}
+                </div>
+              )}
+              {attributeLinks && attributeLinks.length !== 0 && (
+                <div className={styles.linksWrapper}>
+                  {attributeLinks.map(({ linkId, link, anchor }) => (
+                    <LinkCard
+                      key={linkId}
+                      link={link}
+                      text={anchor}
+                      styles={styles}
+                    />
+                  ))}
+                </div>
+              )}
+              {text && text !== "" && (
+                <div
+                  className={styles.sectionContentWrapper}
+                  dangerouslySetInnerHTML={{ __html: text }}
+                ></div>
+              )}
             </section>
           );
         default:
           return null;
       }
     });
-  // console.log(lectureContent);
   return (
     <div className={styles.lectureContainer}>
       <div className={styles.lectureContent}>
@@ -310,18 +381,16 @@ export default function Lecture({ lessonData }) {
             </button>
           )}
         </div>
-        {(lectureContent && lectureContent.length !== 0) || isEdit ? (
-          <>
-            {lectureContent &&
-              lectureContent.length !== 0 &&
-              renderLectureContent()}
-            {isEdit && (
-              <LectureConstructor
-                lectureId={lectureId}
-                lectureContent={lectureContent}
-              />
-            )}
-          </>
+        {isEdit ? (
+          <LectureConstructor
+            lectureId={lectureId}
+            lectureContent={lectureContent.map((item) => ({
+              ...item,
+              id: item.attributeId,
+            }))}
+          />
+        ) : lectureContent?.length !== 0 ? (
+          renderLectureContent()
         ) : (
           <Empty />
         )}

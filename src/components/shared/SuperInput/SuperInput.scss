@@ -1,6 +1,6 @@
 .superInputWrapper {
- display: flex;
- flex-direction: column-reverse;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .toolbar {
@@ -21,9 +21,20 @@
 
 .superInputEditor {
   margin-bottom: 8rem;
+  font-size: 14rem;
+  color: rgba(0, 0, 0, 0.5);
+
+  &.bordered {
+    padding-bottom: 2rem;
+    border-bottom: 1rem solid #d9d9d9;
+  }
 
   & .public-DraftStyleDefault-block {
     margin: 0;
+  }
+
+  & .public-DraftEditorPlaceholder-root {
+    color: #b3b3b3;
   }
 }
 
@@ -144,6 +155,10 @@
   width: 26rem;
   height: 18rem;
   border: none;
+
+  & .alignJustifyIcon path, & .alignJustifyIcon rect {
+    fill: #b3b3b3;
+  }
 
   &:hover {
     background-color: transparent;

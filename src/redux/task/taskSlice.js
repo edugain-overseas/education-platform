@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getTestByTaskIdThunk,
   getLectureByTaskIdThunk,
+  updateLectureTextThunk,
 } from "./taskOperation";
 
 const initialState = {
@@ -44,6 +45,23 @@ export const taskSlice = createSlice({
         ];
       })
       .addCase(getTestByTaskIdThunk.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+      .addCase(updateLectureTextThunk.pending, (state, _) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateLectureTextThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(action);
+        // state.tasks = [
+        //   ...state.tasks.filter((task) => task.id !== payload.id),
+        //   payload,
+        // ];
+      })
+      .addCase(updateLectureTextThunk.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

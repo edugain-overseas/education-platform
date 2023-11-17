@@ -12,7 +12,11 @@ import underline from "../../../images/icons/editTextIcons/underline.svg";
 import ul from "../../../images/icons/editTextIcons/ul.svg";
 import ol from "../../../images/icons/editTextIcons/ol.svg";
 import alignLeft from "../../../images/icons/editTextIcons/alignLeft.svg";
+import alignRight from "../../../images/icons/editTextIcons/alignRight.svg";
+import alignCenter from "../../../images/icons/editTextIcons/alignCenter.svg";
+import alignJustify from "../../../images/icons/burger.svg";
 import "./SuperInput.scss";
+import { useParams } from "react-router-dom";
 
 const toolbar = {
   options: ["history", "fontSize", "inline", "list", "textAlign"],
@@ -45,31 +49,32 @@ const toolbar = {
     className: "textAlign",
     options: ["left", "center", "right", "justify"],
     left: { icon: alignLeft, className: "alignLeft" },
-    // center: { icon: center, className: undefined },
-    // right: { icon: right, className: undefined },
-    // justify: { icon: justify, className: undefined },
+    center: { icon: alignCenter, className: undefined },
+    right: { icon: alignRight, className: undefined },
+    justify: { icon: alignJustify, className: "alignJustifyIcon" },
   },
 };
 
-const SuperInput = ({ state, setState, placeholder, styles }) => {
+const SuperInput = ({
+  state,
+  setState,
+  placeholder,
+  styles,
+  bordered = false,
+}) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const { instructionId } = useParams();
 
   useEffect(() => {
-    if (state !== "") {
-      const contentBlock = htmlToDraft(state);
-      const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks
-      );
-      const editorState = EditorState.createWithContent(contentState);
-      setEditorState(editorState);
-    }
+    const contentBlock = htmlToDraft(state);
+    const contentState = ContentState.createFromBlockArray(
+      contentBlock.contentBlocks
+    );
+    const editorState = EditorState.createWithContent(contentState);
+    setEditorState(editorState);
     // eslint-disable-next-line
-  }, []);
-  // const contentBlock = htmlToDraft(state);
-  // const contentState = ContentState.createFromBlockArray(
-  //   contentBlock.contentBlocks
-  // );
-  // const editorStateQ = EditorState.createWithContent(contentState);
+  }, [instructionId]);
+
   const onChange = (value) => {
     setEditorState(value);
     setState(draftToHtml(convertToRaw(value.getCurrentContent())));
@@ -84,7 +89,9 @@ const SuperInput = ({ state, setState, placeholder, styles }) => {
         toolbarOnFocus
         toolbar={toolbar}
         toolbarClassName="toolbar"
-        editorClassName="superInputEditor"
+        editorClassName={
+          bordered ? "superInputEditor bordered" : "superInputEditor"
+        }
         wrapperClassName="superInputWrapper"
       />
     </div>

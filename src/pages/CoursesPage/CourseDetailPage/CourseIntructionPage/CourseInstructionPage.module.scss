@@ -44,6 +44,7 @@
 
 .instructionContetntWrapper {
   flex: 0 0 calc(50% - 8rem);
+  max-width: calc(50% - 8rem);
   border-radius: 2rem;
   background: #fff;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);

@@ -1,11 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  addHomeworkPartToLecture,
   addImagesPartToLecture,
   addMultipleFilesPartToLecture,
   addSingleFilePartToLecture,
   addTextPartToLecture,
+  deleteLectureFile,
+  deleteSection,
   getLectureByTaskId,
   getTestByTaskId,
+  updateLectureFiles,
+  updateLectureImages,
+  updateLectureLink,
+  updateLectureSingleFile,
+  updateLectureText,
 } from "../../services/taskServices";
 
 export const getLectureByTaskIdThunk = createAsyncThunk(
@@ -74,6 +82,102 @@ export const addMultipleFilesPartToLectureThunk = createAsyncThunk(
     try {
       const response = await addMultipleFilesPartToLecture(lectureId, partData);
       return { lectureId, response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addHomeworkPartToLectureThunk = createAsyncThunk(
+  "task/addHomeworkPartLessonId",
+  async ({ lectureId, partData }, { rejectWithValue }) => {
+    try {
+      const response = await addHomeworkPartToLecture(lectureId, partData);
+      return { lectureId, response };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateLectureTextThunk = createAsyncThunk(
+  "task/updateLectureText",
+  async ({ attrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateLectureText(attrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateLectureSingleFileThunk = createAsyncThunk(
+  "task/updateLectureSingleFile",
+  async ({ attrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateLectureSingleFile(attrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateLectureFilesThunk = createAsyncThunk(
+  "task/updateLectureFiles",
+  async ({ attrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateLectureFiles(attrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateLectureImagesThunk = createAsyncThunk(
+  "task/updateLectureImages",
+  async ({ attrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateLectureImages(attrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateLectureLinkThunk = createAsyncThunk(
+  "task/updateLectureLink",
+  async ({ attrId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await updateLectureLink(attrId, updatedData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteLectureFileThunk = createAsyncThunk(
+  "task/deleteLectureFile",
+  async (filePath, { rejectWithValue }) => {
+    try {
+      const response = await deleteLectureFile(filePath);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteSectionThunk = createAsyncThunk(
+  "task/deleteSection",
+  async (attrId, { rejectWithValue }) => {
+    try {
+      const response = await deleteSection(attrId);
+      return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }

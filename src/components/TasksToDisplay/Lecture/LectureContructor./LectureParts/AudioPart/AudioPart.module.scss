@@ -5,12 +5,6 @@
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
   margin-bottom: 48rem;
   position: relative;
-
-  & audio {
-    display: block;
-    width: 1080rem;
-    margin: 0 auto 24rem;
-  }
 }
 
 .editPanel {
@@ -29,6 +23,33 @@
   & svg {
     width: 16rem;
     height: 16rem;
+  }
+}
+
+.mainContentWrapper {
+  position: relative;
+
+  & audio {
+    display: block;
+    width: 1080rem;
+    margin: 0 auto 24rem;
+  }
+
+  & .deleteBtn {
+    width: 16rem;
+    height: 16rem;
+    position: absolute;
+    right: 20rem;
+    top: 0rem;
+
+    border-radius: 1.455rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0rem 1.45455rem 2.90909rem 0rem rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2.909090757369995rem);
+
+    &:hover path {
+      fill: #d60000;
+    }
   }
 }
 

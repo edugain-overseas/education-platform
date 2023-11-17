@@ -11,7 +11,7 @@ const Dragger = ({
   accept,
   title,
   size = "default",
-  multiple = false,
+  // multiple = false,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [percent, setPercent] = useState(null);
@@ -51,7 +51,7 @@ const Dragger = ({
     name: "presentation",
     accept: accept,
     showUploadList: false,
-    multiple: multiple,
+    // multiple: multiple,
     onChange(info) {
       const { status } = info.file;
       const percentage = info.event?.percent;

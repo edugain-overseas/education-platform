@@ -2,15 +2,14 @@ import React from "react";
 import { serverName } from "../../../constants/server";
 import { ReactComponent as DocumentIcon } from "../../../images/icons/document.svg";
 import { ReactComponent as DownloadIcon } from "../../../images/icons/downloadBigger.svg";
-import { ReactComponent as DeleteIcon } from "../../../images/icons/trash.svg";
+import { ReactComponent as DeleteIcon } from "../../../images/icons/trashRounded.svg";
 import { formatSize } from "../../../helpers/formatSize";
 import { useSelector } from "react-redux";
 import { getIsEdit } from "../../../redux/config/configSelectors";
 
 const DocumentInfoCard = ({ file, handleDelete = () => {}, styles }) => {
-  const { fileName, fileSize, filePath, fileType } = file;
+  const { fileName, fileSize, filePath } = file;
   const isEdit = useSelector(getIsEdit);
-  console.log(fileType);
   return (
     <div className={styles.attachedDocumentWrapper}>
       <DocumentIcon />
@@ -29,7 +28,7 @@ const DocumentInfoCard = ({ file, handleDelete = () => {}, styles }) => {
         <button
           type="button"
           className={styles.deleteBtn}
-          onClick={handleDelete}
+          onClick={() => handleDelete(filePath)}
         >
           <DeleteIcon />
         </button>

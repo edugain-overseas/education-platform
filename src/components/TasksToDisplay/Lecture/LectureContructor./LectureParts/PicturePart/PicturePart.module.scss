@@ -97,17 +97,18 @@
 }
 
 .imageWrapper {
-  flex: 1;
   border-radius: 2rem;
-  overflow: hidden;
+  position: relative;
 
   border-radius: 4rem;
   background: #fff;
   box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
 
   & > div:first-child {
-    width: 100%;
-    aspect-ratio: 290/195;
+    // width: 100%;
+    // aspect-ratio: 290/195;
+    width: 290rem;
+    height: 190rem;
   }
   // height: 195rem;
 
@@ -119,7 +120,7 @@
     object-fit: cover;
   }
 
-  .descWrapper {
+  & .descWrapper {
     padding: 8rem 16rem;
 
     & input,
@@ -135,6 +136,24 @@
 
     & input::placeholder {
       color: #d9d9d9;
+    }
+  }
+
+  & .deleteBtn {
+    width: 16rem;
+    height: 16rem;
+    position: absolute;
+    left: calc(100% + 8rem);
+    top: 0rem;
+    z-index: 2;
+
+    border-radius: 1.455rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0rem 1.45455rem 2.90909rem 0rem rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2.909090757369995rem);
+
+    &:hover path {
+      fill: #d60000;
     }
   }
 }
