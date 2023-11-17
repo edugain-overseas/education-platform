@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/education-platform/static/css/main.f373d70e.css",
-    "main.js": "/education-platform/static/js/main.007de9e8.js",
+    "main.css": "/education-platform/static/css/main.ed4a45b9.css",
+    "main.js": "/education-platform/static/js/main.78829d5e.js",
     "static/js/850.9c78ccfc.chunk.js": "/education-platform/static/js/850.9c78ccfc.chunk.js",
     "static/js/353.d80e8819.chunk.js": "/education-platform/static/js/353.d80e8819.chunk.js",
     "static/media/login-bg.png": "/education-platform/static/media/login-bg.4363596cec990c8af020.png",
@@ -21,6 +21,7 @@
     "static/media/trash.svg": "/education-platform/static/media/trash.1112de9a7135d2f4ac465db08e66a7be.svg",
     "static/media/displayOff.svg": "/education-platform/static/media/displayOff.815f6697bdb09106b95239e52427146b.svg",
     "static/media/saveTemplate.svg": "/education-platform/static/media/saveTemplate.cfba5b76cffe23333214b1a5f5899a33.svg",
+    "static/media/trashRounded.svg": "/education-platform/static/media/trashRounded.5e7051ed14365a20f6fdd2d92fa2e245.svg",
     "static/media/unknownPerson.svg": "/education-platform/static/media/unknownPerson.8cdabe4cc0cec72d14e5bf4889974c5e.svg",
     "static/media/link.svg": "/education-platform/static/media/link.11975364ec3bf08ae5f86f838cd921e9.svg",
     "static/media/checked.svg": "/education-platform/static/media/checked.9c47af4de15909f06ca4c34a32189d35.svg",
@@ -32,6 +33,7 @@
     "static/media/grid.svg": "/education-platform/static/media/grid.cb165eb850b911966f9b5c4b603467d4.svg",
     "static/media/bellWithBadge.svg": "/education-platform/static/media/bellWithBadge.46b0422745ce7c4d402b06272a95d5b5.svg",
     "static/media/archive.svg": "/education-platform/static/media/archive.2bdc086d35fe839e078f5ce17719591e.svg",
+    "static/media/displayOn.svg": "/education-platform/static/media/displayOn.7d31aaf2057d5b61c2737d09fe639607.svg",
     "static/media/voice.svg": "/education-platform/static/media/voice.9f21338bbd3574f5041c95dae2263d0a.svg",
     "static/media/file.svg": "/education-platform/static/media/file.45cfd740cca90a618bc419a343745dff.svg",
     "static/media/bold.svg": "/education-platform/static/media/bold.9fb3e7202fed6bed2f20bf8c568bdfb1.svg",
@@ -69,6 +71,8 @@
     "static/media/redo.svg": "/education-platform/static/media/redo.33bf0fb97f9e063bda8ff08cde8a5dfe.svg",
     "static/media/burger.svg": "/education-platform/static/media/burger.7b7a7735ba6262a747e8a269ba6700e2.svg",
     "static/media/text.svg": "/education-platform/static/media/text.953ff221d20a653b3b0717b01d357c1b.svg",
+    "static/media/alignRight.svg": "/education-platform/static/media/alignRight.a114837ee664eb8bc4a62d86d35e1525.svg",
+    "static/media/alignCenter.svg": "/education-platform/static/media/alignCenter.c7b787156873e9fcd179156c4fd83a1d.svg",
     "static/media/alignLeft.svg": "/education-platform/static/media/alignLeft.f56b35660f9dddb1143aad08ffacb834.svg",
     "static/media/details.svg": "/education-platform/static/media/details.38cecc8f9a27c79ef304df8fbfd46d46.svg",
     "static/media/fullscreen.svg": "/education-platform/static/media/fullscreen.e607c6e9ec9451910fab0912ebc03b3b.svg",
@@ -81,13 +85,13 @@
     "static/media/italic.svg": "/education-platform/static/media/italic.82fde2a8fb5d2706612763f78b3061e9.svg",
     "static/media/fileFilled.svg": "/education-platform/static/media/fileFilled.1ffe0135508bd37099d735441daf3e44.svg",
     "static/media/feedback.svg": "/education-platform/static/media/feedback.04619657e92de14b870f1572f8bb1e16.svg",
-    "main.f373d70e.css.map": "/education-platform/static/css/main.f373d70e.css.map",
-    "main.007de9e8.js.map": "/education-platform/static/js/main.007de9e8.js.map",
+    "main.ed4a45b9.css.map": "/education-platform/static/css/main.ed4a45b9.css.map",
+    "main.78829d5e.js.map": "/education-platform/static/js/main.78829d5e.js.map",
     "850.9c78ccfc.chunk.js.map": "/education-platform/static/js/850.9c78ccfc.chunk.js.map",
     "353.d80e8819.chunk.js.map": "/education-platform/static/js/353.d80e8819.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f373d70e.css",
-    "static/js/main.007de9e8.js"
+    "static/css/main.ed4a45b9.css",
+    "static/js/main.78829d5e.js"
   ]
 }
