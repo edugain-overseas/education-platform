@@ -202,7 +202,6 @@ export default function ScheduleModal({
     console.log(newLesson);
   };
 
-  console.log();
   return (
     <Modal
       open={isOpen}
@@ -226,6 +225,8 @@ export default function ScheduleModal({
               onDateChange={onDateChange}
               error={validate && !date}
               day={day}
+              height="32rem"
+              className='lessonAddModalDatePicker'
             />
             <Select
               type="time"

@@ -5,7 +5,10 @@ import {
   addMultipleFilesPartToLecture,
   addSingleFilePartToLecture,
   addTextPartToLecture,
+  crateTestQuestions,
+  createTest,
   deleteLectureFile,
+  deleteQuestion,
   deleteSection,
   getLectureByTaskId,
   getTestByTaskId,
@@ -14,6 +17,7 @@ import {
   updateLectureLink,
   updateLectureSingleFile,
   updateLectureText,
+  updateQuestion,
 } from "../../services/taskServices";
 
 export const getLectureByTaskIdThunk = createAsyncThunk(
@@ -30,9 +34,9 @@ export const getLectureByTaskIdThunk = createAsyncThunk(
 
 export const getTestByTaskIdThunk = createAsyncThunk(
   "task/getTestByLessonId",
-  async (lessonId, { rejectWithValue }) => {
+  async ({ lessonId, userType }, { rejectWithValue }) => {
     try {
-      const response = await getTestByTaskId(lessonId);
+      const response = await getTestByTaskId(lessonId, userType);
       return { data: response, id: lessonId };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -165,6 +169,54 @@ export const deleteLectureFileThunk = createAsyncThunk(
   async (filePath, { rejectWithValue }) => {
     try {
       const response = await deleteLectureFile(filePath);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createTestThunk = createAsyncThunk(
+  "task/createTest",
+  async (config, { rejectWithValue }) => {
+    try {
+      const response = await createTest(config);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const crateTestQuestionsThunk = createAsyncThunk(
+  "task/crateTestQuestions",
+  async ({ testId, data }, { rejectWithValue }) => {
+    try {
+      const response = await crateTestQuestions(testId, data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateQuestionThunk = createAsyncThunk(
+  "task/updateQuestion",
+  async ({ questionId, questionData }, { rejectWithValue }) => {
+    try {
+      const response = await updateQuestion(questionId, questionData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteQuestionThunk = createAsyncThunk(
+  "task/deleteQuestion",
+  async (questionId, { rejectWithValue }) => {
+    try {
+      const response = await deleteQuestion(questionId);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -19,7 +19,11 @@ export const configSlice = createSlice({
       state.isEdit = false;
       state.isSubmit = false;
     },
+    setUnsubmit(state, _) {
+      state.isSubmit = false;
+    },
   },
 });
 
-export const { setEdit, setSumbit, setDefault } = configSlice.actions;
+export const { setEdit, setSumbit, setDefault, setUnsubmit } =
+  configSlice.actions;

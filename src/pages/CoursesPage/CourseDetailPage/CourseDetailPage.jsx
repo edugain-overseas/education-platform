@@ -17,6 +17,8 @@ import {
   setActiveData as setSubjectActiveData,
   setMessages as setSubjectMessages,
   setUsers as setSubjectUsers,
+  deleteMessage as deleteSubjectMessage,
+  deleteAnswer as deleteSubjectAnswer,
 } from "../../../redux/subjectChats/subjectChatSlice";
 import {
   getGroupId,
@@ -68,6 +70,7 @@ export default function CourseDetailPage() {
   )?.group_id;
 
   const dispatch = useDispatch();
+  console.log(socket);
 
   useEffect(() => {
     const ws = connectToSubjectWebSocket(id, token);
@@ -86,6 +89,7 @@ export default function CourseDetailPage() {
       const data = JSON.parse(event.data);
       const participantsData = data.userInfo;
       const messagesData = data.messages;
+      const singleMessage = data.message;
 
       if (messagesData) {
         if (participantsData) {
@@ -96,8 +100,20 @@ export default function CourseDetailPage() {
         dispatch(setSubjectActiveData(data));
       } else if (data.answerId) {
         dispatch(addSubjectFeedback(data));
-      } else {
+      } else if (typeof singleMessage !== "string") {
         dispatch(addSubjectMessage(data));
+      } else if (
+        typeof singleMessage === "string" &&
+        singleMessage.includes("deleted") &&
+        singleMessage.includes("Message")
+      ) {
+        dispatch(deleteSubjectMessage(singleMessage));
+      } else if (
+        typeof singleMessage === "string" &&
+        singleMessage.includes("deleted") &&
+        singleMessage.includes("Answer")
+      ) {
+        dispatch(deleteSubjectAnswer(singleMessage));
       }
     };
 

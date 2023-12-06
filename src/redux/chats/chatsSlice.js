@@ -73,6 +73,34 @@ export const chatsSlice = createSlice({
         ]),
       ];
     },
+    deleteMessage(state, { payload }) {
+      const { subjectId, data: message } = payload;
+      const messageId = parseInt(message.split(" ")[3]);
+      const chat = state.find((chat) => chat.subjectId === subjectId);
+      if (chat) {
+        const messageIndex = chat.messages.findIndex(
+          (msg) => msg.messageId === messageId
+        );
+        if (messageIndex !== -1) {
+          chat.messages[messageIndex].deleted = true;
+        }
+      }
+    },
+    deleteAnswer(state, { payload }) {
+      console.log(payload);
+      const { subjectId, data: message } = payload;
+      const answerId = parseInt(message.split(" ")[3]);
+      const chat = state.find((chat) => chat.subjectId === subjectId);
+      if (chat) {
+        chat.messages.forEach((message) => {
+          message.answers.forEach((answer) => {
+            if (answer.answerId === answerId) {
+              answer.deleted = true;
+            }
+          });
+        });
+      }
+    },
     setFeedback(state, { payload }) {
       if (payload.data) {
         state = [
@@ -363,4 +391,6 @@ export const {
   setFeedback,
   addFeedback,
   clearAttachedFiles,
+  deleteMessage,
+  deleteAnswer,
 } = chatsSlice.actions;

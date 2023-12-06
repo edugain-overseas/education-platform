@@ -1,0 +1,51 @@
+.wrapper {
+  display: inline-flex;
+  gap: 24rem;
+  padding: 24rem;
+
+  border-radius: 4rem;
+  background: #fff;
+  box-shadow: 0rem 0rem 16rem 0rem rgba(0, 0, 0, 0.12);
+
+  & button {
+    padding-block: 16rem;
+    padding-inline: 4rem;
+    width: 100rem;
+    aspect-ratio: 1;
+    border-radius: 2rem;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+    box-shadow: 0rem 0rem 3.70673rem 0rem rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: rgba(0, 155, 0, 0.2);
+      & span {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    & span {
+      color: #b3b3b3;
+      text-align: center;
+      font-family: Inter, sans-serif;
+      font-size: 14rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-transform: capitalize;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    & svg {
+      width: 30rem;
+      height: 30rem;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   getUserName,
@@ -9,7 +9,7 @@ import { ReactComponent as SettingsIcon } from "../../../images/icons/settings.s
 // import { serverName } from "../../../constants/server";
 import NotificationButton from "./NotificationButton/NotificationButton";
 // import image from "../../../images/logo192.png";
-import { getIsEdit } from "../../../redux/config/configSelectors";
+import { getIsEdit, getIsSubmit } from "../../../redux/config/configSelectors";
 import {
   setDefault,
   setEdit,
@@ -17,7 +17,7 @@ import {
 } from "../../../redux/config/configSlice";
 import { useDispatch } from "react-redux";
 import { getIsLoading } from "../../../redux/subject/subjectSelectors";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import UserAvatar from "../../shared/UserAvatar/UserAvatar";
 import styles from "./UserPanel.module.scss";
 
@@ -27,24 +27,31 @@ export const UserPanel = () => {
   const userInfo = useSelector(getUserInfo);
   const userType = useSelector(getUserType);
   const isEdit = useSelector(getIsEdit);
+  const isSubmit = useSelector(getIsSubmit);
   const isLoading = useSelector(getIsLoading);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
   const handleSubmit = () => {
     if (isLoading) {
       return;
     }
     dispatch(setSumbit());
-    if (
-      pathname === "/" ||
-      pathname === "/schedule" ||
-      pathname.includes("/participants") 
-      // pathname.includes("/tasks")
-    ) {
-      dispatch(setDefault());
-      return;
-    }
+    // if (
+    //   pathname === "/" ||
+    //   pathname === "/schedule" ||
+    //   pathname.includes("/participants")
+    //   // pathname.includes("/tasks")
+    // ) {
+    //   dispatch(setDefault());
+    //   return;
+    // }
   };
+
+  useEffect(() => {
+    if (isSubmit) {
+      dispatch(setDefault());
+    }
+  }, [isSubmit, dispatch]);
 
   return (
     <div className={styles.wrapper}>

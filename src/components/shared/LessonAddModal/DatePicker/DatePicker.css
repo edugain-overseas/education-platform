@@ -1,12 +1,8 @@
-.datePicker {
-  height: 32rem;
-}
-
 .ant-picker-footer {
   display: none;
 }
 
-.datePicker div.ant-picker-input input {
+.lessonAddModalDatePicker div.ant-picker-input input {
   color: rgba(0, 0, 0, 0.88);
   font-family: Inter, sans-serif;
   font-size: 14rem;

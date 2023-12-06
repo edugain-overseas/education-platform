@@ -19,8 +19,11 @@ import {
 } from "../../../redux/chats/chatOperations";
 import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import UserAvatar from "../../shared/UserAvatar/UserAvatar";
+import { getUserId, getUserType } from "../../../redux/user/userSelectors";
+import MessageDetailBtn from "../MessageDetailBtn/MessageDetailBtn";
+import { WebsocketContext, WebsocketsContext } from "../../../App";
+import { SubjectWebsocketContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseDetailPage";
 import styles from "./MessageFromChat.module.scss";
-import { getUserType } from "../../../redux/user/userSelectors";
 
 export function MessageFromChat({
   message = [],
@@ -29,6 +32,8 @@ export function MessageFromChat({
   lastElement = false,
   readed = false,
   chatData,
+  senderId,
+  setEditMessage
 }) {
   const dispatch = useDispatch();
 
@@ -37,6 +42,19 @@ export function MessageFromChat({
   const replyTo = chatData?.feedbackTo;
 
   const userType = useSelector(getUserType);
+
+  const isMine = useSelector(getUserId) === senderId;
+
+  let socket = useContext(
+    chatType === "main"
+      ? userType === "teacher"
+        ? WebsocketsContext
+        : WebsocketContext
+      : SubjectWebsocketContext
+  );
+  if (chatType === "main" && userType === "teacher") {
+    socket = socket.find(({ id }) => chatData.subjectId === id)?.websocket;
+  }
 
   const handleFeedback = () => {
     if (replyTo !== message.messageId) {
@@ -78,7 +96,7 @@ export function MessageFromChat({
                 data: message.messageId,
               })
             : readMessageThunk(message.messageId)
-          : readSubjectMessageThunk(message.messageIdchat)
+          : readSubjectMessageThunk(message.messageId)
       );
     } else {
       console.log(chatData);
@@ -95,11 +113,32 @@ export function MessageFromChat({
     }
   };
 
+  const handleDeleteMessage = () => {
+    try {
+      const data = { senderId, senderType: userType };
+      if (type === "origin") {
+        data.type = "deleteMessage";
+        data.messageId = message.messageId;
+      } else {
+        data.type = "deleteAnswer";
+        data.answerId = message.answerId;
+      }
+      console.log(data);
+      socket.send(JSON.stringify(data));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleEditMessage = () => {
+    setEditMessage(message)
+  }
+
   return (
     <div
       className={
         type === "origin"
-          ? message.answers?.length === 0
+          ? message.answers?.filter(({ deleted }) => !deleted).length === 0
             ? self
               ? `${styles.messageWrapper} ${styles.selfMessage}`
               : `${styles.messageWrapper}`
@@ -167,9 +206,11 @@ export function MessageFromChat({
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{
-              __html: type === "origin" ? message?.messageText : message?.answer,
+              __html:
+                type === "origin" ? message?.messageText : message?.answer,
             }}
           ></div>
+          {isMine && <MessageDetailBtn handleDelete={handleDeleteMessage} handleEditMessage={handleEditMessage}/>}
           {type === "origin" && (
             <button
               className={

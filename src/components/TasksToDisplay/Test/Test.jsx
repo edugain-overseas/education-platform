@@ -14,6 +14,9 @@ import { getUserType } from "../../../redux/user/userSelectors";
 import { getUserInfo } from "../../../redux/user/userSelectors";
 import { instance } from "../../../services/instance";
 import styles from "./Test.module.scss";
+import TestContructor from "./TestContructor/TestContructor";
+// import { useParams } from "react-router-dom";
+import { getTasks } from "../../../redux/task/taskSelectors";
 
 export default function Test({ lessonData }) {
   const [testTitle, setTestTitle] = useState("");
@@ -26,6 +29,8 @@ export default function Test({ lessonData }) {
   const studentId = useSelector(getUserInfo)?.student_id;
 
   const testContent = lessonData?.data?.testQuestions || null;
+  const testqwe = useSelector(getTasks);
+  console.log(testqwe);
 
   const { testId } = lessonData?.data;
 
@@ -69,13 +74,19 @@ export default function Test({ lessonData }) {
 
   const setMultipleAnswersState = (id, value) => {
     setStudentAnswers((prev) => {
+      console.log(prev);
       const updatedState = prev.map((question) => {
         if (question.questionId === id) {
           if (question.answersIds.includes(value)) {
-            question.answersIds = question.answerIds.filter((v) => v !== value);
-          } else {
-            question.answersIds.push(value);
+            return {
+              ...question,
+              answersIds: question.answersIds.filter((v) => v !== value),
+            };
           }
+          return {
+            ...question,
+            answersIds: [...question.answersIds, value],
+          };
         }
         return question;
       });
@@ -104,7 +115,6 @@ export default function Test({ lessonData }) {
               rightOptionId: value,
             });
           }
-          console.log(leftOptionId, value);
         }
         return question;
       });
@@ -342,10 +352,12 @@ export default function Test({ lessonData }) {
               onChange={(e) => setTestDesc(e.target.value)}
             />
           ) : (
-            <h2>
-              <span>Description: </span>
-              {lessonData?.data?.lessonDescription}
-            </h2>
+            lessonData?.data?.lessonDescription && (
+              <h2>
+                <span>Description: </span>
+                {lessonData?.data?.lessonDescription}
+              </h2>
+            )
           )}
           <h2>
             <span>Test №:</span>
@@ -361,20 +373,25 @@ export default function Test({ lessonData }) {
           )}
         </div>
         {(testContent && testContent?.legth !== 0) || isEdit ? (
-          testContent && testContent?.legth !== 0 && renderTestContent()
+          isEdit ? (
+            <TestContructor testData={lessonData?.data} />
+          ) : (
+            testContent && testContent?.legth !== 0 && renderTestContent()
+          )
         ) : (
           <Empty />
         )}
-        {userType === "student" && result ? (
-          <h3>{result.message}</h3>
-        ) : (
-          <div className={styles.submitTestBtnWrapper}>
-            <button className={styles.completeBtn} onClick={handleSubmitTest}>
-              <span>Complete</span>
-              <CompleteIcon />
-            </button>
-          </div>
-        )}
+        {userType === "student" &&
+          (result ? (
+            <h3>{result.message}</h3>
+          ) : (
+            <div className={styles.submitTestBtnWrapper}>
+              <button className={styles.completeBtn} onClick={handleSubmitTest}>
+                <span>Complete</span>
+                <CompleteIcon />
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );

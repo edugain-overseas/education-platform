@@ -3,6 +3,7 @@ div.testContainer {
   overflow-y: auto;
   padding-inline: 75rem;
   padding-bottom: 56rem;
+  margin-top: 16rem;
 
   & .submitTestBtnWrapper {
     display: flex;
@@ -86,6 +87,7 @@ div.testContainer {
     border-radius: 2rem;
     border: 1rem solid #7e7e7e;
     box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+    margin-bottom: 76rem;
   }
   & button {
     position: absolute;

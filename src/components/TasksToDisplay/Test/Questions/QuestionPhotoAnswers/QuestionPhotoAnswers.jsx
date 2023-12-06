@@ -18,6 +18,7 @@ const QuestionPhotoAnswers = ({ answers, state, setState, id }) => {
     }
 
     return answers.map(({ answerId, answerText, imagePath }, index) => {
+      console.log(imagePath);
       return (
         <div key={answerId} className={styles.imageCard}>
           <Image src={`${serverName}${imagePath}`} fallback={noImage} />

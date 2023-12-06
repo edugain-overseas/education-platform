@@ -30,7 +30,6 @@ export const renderFileFromMessage = (file, styles = {}) => {
         />
       );
     default:
-      console.log(file);
       const { fileName, fileSize, filePath } = file;
       const fileNameArray = fileName?.split("_") || [];
       if (fileNameArray.length > 1) {

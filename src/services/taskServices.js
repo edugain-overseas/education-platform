@@ -50,8 +50,10 @@ export const addHomeworkPartToLecture = async (lectureId, partData) => {
   return data;
 };
 
-export const getTestByTaskId = async (taskId) => {
-  const { data } = await instance.get(`/test/${taskId}`);
+export const getTestByTaskId = async (taskId, userType) => {
+  const { data } = await instance.get(
+    userType !== "student" ? `/test-for-teacher/${taskId}` : `/test/${taskId}`
+  );
   return data;
 };
 
@@ -106,5 +108,40 @@ export const deleteSection = async (attrId) => {
   const { data } = await instance.delete(
     `/lecture/delete/section?attribute_id=${attrId}`
   );
+  return data;
+};
+
+export const createTest = async (config) => {
+  const { data } = await instance.post("/test", config);
+  return data;
+};
+
+export const crateTestQuestions = async (testId, questionsData) => {
+  const { data } = await instance.post(
+    `/test/create-data/${testId}`,
+    questionsData
+  );
+  return data;
+};
+
+export const updateQuestion = async (questionId, questionData) => {
+  const { data } = await instance.put(
+    `/test/question?question_id=${questionId}`,
+    questionData
+  );
+  return data;
+};
+
+export const deleteQuestion = async (questionId) => {
+  const { data } = await instance.delete(
+    `/test/delete-question?question_id=${questionId}`
+  );
+  return data;
+};
+
+export const uploadTestImage = async (formData) => {
+  instance.defaults.headers["Content-Type"] = "multipart/form-data";
+  const { data } = await instance.post("/test/upload/image", formData);
+  instance.defaults.headers["Content-Type"] = "application/json";
   return data;
 };

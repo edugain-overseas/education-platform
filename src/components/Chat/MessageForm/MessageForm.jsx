@@ -27,8 +27,9 @@ import { TypeContext } from "../../../pages/CoursesPage/CourseDetailPage/CourseT
 import AttachedFilesPopover from "./AttachedFilesPopover/AttachedFilesPopover";
 import EmojiPanel from "./EmojiPanel/EmojiPanel";
 import { ReactComponent as PinIcon } from "../../../images/icons/pin.svg";
-import styles from "./MessageForm.module.scss";
 import { getStringFromHTMLString } from "../../../helpers/getStringFromHTMLString";
+import styles from "./MessageForm.module.scss";
+// import { EditMessage } from "../Chat";
 
 export function MessageForm({ chatData = null }) {
   const [messageHTML, setMessageHTML] = useState("");
@@ -36,8 +37,11 @@ export function MessageForm({ chatData = null }) {
   const [fixed, setFixed] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const userType = useSelector(getUserType);
-
+  
+  // const editMessage = useContext(EditMessage)
   const type = useContext(TypeContext) || "main";
+  
+  // console.log(editMessage);
 
   let socket = useContext(
     type === "main"
@@ -49,41 +53,26 @@ export function MessageForm({ chatData = null }) {
   if (type === "main" && userType === "teacher") {
     socket = socket.find(({ id }) => chatData.subjectId === id)?.websocket;
   }
+
   const dispatch = useDispatch();
 
   const userId = useSelector(getUserId);
+
   const participantsData = chatData?.participantsData;
-  // const participantsData = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.participantsData
-  //       : getParticipantsData
-  //     : getSubjectParticipantsData
-  // );
+
   const attachedFiles = chatData?.attachedFilesToMessage?.filesData;
-  // const attachedFiles = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.attachedFilesToMessage.filesData
-  //       : getAttachedFiles
-  //     : getSubjectAttachedFiles
-  // );
+
   const replyTo = chatData?.feedbackTo;
-  // const replyTo = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.feedbackTo
-  //       : getFeedbackData
-  //     : getSubjectFeedbackData
-  // );
-  const isLoadingFiles = chatData?.attachedFilesToMessage.isLoading;
-  // const isLoadingFiles = useSelector(
-  //   type === "group"
-  //     ? chatData
-  //       ? chatData.attachedFilesToMessage.isLoading
-  //       : getAttachFileLoading
-  //     : getSubjectAttachFileLoading
-  // );
+
+  const isLoadingFiles = chatData?.attachedFilesToMessage?.isLoading;
+
+  // useEffect(()=>{
+  //   if (editMessage) {
+  //     setMessageHTML(editMessage.messageText)
+  //   } else {
+  //     setMessageHTML('')
+  //   }
+  // },[editMessage])
 
   const handleSubmit = (event) => {
     event.preventDefault();

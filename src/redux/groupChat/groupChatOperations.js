@@ -32,7 +32,6 @@ export const readMessageThunk = createAsyncThunk(
   "groupChat/readMessage",
   async (messageId, { rejectWithValue }) => {
     try {
-      console.log('thunk');
       const response = await readMessage(messageId);
       return response;
     } catch (error) {
@@ -57,7 +56,6 @@ export const loadMoreMessagesThunk = createAsyncThunk(
   "groupChat/loadMoreMessages",
   async ({ groupName, lastMessageId }, { rejectWithValue }) => {
     try {
-      console.log(groupName, lastMessageId);
       const response = await loadMoreMessages(groupName, lastMessageId);
       return response;
     } catch (error) {

@@ -9,7 +9,7 @@ const MessageSLide = ({ message, chatData }) => {
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.avatarWrapper}>
-        <UserAvatar imageSrc={sender?.imagePath} userName={sender?.username} />
+        <UserAvatar imageSrc={sender?.imagePath} userName={sender?.name} />
         <div
           className={
             sender?.isActive

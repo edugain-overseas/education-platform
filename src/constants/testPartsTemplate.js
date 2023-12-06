@@ -1,0 +1,55 @@
+import { v4 as uuidv4 } from "uuid";
+
+export const testPartsTemplate = () => ({
+  classic: {
+    id: uuidv4(),
+    questionType: "test",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    questionAnswers: [],
+  },
+  multipleChoice: {
+    id: uuidv4(),
+    questionType: "multiple_choice",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    questionAnswers: [],
+  },
+  boolean: {
+    id: uuidv4(),
+    questionType: "boolean",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    questionAnswers: [],
+  },
+  photoAnswers: {
+    id: uuidv4(),
+    questionType: "answer_with_photo",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    questionAnswers: [],
+  },
+  photoQuestion: {
+    id: uuidv4(),
+    questionType: "question_with_photo",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    imagePath: "",
+    questionAnswers: [],
+  },
+  matching: {
+    id: uuidv4(),
+    questionType: "matching",
+    questionText: "",
+    questionScore: 0,
+    hided: false,
+    questionAnswers: [],
+    leftOptions: [],
+    rightOptions: [],
+  },
+});

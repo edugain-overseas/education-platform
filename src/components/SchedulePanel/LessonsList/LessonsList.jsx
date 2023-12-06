@@ -7,7 +7,6 @@ import { getUserType } from "../../../redux/user/userSelectors";
 import styles from "./LessonsList.module.scss";
 
 export function LessonsList({ lessons, day }) {
-  console.log(lessons);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isEdit = useSelector(getIsEdit);
   const userType = useSelector(getUserType);

@@ -61,7 +61,9 @@ function App() {
 
   useEffect(() => {
     if (userType === "teacher" && token && subjects) {
+      console.log(userType, token, subjects);
       subjects.forEach(({ subject_id }) => {
+        console.log(websockets.current);
         if (
           !websockets.current?.find((websocket) => websocket.id === subject_id)
         ) {

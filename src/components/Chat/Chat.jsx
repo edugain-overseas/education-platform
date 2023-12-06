@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { MessageForm } from "./MessageForm/MessageForm";
 import { ReactComponent as GridIcon } from "../../images/icons/grid.svg";
 import { ChatFeed } from "./ChatFeed/ChatFeed";
@@ -17,13 +23,12 @@ import styles from "./Chat.module.scss";
 import { TypeContext } from "../../pages/CoursesPage/CourseDetailPage/CourseTapesPage/CourseTapesPage";
 import FixedMessages from "./FixedMessages/FixedMessages";
 
-export function Chat({
-  subjectId = null,
-  subjectData = null,
-  chatData = null,
-}) {
+export const EditMessage = createContext(null);
+
+export function Chat({ subjectId = null, subjectData = null, chatData = {} }) {
   const [isShowMore, setIsShowMore] = useState(false);
   const [avatarsWrapperWidth, setAvatarsWrapperWidth] = useState(null);
+  const [editMessage, setEditMessage] = useState(null);
 
   const type = useContext(TypeContext) || "main";
 
@@ -35,7 +40,7 @@ export function Chat({
   const userType = useSelector(getUserType);
   const userGroup = useSelector(getUserGroup) || "";
   const chatGroup = useSelector(getTeacherSubjects)?.find(
-    ({ subject_id }) => +subject_id === chatData.subjectId
+    ({ subject_id }) => +subject_id === chatData?.subjectId
   )?.group_name;
   const chatSubjectTitle = useSelector(getTeacherSubjects)?.find(
     ({ subject_id }) => +subject_id === chatData.subjectId
@@ -59,7 +64,9 @@ export function Chat({
 
   const historyEnd = chatData?.historyEnd;
   const fixedMessages =
-    messages?.filter(({ messageFixed }) => messageFixed) || [];
+    messages
+      ?.filter(({ deleted }) => !deleted)
+      .filter(({ messageFixed }) => messageFixed) || [];
 
   useEffect(() => {
     setAvatarsWrapperWidth(avatarsWrapperRef?.current?.offsetWidth);
@@ -121,6 +128,41 @@ export function Chat({
     userGroup,
     userType,
   ]);
+
+  useEffect(() => {
+    if (isLoading || historyEnd) {
+      return;
+    }
+    if (
+      chatFeedWrapperRef.current.children[0].clientHeight <=
+      chatFeedWrapperRef.current.clientHeight
+    ) {
+      if (messages && messages.length !== 0) {
+        const lastMessageId = messages[messages?.length - 1]?.messageId;
+        console.log(messages);
+        dispatch(
+          type === "main"
+            ? userType === "teacher"
+              ? loadMoreTeacherSubjectMessagesThunk({
+                  subjectId: chatData.subjectId,
+                  data: {
+                    subjectId: chatData.subjectId,
+                    lastMessageId,
+                  },
+                })
+              : loadMoreMessagesThunk({
+                  groupName: userGroup,
+                  lastMessageId,
+                })
+            : loadMoreSubjectMessagesThunk({
+                subjectId: subjectId,
+                lastMessageId,
+              })
+        );
+      }
+    }
+    // eslint-disable-next-line
+  }, [chatFeedWrapperRef.current?.children?.clientHeight, messages]);
 
   const handleShowMore = () => {
     setIsShowMore(true);
@@ -258,7 +300,9 @@ export function Chat({
               {targetMessage.messageDatetime.slice(-8, -3)}
             </p>
           )}
-          <MessageForm type={type} chatData={chatData} />
+          <EditMessage.Provider value={editMessage}>
+            <MessageForm type={type} chatData={chatData} />
+          </EditMessage.Provider>
         </div>
       </div>
       {fixedMessages.length !== 0 && (
@@ -272,7 +316,7 @@ export function Chat({
         }
         ref={chatFeedWrapperRef}
       >
-        <ChatFeed chatData={chatData} />
+        <ChatFeed chatData={chatData} setEditMessage={setEditMessage} />
       </div>
     </div>
   );

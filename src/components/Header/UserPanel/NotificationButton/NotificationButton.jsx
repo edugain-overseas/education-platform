@@ -38,7 +38,7 @@ export default function NotificationButton() {
   const messagesToNotify =
     userType === "student"
       ? (messages &&
-          messages.filter(
+          messages.filter(({deleted})=>!deleted).filter(
             (message) =>
               message.senderId !== userId &&
               !message.readBy?.includes(`${userId}`)
@@ -50,7 +50,7 @@ export default function NotificationButton() {
               allMessages.push({ subjectId: chat.subjectId, message: message });
             }
           });
-          return allMessages;
+          return allMessages.filter(({deleted})=>!deleted);
         }, []);
 
   const amoutTodisplay = (messages) => {
@@ -85,14 +85,15 @@ export default function NotificationButton() {
     const userData = participantsData?.find(
       (user) => user.userId === message.senderId
     );
+    console.log(userData);
     return (
       <div className={styles.cardHead}>
         <div className={styles.avatarWrapper}>
-          <UserAvatar imageSrc={userData.imagePath} userName={userData.name} />
+          <UserAvatar imageSrc={userData?.imagePath} userName={userData?.name} />
         </div>
         <div className={styles.cardHeadInfoWrapper}>
           <span className={styles.cardHeadName}>
-            {userData.name} {userData.surname}
+            {userData?.name} {userData?.surname}
           </span>
           <span className={styles.cardHeadTime}>
             {message.messageDatetime.slice(-8, -3)}

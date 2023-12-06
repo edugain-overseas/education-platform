@@ -386,8 +386,6 @@ const LectureConstructor = ({ lectureId, lectureContent }) => {
         })
       ).finally(() => dispatch(getLectureByTaskIdThunk(lessonId)));
 
-      // ImageDiscription
-
       dispatch(setDefault());
     };
     if (isSumbit) {
@@ -396,7 +394,6 @@ const LectureConstructor = ({ lectureId, lectureContent }) => {
   }, [isSumbit, lectureParts, dispatch, lectureId, lessonId]);
 
   const handleDragEnd = ({ source, destination }) => {
-    console.log(destination.index, source.index);
     const startIndex = source.index;
     const endIndex = destination?.index;
     if (!destination || startIndex === endIndex) {

@@ -1,0 +1,18 @@
+.ant-drawer-header {
+}
+
+.ant-drawer-body {
+    box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.12);
+}
+
+.ant-drawer-footer {
+}
+
+.ant-drawer-mask {
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(4rem);
+}
+
+.ant-drawer-right>.ant-drawer-content-wrapper {
+    top: 130rem;
+}

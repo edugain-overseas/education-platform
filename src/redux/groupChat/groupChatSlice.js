@@ -6,6 +6,7 @@ import {
   readAnswerThunk,
   readMessageThunk,
 } from "./groupChatOperations";
+// import { message } from "antd";
 
 const initialState = {
   messages: null,
@@ -52,6 +53,26 @@ export const groupChatSlice = createSlice({
         state.feedbackTo = null;
       }
     },
+    deleteMessage(state, { payload: str }) {
+      const id = parseInt(str.split(" ")[3]);
+
+      state.messages.forEach((message) => {
+        if (message.messageId === id) {
+          message.deleted = true;
+        }
+      });
+    },
+    deleteAnswer(state, { payload: str }) {
+      const id = parseInt(str.split(" ")[3]);
+
+      state.messages.forEach((message) => {
+        message.answers.forEach((answer) => {
+          if (answer.answerId === id) {
+            answer.deleted = true;
+          }
+        });
+      });
+    },
     addFeedback(state, { payload }) {
       const newAnswer = {
         answerId: payload.answerId,
@@ -62,9 +83,10 @@ export const groupChatSlice = createSlice({
         readBy: payload.readBy,
         attachFiles: payload.attachFiles,
       };
+      console.log(payload);
 
       state.messages.forEach((message) => {
-        if (message.message_id === payload.message_id) {
+        if (message.messageId === payload.messageId) {
           message.answers = [...message.answers, newAnswer];
         }
       });
@@ -171,4 +193,6 @@ export const {
   setFeedback,
   addFeedback,
   clearAttachedFiles,
+  deleteMessage,
+  deleteAnswer,
 } = groupChatSlice.actions;

@@ -5,10 +5,10 @@ import { ReactComponent as SearchIcon } from "../../../../images/icons/search.sv
 import { useSelector } from "react-redux";
 import { getSubjectData } from "../../../../redux/subject/subjectSelectors";
 import { Outlet, useParams } from "react-router-dom";
-import styles from "./CourseTasksPage.module.scss";
 import { getIsSubmit } from "../../../../redux/config/configSelectors";
 import { useDispatch } from "react-redux";
 import { setDefault } from "../../../../redux/config/configSlice";
+import styles from "./CourseTasksPage.module.scss";
 
 const CourseTasksPage = () => {
   const { id, lessonId } = useParams();
@@ -22,11 +22,13 @@ const CourseTasksPage = () => {
         (itemA, itemB) => itemA.module_number - itemB.module_number
       )
     : null;
+
   useEffect(() => {
     if (isSubmit) {
       dispatch(setDefault());
     }
   }, [isSubmit, dispatch]);
+  
   return (
     <div className={styles.tasksPageMainWrapper}>
       <div className={styles.titlesWrapper}>

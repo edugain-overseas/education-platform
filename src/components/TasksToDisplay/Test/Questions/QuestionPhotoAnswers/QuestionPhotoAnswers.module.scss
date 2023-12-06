@@ -9,6 +9,10 @@
     border-radius: 4rem;
     box-shadow: 0 0 3.70673rem 0 rgba(0, 0, 0, 0.12);
 
+    & > div {
+      width: 100%;
+    }
+
     & img {
       width: 100%;
       aspect-ratio: 16/9;

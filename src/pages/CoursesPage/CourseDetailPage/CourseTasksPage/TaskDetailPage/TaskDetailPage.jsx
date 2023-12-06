@@ -20,6 +20,7 @@ import { getTasks } from "../../../../../redux/task/taskSelectors";
 import { Empty } from "antd";
 import { getUserType } from "../../../../../redux/user/userSelectors";
 import StudentTest from "./StudentTest/StudentTest";
+import TestSettings from "../../../../../components/TasksToDisplay/Test/TestSettings/TestSettings";
 import styles from "./TaskDetailPage.module.scss";
 
 export default function TaskDetailPage() {
@@ -28,7 +29,7 @@ export default function TaskDetailPage() {
   const { id, lessonId } = useParams();
   const subjectData = useSelector(getSubjectData);
   const lessonData = useSelector(getTasks).find(
-    (lesson) => lesson.id === lessonId
+    (lesson) => lesson.id === +lessonId
   );
   const userType = useSelector(getUserType);
   const navigate = useNavigate();
@@ -49,16 +50,16 @@ export default function TaskDetailPage() {
     if (type && lessonId) {
       switch (type) {
         case "lecture":
-          dispatch(getLectureByTaskIdThunk(lessonId)).then(() => {});
+          dispatch(getLectureByTaskIdThunk(+lessonId)).then(() => {});
           break;
         case "test":
-          dispatch(getTestByTaskIdThunk(lessonId));
+          dispatch(getTestByTaskIdThunk({ lessonId: +lessonId, userType }));
           break;
         default:
           break;
       }
-    }
-  }, [lessonId, type, dispatch]);
+    } 
+  }, [lessonId, type, dispatch, userType]);
 
   const getComponentByType = () => {
     switch (type) {
@@ -89,6 +90,7 @@ export default function TaskDetailPage() {
     }
     navigate(`/courses/${id}/tasks/${+lessonId - 1}`);
   };
+
   return (
     <div className={styles.taskDetailWrapper}>
       <div className={styles.controlPanel}>
@@ -129,6 +131,7 @@ export default function TaskDetailPage() {
                 <span>Open template</span>
                 <OpenTemplateIcon />
               </button>
+              {type === "test" && <TestSettings config={lessonData?.data} />}
             </>
           )}
         </div>

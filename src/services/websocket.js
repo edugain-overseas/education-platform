@@ -2,6 +2,8 @@ import { webSocketUrl } from "../constants/server";
 import {
   addFeedback,
   addMessage,
+  deleteAnswer,
+  deleteMessage,
   setActiveData,
   setMessages,
   setUsers,
@@ -14,6 +16,8 @@ import {
   setActiveData as setTeacherActiveData,
   setMessages as setTeacherMessages,
   setUsers as setTeacherUsers,
+  deleteMessage as deleteTeacherMessage,
+  deleteAnswer as deleteTeacherAnswer
 } from "../redux/chats/chatsSlice";
 import { store } from "../redux/store";
 const dispatch = store.dispatch;
@@ -27,11 +31,12 @@ export const connectToWebSocket = (chatGroup, token) => {
       websocket.onclose = function (event) {
         console.log("Connection Closed");
       };
-
       websocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        console.log(event.data);
         const participantsData = data.userInfo;
         const messagesData = data.messages;
+        const singleMessage = data.message;
 
         if (messagesData) {
           if (participantsData) {
@@ -42,8 +47,20 @@ export const connectToWebSocket = (chatGroup, token) => {
           dispatch(setActiveData(data));
         } else if (data.answerId) {
           dispatch(addFeedback(data));
-        } else {
+        } else if (typeof singleMessage !== "string") {
           dispatch(addMessage(data));
+        } else if (
+          typeof singleMessage === "string" &&
+          singleMessage.includes("deleted") &&
+          singleMessage.includes("Message")
+        ) {
+          dispatch(deleteMessage(singleMessage));
+        } else if (
+          typeof singleMessage === "string" &&
+          singleMessage.includes("deleted") &&
+          singleMessage.includes("Answer")
+        ) {
+          dispatch(deleteAnswer(singleMessage));
         }
       };
       return websocket;
@@ -65,12 +82,14 @@ export const connectToTeacherSubjectWebsocket = (subject_id, token) => {
       };
       websocket.onclose = () => {
         console.log(`Connected to subject ${subject_id} websocket closed`);
-        dispatch(deleteSubjectChat(subject_id))
-      }
+        dispatch(deleteSubjectChat(subject_id));
+      };
       websocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const participantsData = data.userInfo;
         const messagesData = data.messages;
+        const singleMessage = data.message;
+        console.log(data);
 
         if (messagesData) {
           if (participantsData) {
@@ -84,9 +103,23 @@ export const connectToTeacherSubjectWebsocket = (subject_id, token) => {
         } else if (data.idsActiveUsers) {
           dispatch(setTeacherActiveData({ subjectId: subject_id, data }));
         } else if (data.answerId) {
-          dispatch(addTeacherFeedback({ subjectId: subject_id, data}));
-        } else {
-          dispatch(addTeacherMessage({ subjectId: subject_id, data}));
+          dispatch(addTeacherFeedback({ subjectId: subject_id, data }));
+        } else if (typeof singleMessage !== "string") {
+          dispatch(addTeacherMessage({ subjectId: subject_id, data }));
+        } else if (
+          typeof singleMessage === "string" &&
+          singleMessage.includes("deleted") &&
+          singleMessage.includes("Message")
+        ) {
+          dispatch(
+            deleteTeacherMessage({ subjectId: subject_id, data: singleMessage })
+          );
+        } else if (
+          typeof singleMessage === "string" &&
+          singleMessage.includes("deleted") &&
+          singleMessage.includes("Answer")
+        ) {
+          dispatch(deleteTeacherAnswer({ subjectId: subject_id, data: singleMessage }));
         }
       };
       return websocket;

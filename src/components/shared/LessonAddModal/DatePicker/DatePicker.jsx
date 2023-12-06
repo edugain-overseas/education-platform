@@ -3,7 +3,15 @@ import dayjs from "dayjs";
 import { DatePicker as AntDatePicker } from "antd";
 import "./DatePicker.css";
 
-export default function DatePicker({ date, onDateChange, error, day }) {
+export default function DatePicker({
+  date,
+  onDateChange,
+  error,
+  day,
+  placeholder = "Select date",
+  height = "initial",
+  className = null
+}) {
   const today = dayjs();
   const dateFormat = "DD.MM.YY (dddd)";
   const disabledDate = (currentDate) => {
@@ -20,9 +28,11 @@ export default function DatePicker({ date, onDateChange, error, day }) {
       inputReadOnly={true}
       disabledDate={disabledDate}
       format={dateFormat}
-      className="datePicker"
+      className={className}
       status={error && "error"}
       defaultValue={day ? dayjs(day) : today}
+      placeholder={placeholder}
+      style={{ height }}
     />
   );
 }

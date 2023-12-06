@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { serverName } from "../../constants/server";
+import Sceleton from "../shared/Skeleton/Sceleton";
 
 export default function VideoPlayer({ file }) {
   const [url, setUrl] = useState(null);
@@ -29,16 +30,16 @@ export default function VideoPlayer({ file }) {
   }, [file.filePath]);
 
   return url ? (
-      <video
-        controls
-        controlsList="nodownload"
-        width="100%"
-        height="auto"
-        onContextMenu={(e) => e.preventDefault()}
-      >
-        <source src={url} type="video/webm" />
-      </video>
+    <video
+      controls
+      controlsList="nodownload"
+      width="100%"
+      height="auto"
+      onContextMenu={(e) => e.preventDefault()}
+    >
+      <source src={url} type="video/webm" />
+    </video>
   ) : (
-    <div></div>
+    <Sceleton style={{ aspectRatio: 16 / 9 }} />
   );
 }
